@@ -1,0 +1,97 @@
+<template>
+  <el-container>
+    <el-header class="el-header">
+      <el-menu
+        :default-active="activeIndex2"
+        class="el-menu-demo"
+        mode="horizontal"
+        background-color="#545c64"
+        text-color="#fff"
+        active-text-color="#ffd04b">
+        <el-menu-item index="1">处理中心</el-menu-item>
+        <el-submenu index="2">
+          <template slot="title">我的工作台</template>
+          <el-menu-item index="2-1">选项1</el-menu-item>
+          <el-menu-item index="2-2">选项2</el-menu-item>
+          <el-menu-item index="2-3">选项3</el-menu-item>
+          <el-submenu index="2-4">
+            <template slot="title">选项4</template>
+            <el-menu-item index="2-4-1">选项1</el-menu-item>
+            <el-menu-item index="2-4-2">选项2</el-menu-item>
+            <el-menu-item index="2-4-3">选项3</el-menu-item>
+          </el-submenu>
+        </el-submenu>
+        <el-menu-item index="3" disabled>消息中心</el-menu-item>
+        <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+      </el-menu>
+    </el-header>
+
+    <el-container>
+
+      <el-aside class="el-aside">
+        <el-header class="el-header" style="height: 200px">
+          <div style="background-color: cornsilk;height: 220px;width: 200px">
+            <br>
+            <span>用户名</span>
+            <br>
+            <el-avatar  id="tupian" :size="100" :src="circleUrl"></el-avatar>
+            <br>
+            <br>
+            <a href="#">退出</a>
+          </div>
+
+        </el-header>
+        <el-main class="el-main">
+        <el-menu default-active="1-4-1" class="el-menu-vertical-demo"  :collapse="isCollapse" style="background-color: darkgray">
+          <el-menu-item index="2">
+            <i class="el-icon-menu"></i>
+            <span slot="title">我的订单</span>
+          </el-menu-item>
+          <el-menu-item index="3">
+            <i class="el-icon-document"></i>
+            <span slot="title">我的收入</span>
+          </el-menu-item>
+          <el-menu-item index="4">
+            <i class="el-icon-setting"></i>
+            <span slot="title">信息/隐私</span>
+          </el-menu-item>
+        </el-menu>
+        </el-main>
+      </el-aside>
+
+      <el-main class="el-main">
+          <h1>这里是首页</h1>
+      </el-main>
+    </el-container>
+
+  </el-container>
+</template>
+
+<script>
+    export default {
+      name: "Shgrzx",
+      data(){
+        return {
+          activeIndex: '1',
+          activeIndex2: '1',
+          isCollapse: false,
+          icon:"el-icon-s-fold",
+          circleUrl:"./img/1.jpg"
+        }
+      },
+      methods: {
+        kai(){
+           if(this.isCollapse==false){
+
+           }
+        }
+      }
+    }
+</script>
+
+<style scoped>
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 550px;
+  }
+</style>

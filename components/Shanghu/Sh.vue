@@ -1,4 +1,5 @@
 <template>
+
     <div>
       <el-table :data="tableData" stripe style="width: 100%">
         <el-table-column prop="sid" label="ID" width="180">
@@ -53,7 +54,7 @@
           _this.total = result.data.total;
         }).
         catch(function(error) {
-          alert(error)
+          /*alert(error)*/
         });
 
       },
