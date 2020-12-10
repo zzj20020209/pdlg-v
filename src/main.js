@@ -7,7 +7,7 @@ import Axios from 'axios'
 Vue.use(ElementUI)
 
 
-Axios.defaults.baseURL = "http://127.0.0.1:8080/crmsystem"
+Axios.defaults.baseURL = "http://localhost:8080/pdlg"
 // 将baseURL绑定到全局
 Vue.prototype.$axios = Axios
 new Vue({
