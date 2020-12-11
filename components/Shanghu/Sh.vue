@@ -1,8 +1,6 @@
 <template>
     <div>
       <el-table :data="tableData" stripe style="width: 100%">
-        <el-table-column prop="sid" label="ID" width="180">
-        </el-table-column>
         <el-table-column prop="sname" label="用户名" width="180">
         </el-table-column>
         <el-table-column prop="yhm" label="账号">

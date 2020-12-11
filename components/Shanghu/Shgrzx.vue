@@ -1,5 +1,6 @@
 <template>
-  <el-container>
+  <div class="homeWrap">
+  <el-container style="height:100%" direction="vertical">
     <el-header class="el-header">
       <el-menu
         :default-active="activeIndex2"
@@ -65,6 +66,7 @@
     </el-container>
 
   </el-container>
+  </div>
 </template>
 
 <script>
@@ -93,5 +95,19 @@
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
     min-height: 550px;
+  }
+  .homeWrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+*{
+  padding: 0px;
+  margin: 0px;
+}
+  .el-menu-item{
+    padding: 0 50px;
   }
 </style>
