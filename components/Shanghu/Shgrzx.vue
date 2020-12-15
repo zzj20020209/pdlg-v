@@ -27,6 +27,7 @@
       </el-menu>
     </el-header>
 
+
     <el-container>
 
       <el-aside class="el-aside">
@@ -94,7 +95,7 @@
 <style scoped>
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
-    min-height: 550px;
+    min-height: 640px;
   }
   .homeWrap {
     position: absolute;

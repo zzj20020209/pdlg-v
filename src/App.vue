@@ -1,14 +1,15 @@
 <template>
 <div id="app">
-  <sh></sh>
+  <!--<sh></sh>-->
   <!--<shgrzx></shgrzx>-->
+  <shzc></shzc>
 </div>
 </template>
 
 <script>
   import Sh from '../components/Shanghu/Sh.vue'
   import Shgrzx from "../components/Shanghu/Shgrzx";
-  /*import Edituser from "../components/edituser.vue"*/
+  import Shzc from "../components/Shanghu/Shzc";
 
   export default {
     name: 'app',
@@ -17,7 +18,8 @@
     },
     components:{
       "sh":Sh,
-      "shgrzx":Shgrzx
+      "shgrzx":Shgrzx,
+      "shzc":Shzc
     }
   }
 </script>
