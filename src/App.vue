@@ -10,6 +10,7 @@
   import Sh from '../components/Shanghu/Sh.vue'
   import Shgrzx from "../components/Shanghu/Shgrzx";
   import Shzc from "../components/Shanghu/Shzc";
+  import Goods from "../components/Goods/Goods";
 
   export default {
     name: 'app',
@@ -19,7 +20,8 @@
     components:{
       "sh":Sh,
       "shgrzx":Shgrzx,
-      "shzc":Shzc
+      "shzc":Shzc,
+      "Goods":Goods
     }
   }
 </script>
