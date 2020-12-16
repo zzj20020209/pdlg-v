@@ -2,7 +2,7 @@
 <div id="app">
   <!--<sh></sh>-->
   <!--<shgrzx></shgrzx>-->
-  <shzc></shzc>
+  <!--<router-view></router-view>-->
 </div>
 </template>
 
