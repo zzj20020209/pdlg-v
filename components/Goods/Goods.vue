@@ -307,7 +307,7 @@ export default {
       },
       created() { //钩子函数  vue对象初始化完成后  执行
         this.getData();
-        this.selectAll();
+        //this.selectAll();
       },
     }
 </script>

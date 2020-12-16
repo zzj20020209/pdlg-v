@@ -27,6 +27,7 @@
         <el-form-item label="商品图片">
           <el-input v-model="data.gunit"></el-input>
         </el-form-item></el-col>
+
       <!--<el-col :span="8">
         <el-form-item label="商品类型">
           <el-select v-model="data.goodSort.gsid" placeholder="请选择" >
@@ -56,9 +57,11 @@
         },
         methods:{
           selectAll(){
+
             var _this = this;
             this.$axios.post("queryAllGoodSortname.action").
             then(function(result) {
+
               _this.editSelect=result.data
 
             }).
@@ -68,7 +71,7 @@
           },
         },
         created() { //钩子函数  vue对象初始化完成后  执行
-          this.selectAll();
+          //this.selectAll();
         },
     }
 </script>

@@ -1,32 +1,32 @@
 <template>
   <div id="app">
-    <sh></sh>
-    <!--<shgrzx></shgrzx>-->
+
+    <router-view></router-view>
+
   </div>
 </template>
 
 <script>
-  import Sh from '../components/Shanghu/Sh.vue'
+  /*import Sh from '../components/Shanghu/Sh.vue'
   import Shgrzx from "../components/Shanghu/Shgrzx";
-  import Goods from "../components/Goods/Goods";
+  import Goods from "../components/Goods/Goods";*/
   /*import Edituser from "../components/edituser.vue"*/
 
   export default {
     name: 'app',
     data() {
-      return ""
+      return {
+
+      }
     },
-    components:{
+   /* components:{
       "sh":Sh,
       "shgrzx":Shgrzx,
       "Goods":Goods
 
-    }
+    }*/
   }
 </script>
 
 <style>
-  *{
-    text-align: center;
-  }
 </style>
