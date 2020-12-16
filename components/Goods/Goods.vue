@@ -6,10 +6,28 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">查询</el-button>
+        <el-button @click="add()" type="warning">添加商品</el-button>
+        <a>hhh</a>
       </el-form-item>
     </el-form>
-    <el-button @click="add()" type="warning">添加商品</el-button>
+
     <el-table :data="tableData" stripe style="width: 100%">
+      <el-table-column type="expand">
+        <template slot-scope="props">
+          <el-form label-position="left" inline class="demo-table-expand">
+            <el-form-item label="商品类型:">
+              <span>{{ props.row.gsid.goodBigSort.gbsname }}</span>
+            </el-form-item>
+            <el-form-item label="商品所属分类:">
+              <span>{{ props.row.gsid.goodSmallsort.gssname }}</span>
+            </el-form-item>
+            <el-form-item label="商品所属分类:">
+              <span>{{ props.row.gsid.goodSmallsort.gssname }}</span>
+            </el-form-item>
+          </el-form>
+
+        </template>
+      </el-table-column>
       <el-table-column prop="gid" label="ID" width="180">
       </el-table-column>
       <el-table-column prop="gname" label="商品名称" width="180">
@@ -23,8 +41,8 @@
           <img style="width:80px;height:80px;border:none;" :src="scope.row.gimage">
         </template>
       </el-table-column>
-      <el-table-column prop="goodSort.gsname" label="商品类型">
-      </el-table-column>
+     <!-- <el-table-column prop="gsid.goodBigSort.gbsname" label="商品类型">
+      </el-table-column>-->
 
       <el-table-column label="操作">
         <template slot-scope="scope">
@@ -42,21 +60,27 @@
                    :page-size="pagesize" :page-sizes="[2,3,4]">
     </el-pagination>
 
+    <div>
+      <!-- 路由视图 -->
 
-     <!--<el-dialog title="编辑页面" :visible.sync="dialogFormVisible">
-       <h1>加载添加页面/编辑页面</h1>
-       <edit-goods></edit-goods>
-       <div slot="footer" class="dialog-footer">
-         <el-button @click="dialogFormVisible = false">取 消</el-button>
-         <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-       </div>
-     </el-dialog>hhhh-->
-    <el-dialog :visible.sync="editFormVisible">
+    </div>
+
+
+    <el-dialog title="编辑页面" :visible.sync="dialogFormVisible">
+      <edit-goods :data="selectData"></edit-goods>
+      <!--将编辑页面子组件加入到列表页面 -->
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="subEdit">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <!--<el-dialog :visible.sync="editFormVisible">
       <el-form  :model="editForm" >
-      <!--  <el-form-item label="日期" :picker-options="pickerOptions">
+      &lt;!&ndash;  <el-form-item label="日期" :picker-options="pickerOptions">
           <el-date-picker v-model="editForm.date" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日"
                           value-format="yyyy-MM-dd"></el-date-picker>
-        </el-form-item>-->
+        </el-form-item>&ndash;&gt;
         <el-row>
           <el-col :span="8">
         <el-form-item label="商品名称">
@@ -91,7 +115,7 @@
         <el-button @click="closeDialog()">取消</el-button>
         <el-button type="primary" @click="sumbitEditRow()">确定</el-button>
       </div>
-    </el-dialog>
+    </el-dialog>-->
 
     <el-dialog :visible.sync="addFormVisible">
       <el-form    :rules="rules">
@@ -118,7 +142,7 @@
             <el-form-item label="商品图片">
               <el-input v-model="editgunit"></el-input>
             </el-form-item></el-col>
-          <el-col :span="8">
+         <!-- <el-col :span="8">
             <el-form-item label="商品类型" prop="leixing">
               <el-select v-model="leixing" placeholder="请选择" >
                 <el-option v-for="e in editSelect"
@@ -126,7 +150,7 @@
                            :label="e.gsname"
                            :value="e.gsid"></el-option>
               </el-select>
-            </el-form-item></el-col>
+            </el-form-item></el-col>-->
         </el-row>
       </el-form>
       <div>
@@ -139,16 +163,18 @@
 
 <script>
 
-  import EditGoods from "./editGoods";
+/*  import EditGoods from "./editGoods.vue";*/
 
 
-    export default {
+    import editGoods from "./editGoods";
+
+export default {
         name: "Goods",
-      components: {EditGoods},
+      components: {editGoods: editGoods},
       data () {
         return {
           tableData: [],
-          editFormVisible: false,
+          dialogFormVisible: false,
           addFormVisible:false,
           total:1,
           page:1,
@@ -161,6 +187,8 @@
           editgunit:"",
           editgprice:"",
           leixing:"",
+          selectIndex:0,
+          selectData:{},
           rules: {
             //需要校验的字段名
             gname: [
@@ -229,8 +257,14 @@
         },
         editgoods(val) { //编辑按钮按下  打开编辑模态框
           //获取到要编辑的巨记录  通过val（id）
-          this.editFormVisible = true;
-          var _this = this;
+          this.dialogFormVisible = true;
+          for (let i = 0; i < this.tableData.length; i++) {
+            if(this.tableData[i].gid == val){
+              this.selectIndex = i;
+              this.selectData = {...this.tableData[i]};
+            }
+          }
+          /*var _this = this;
           var params = new URLSearchParams();
           params.append("gid", val);
 
@@ -241,8 +275,13 @@
           }).
           catch(function() {
 
-          });
+          });*/
 
+        },
+        subEdit() {
+          //console.log(this.tableData[this.selectIndex])
+          let data = this.tableData[this.selectIndex];
+          data.gid = this.selectData.gid;
         },
         onSubmit(){
           this.getData();
@@ -273,30 +312,16 @@
     }
 </script>
 <style>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
+  .demo-table-expand {
+    font-size: 0;
   }
-
-  h1, h2 {
-    font-weight: normal;
+  .demo-table-expand label {
+    width: 100px;
+    color: #99a9bf;
   }
-
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-
-  li {
-    display: inline-block;
-    margin: 0 10px;
-  }
-
-  a {
-    color: #42b983;
+  .demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
   }
 </style>
