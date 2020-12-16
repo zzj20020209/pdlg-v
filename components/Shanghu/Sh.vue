@@ -105,8 +105,7 @@
           });
           //刷新数据
           _this.getData();
-        }).
-        catch(function() {
+        }).      catch(function() {
           _this.$message({
             message: '删除失败',
             type: 'success'

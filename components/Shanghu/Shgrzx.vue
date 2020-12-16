@@ -34,7 +34,7 @@
         <el-header class="el-header" style="height: 200px">
           <div style="background-color: cornsilk;height: 220px;width: 200px">
             <br>
-            <span>用户名</span>
+            <span>欢迎[{{shm}}]登录了！</span>
             <br>
             <el-avatar  id="tupian" :size="100" :src="circleUrl"></el-avatar>
             <br>
@@ -75,6 +75,7 @@
       name: "Shgrzx",
       data(){
         return {
+          shm: sessionStorage.getItem('sname'),
           activeIndex: '1',
           activeIndex2: '1',
           isCollapse: false,
