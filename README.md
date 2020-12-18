@@ -1,4 +1,4 @@
-# pdlg
+# pdlg-vv
 
 > A Vue.js project
 

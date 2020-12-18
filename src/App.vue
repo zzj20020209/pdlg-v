@@ -1,34 +1,32 @@
 <template>
-<div id="app">
-  <!--<sh></sh>-->
-  <!--<shgrzx></shgrzx>-->
-  <router-view></router-view>
-<!--  <gwc></gwc>-->
-</div>
+  <div id="app">
+
+    <router-view></router-view>
+
+  </div>
 </template>
 
 <script>
-  import Sh from '../components/Shanghu/Sh.vue'
+  /*import Sh from '../components/Shanghu/Sh.vue'
   import Shgrzx from "../components/Shanghu/Shgrzx";
-  import Shzc from "../components/Shanghu/Shzc";
-  import Gwc from "../components/Goods/Gwc";
+  import Goods from "../components/Goods/Goods";*/
+  /*import Edituser from "../components/edituser.vue"*/
 
   export default {
     name: 'app',
     data() {
-      return ""
+      return {
+
+      }
     },
-    components:{
-      "gwc":Gwc,
+   /* components:{
       "sh":Sh,
       "shgrzx":Shgrzx,
-      "shzc":Shzc
-    }
+      "Goods":Goods
+
+    }*/
   }
 </script>
 
 <style>
-*{
-  text-align: center;
-}
 </style>

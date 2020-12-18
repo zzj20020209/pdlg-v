@@ -16,6 +16,7 @@
 </template>
 
 <script>
+ /* :action="$host + 'fileUpload?dir=image'"*/
     export default {
       name: "View1Com",
       data() {
