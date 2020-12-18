@@ -55,7 +55,9 @@
       </el-table-column>
     </el-table>
 
-    <el-pagination style="text-align: center;margin-top: 20px"  @size-change="handleSizeChange" @current-change="pagechange"   :current-page="page"
+    <el-pagination style="text-align: center;margin-top: 20px"
+                   @size-change="handleSizeChange" @current-change="pagechange"
+                   :current-page="page"
                   layout="total, prev, pager, next,sizes" :total="total"
                    :page-size="pagesize" :page-sizes="[2,3,4]">
     </el-pagination>

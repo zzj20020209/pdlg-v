@@ -3,7 +3,7 @@
       是DemoView1首页, 的子组件1
       <el-upload
         class="avatar-uploader"
-        :action="$host + 'fileUpload?dir=image'"
+        :action="$host + 'fileUpload'"
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
         :before-upload="beforeAvatarUpload"
@@ -16,6 +16,7 @@
 </template>
 
 <script>
+ /* :action="$host + 'fileUpload?dir=image'"*/
     export default {
       name: "View1Com",
       data() {
