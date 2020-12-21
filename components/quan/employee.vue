@@ -2,7 +2,7 @@
   <div align="left">
 
     <el-button class="el-button el-icon-plus el-button--success" @click="dialogVisible = true">
-      添加新的员工
+      添加一个新的员工
     </el-button>
 
     <el-button class="el-button el-icon-plus el-button--danger" @click="deleteall">

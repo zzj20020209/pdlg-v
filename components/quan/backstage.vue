@@ -52,6 +52,7 @@
 import employee from "./employee";
 import Goods from "../Goods/Goods";
 import Sh from "../Shanghu/Sh";
+import Gwc from "../Goods/Gwc";
 
 export default {
   name: "backstage",

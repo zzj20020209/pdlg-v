@@ -7,7 +7,6 @@
       <el-form-item>
         <el-button type="primary" @click="onSubmit">查询</el-button>
         <el-button @click="add()" type="warning">添加商品</el-button>
-        <a>hhh</a>
       </el-form-item>
     </el-form>
 

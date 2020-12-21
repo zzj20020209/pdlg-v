@@ -1,4 +1,5 @@
 <template>
+  <div>
   <el-form ref="loginform" :model="loginform" label-width="80px">
     <el-form-item label="用户名">
       <el-input v-model="loginform.username"></el-input>
@@ -10,6 +11,7 @@
       <el-button @click="logins">登录</el-button>
     </el-form-item>
   </el-form>
+  </div>
 </template>
 
 <script>

@@ -7,11 +7,6 @@
 </template>
 
 <script>
-  /*import Sh from '../components/Shanghu/Sh.vue'
-  import Shgrzx from "../components/Shanghu/Shgrzx";
-  import Goods from "../components/Goods/Goods";*/
-  /*import Edituser from "../components/edituser.vue"*/
-
   export default {
     name: 'app',
     data() {
@@ -19,14 +14,12 @@
 
       }
     },
-   /* components:{
-      "sh":Sh,
-      "shgrzx":Shgrzx,
-      "Goods":Goods
-
-    }*/
   }
 </script>
 
 <style>
+  *{
+    margin: 0px;
+    padding: 0px;
+  }
 </style>
