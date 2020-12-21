@@ -8,6 +8,9 @@ import Goods from "../components/Goods/Goods";
 import Sh from "../components/Shanghu/Sh";
 import Shgrzx from "../components/Shanghu/Shgrzx";
 import Shzc from "../components/Shanghu/Shzc";
+import Login from "../components/quan/login";
+import backstage from "../components/quan/backstage";
+import employee from "../components/quan/employee";
 import Shdl from "../components/Shanghu/Shdl";
 
 Vue.use(VueRouter)
@@ -57,7 +60,19 @@ const routes = [
   {
     path: "/shzc",
     component: Shzc
-  }/*,
+  },
+  {
+    path:"/employee",
+    component:employee
+  },
+  {
+    path:"/backstages",
+    component:backstage
+  },
+  {
+    path:"/",
+    component:Login
+  }/*
   {
     path:"/",
     component:Shdl
