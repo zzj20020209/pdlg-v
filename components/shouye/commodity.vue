@@ -70,8 +70,9 @@
         </table>
       </el-col>
     </el-row>
-    <div style="width:94%;height:2px;margin:0px auto;padding:0px;background-color:gray;overflow:hidden;"></div>
-
+    <div style="width:94%;height:2px;margin:0px auto;padding:0px;background-color:gray;overflow:hidden;">
+    </div>
+<img src="imgs/11.jpg" style="width: 100%">
   </div>
 </template>
 

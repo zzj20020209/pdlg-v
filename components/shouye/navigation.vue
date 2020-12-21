@@ -14,11 +14,10 @@
               <el-menu-item index="1-1">个人中心</el-menu-item>
             </el-submenu>
 
-            <el-menu-item index="6">
-              <el-input v-model="shang" placeholder="请输入要搜索的商品" @change="search"></el-input>
+            <el-menu-item index="6" style="margin-left: 350px">
+              <el-input v-model="shang" placeholder="请输入要搜索的商品" @change="search" style="width: 500px"></el-input>
             </el-menu-item>
-
-            <el-menu-item index="2" style="padding-left: 140px"><a href="#">【登录】|</a><a href="#">【注册】</a></el-menu-item>
+            <el-menu-item index="2" style="margin-left: 140px"><a href="#">【登录】|</a><a href="#">【注册】</a></el-menu-item>
             <el-menu-item index="3"><i class="el-icon-phone-outline"></i>拨打热线:13787499481</el-menu-item>
             <el-submenu index="4">
               <template slot="title">更多</template>
@@ -55,6 +54,5 @@ export default {
 </script>
 
 <style scoped>
-
 
 </style>
