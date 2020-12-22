@@ -4,6 +4,22 @@
       <el-form-item label="商品名称">
         <el-input v-model="goodsname" placeholder="商品名称"></el-input>
       </el-form-item>
+      <el-form-item label="商品状态">
+          <el-select v-model="gstatus"  placeholder="请选择" >
+            <el-option
+              key=''
+              label='请选择'
+              value=''></el-option>
+            <el-option
+                       key='0'
+                       label='可用'
+                       value='0'></el-option>
+            <el-option
+              key="1"
+              label="不可用"
+              value="1"></el-option>
+          </el-select>
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">查询</el-button>
         <el-button @click="add()" type="warning">添加商品</el-button>
@@ -21,6 +37,12 @@
             </el-form-item>
             <el-form-item label="商品所属分类:">
               <span>{{ props.row.gsid.goodSmallsort.gssname }}</span>
+            </el-form-item>
+            <el-form-item label="商品状态:">
+              <span>{{ props.row.gstatus==0?"可用":"不可用" }}</span>
+            </el-form-item>
+            <el-form-item label="商品详情图片:">
+              <img v-for="e in props.row.goodsImagelist" style="width:80px;height:80px;border:none;" :src="$host + e.giurl">
             </el-form-item>
           </el-form>
 
@@ -134,6 +156,23 @@
              </el-select>
 
            </el-form-item></el-col>
+          <el-col :span="8">
+            <el-form-item label="商品详情图片">
+              <el-upload
+                :action="$host + 'fileUpload'"
+                list-type="picture-card"
+                :on-preview="handlePictureCardPreview"
+                :on-success="handleSuccess"
+                :on-remove="handleRemove">
+                <i class="el-icon-plus"></i>
+              </el-upload>
+              <el-dialog :visible.sync="dialogVisible">
+                <img width="100%" :src="$host + dialogImageUrl" alt="">
+              </el-dialog>
+             <!-- <img  v-for="e in fileList"
+                    style="width:80px;height:80px;border:none;" :src="$host+e.path">-->
+            </el-form-item>
+          </el-col>
         </el-row>
         {{gsid}}
       </el-form>
@@ -181,6 +220,10 @@ export default {
           addSelect:[],
           addSelectt:[],
           ssid:"",
+          gstatus:0,
+          fileList: [],
+          dialogImageUrl: '',
+          dialogVisible: false
         /*  editSelectt:[],
           editSelecttt:[]*/
          /* rules: {
@@ -199,11 +242,13 @@ export default {
       },
       methods: {
         getData() { //获取数据方法
+          this.tableData=[];
           var _this = this;
           var params = new URLSearchParams();
           params.append("page", this.page);
           params.append("size", this.pagesize);
           params.append("gname", this.goodsname);
+          params.append("gstatus", parseInt(this.gstatus));
           this.$axios.post("/queryGoods.action",params).
           then(function(result) {
             _this.tableData = result.data.rows;
@@ -272,12 +317,20 @@ export default {
 
         },
         subEdit() {
-          //console.log(this.tableData[this.selectIndex])
-          let data = this.tableData[this.selectIndex];
           var _this = this;
+          console.log(this.fileList)
+          let mids="";
+          this.fileList.forEach(function(item){
+            mids=mids+item.path+","
+          });
+          mids=mids+_this.imageUrl
+          alert(mids)
+          //console.log(this.tableData[this.selectIndex])
+          /*let data = this.tableData[this.selectIndex];
+          var _this = this;*/
          // data.gname = this.selectData.gname;
          // alert(data.gname)
-        var params = new URLSearchParams();
+       /* var params = new URLSearchParams();
           params.append("gid", this.selectData.gid);
           params.append("gname", this.selectData.gname);
           params.append("gunit", this.selectData.gunit);
@@ -301,7 +354,7 @@ export default {
               message: '修改失败',
               type: 'success'
             });
-          })
+          })*/
         },
         onSubmit(){
           this.getData();
@@ -408,12 +461,20 @@ export default {
         },
         sumbitaddRow(){
           var _this = this;
+          console.log(this.fileList)
+          let mids="";
+          this.fileList.forEach(function(item){
+            mids=mids+item.path+","
+          });
+          mids=mids+_this.imageUrl
+          alert(mids)
           var params = new URLSearchParams();
           params.append("gname", _this.addgname);
           params.append("gunit", _this.addgunit);
           params.append("gprice", _this.addgprice);
           params.append("gimage", _this.imageUrl);
           params.append("gssid", _this.gsid);
+          params.append("mids", mids);
           this.$axios.post("addGoods.action", params).
           then(function(result) {
             _this.$message({
@@ -447,6 +508,27 @@ export default {
             this.$message.error('上传头像图片大小不能超过 2MB!');
           }
           return isJPG && isLt2M;
+        },
+        //移除图片
+        handleRemove(file, fileList) {
+          console.log(file, fileList);
+        },
+        //上传成功调用
+        handleSuccess(data,file, fileList) {
+          if (data.flag) {
+            this.$message.success("上传成功");
+            console.log("上传成功 ： ",data);
+            file.url = this.$host + data.msg;
+            file.path = data.msg;
+            this.fileList = fileList;
+          }else {
+            this.$message.error(data.msg);
+          }
+        },
+        //点击图片， 将图片传给模态框， 放大图片
+        handlePictureCardPreview(file) {
+          this.dialogImageUrl = file.url;
+          this.dialogVisible = true;
         }
       },
       created() { //钩子函数  vue对象初始化完成后  执行

@@ -13,6 +13,7 @@ import backstage from "../components/quan/backstage";
 import employee from "../components/quan/employee";
 import Shdl from "../components/Shanghu/Shdl";
 import editGoods from "../components/Goods/editGoods";
+import warehouse from "../components/Warehouse/warehouse";
 
 Vue.use(VueRouter)
 
@@ -77,6 +78,10 @@ const routes = [
   {
     path:"/",
     component:Login
+  },
+  {
+    path:"/warehouse",
+    component:warehouse
   }/*
   {
     path:"/",
