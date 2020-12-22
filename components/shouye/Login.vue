@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form ref="loginForm" :model="form" :rules="rules" label-width="80px" class="login-box">
-      <h3 class="login-title">登录</h3>
+      <h3 class="login-title">用户登录</h3>
       <el-form-item label="账号" prop="username">
         <el-input type="text" placeholder="请输入账号" v-model="form.username" prefix-icon="el-icon-user-solid"/>
       </el-form-item>
@@ -38,12 +38,12 @@ export default {
 
       // 表单验证，需要在 el-form-item 元素中增加 prop 属性
       rules: {
-        username: [
-          {required: true, message: '账号不可为空', trigger: 'blur'}
-        ],
+      username: [
+        {required: true, message: '账号不可为空', trigger: 'blur'}
+      ],
         password: [
-          {required: true, message: '密码不可为空', trigger: 'blur'}
-        ]
+        {required: true, message: '密码不可为空', trigger: 'blur'}
+      ]
       },
 
       // 对话框显示和隐藏

@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <h3>商户登录</h3>
+    <h3 style="margin-right: 160px">商户登录</h3>
     <el-row>
 
       <el-col :span="8" :offset="8">
@@ -16,7 +16,7 @@
 
           <el-form-item>
             <el-button type="primary" @click="onSubmit">登录</el-button>
-            <el-button>取消</el-button>
+            <el-button @click="hsy">取消</el-button>
             <el-button type="primary" @click="zc">注册</el-button>
           </el-form-item>
 
@@ -35,8 +35,8 @@
       data() {
         return {
 
-          shyhm: 'rr',
-          password: "rr"
+          shyhm: "",
+          password: ""
 
         }
       },
@@ -69,6 +69,9 @@
         },
         zc(){
           this.$router.push("/shzc");
+        },
+        hsy(){
+          this.$router.push("/")
         }
       }
     }

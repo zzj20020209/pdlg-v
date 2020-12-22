@@ -59,7 +59,7 @@
 import employee from "./employee";
 import Goods from "../Goods/Goods";
 import Sh from "../Shanghu/Sh";
-import Gwc from "../Goods/Gwc";
+import ShSp from "../Shanghu/ShSp";
 
 export default {
   name: "backstage",
@@ -73,10 +73,12 @@ export default {
       username:sessionStorage.getItem("username")
     }
   }
-  , components: {
+  ,
+  components: {
     employee,
     Sh,
-    Goods
+    Goods,
+    ShSp
   },
   methods: {
     getDate() {

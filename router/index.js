@@ -14,6 +14,7 @@ import employee from "../components/quan/employee";
 import Shdl from "../components/Shanghu/Shdl";
 import search from "../components/shouye/search";
 import navigation from "../components/shouye/navigation";
+import ShSp from "../components/Shanghu/ShSp";
 
 Vue.use(VueRouter)
 
@@ -86,6 +87,10 @@ const routes = [
   {
     path:"/shdl",
     component:Shdl
+  },
+  {
+    path: "/shsp",
+    component: ShSp
   }
 ]
 const router = new VueRouter({

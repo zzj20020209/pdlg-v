@@ -6,7 +6,7 @@
           <el-menu active-text-color="red" text-color="black"
                    background-color="gainsboro" show-timeout="3000"
                    :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-            <el-menu-item><img src="img/pdlg01.jpg" style="width: 125px;"></el-menu-item>
+            <el-menu-item index="10"><img src="img/pdlg01.jpg" style="width: 125px;"></el-menu-item>
             <el-menu-item disabled class="el-icon-success">欢迎光临胖达乐购:</el-menu-item>
 
               <el-submenu index="1"  v-if="user!=null">
@@ -25,13 +25,13 @@
             <el-menu-item index="6" style="margin-left: 225px">
               <el-input v-model="shang" placeholder="请输入要搜索的商品" @change="search" style="width: 500px"></el-input>
             </el-menu-item>
-            <el-menu-item index="2" style="margin-left: 140px" v-if="user==null"><a href="#" @click="dkdl">【登录】</a></el-menu-item>
-            <el-menu-item index="7"><a href="#" @click="dkzc">【注册】</a></el-menu-item>
-            <el-menu-item index="3"><i class="el-icon-phone-outline"></i>拨打热线:13787499481</el-menu-item>
+            <el-menu-item index="2" style="margin-left: 140px" v-if="user==null" @click="dkdl">【登录】</el-menu-item>
+            <el-menu-item index="7" @click="dkzc" v-if="user==null">【注册】</el-menu-item>
+            <el-menu-item index="3" v-if="user!=null" style="margin-left: 275px"><i class="el-icon-phone-outline"></i>拨打热线:13787499481</el-menu-item>
+            <el-menu-item index="3" v-if="user==null"><i class="el-icon-phone-outline"></i>拨打热线:13787499481</el-menu-item>
             <el-submenu index="4">
               <template slot="title">更多</template>
               <el-menu-item index="4-1" @click="shanghu">进入商户</el-menu-item>
-              <el-menu-item index="4-2" @click="houduan">进入后端</el-menu-item>
             </el-submenu>
             <el-menu-item index="5">
               <i class="el-icon-shopping-cart-1"></i>
@@ -205,7 +205,7 @@
     data() {
       return {
         dialogVisible: false,
-        user: sessionStorage.getItem("username"),
+        user: sessionStorage.getItem("yhname"),
         circleUrl:"./img/2.png",
         zcym:false,
         activeIndex: '1',
@@ -262,20 +262,19 @@
       search() {
         this.$router.push("/search")
       },
-      houduan() {
-        this.$router.push("/login");
-      },
       shanghu() {
         this.$router.push("/shdl")
       },
       dkdl(){
-        this.dlym=true
+        this.dlym=true;
       },
       dkzc(){
         this.zcym=true;
       },
       tcdl(){
         sessionStorage.removeItem("username")
+        sessionStorage.removeItem("password")
+        this.user=null
         this.$router.push("/")
       },
       zconSubmit(formName) {
@@ -331,6 +330,9 @@
                   })
 
                   sessionStorage.setItem("username",result.data.username);
+                  sessionStorage.setItem("password",result.data.mm);
+                  sessionStorage.setItem("yhname",result.data.yhname);
+                  _this.user=result.data.yhname
                   _this.dlym=false
                   _this.$router.push("/")
                 } else {
