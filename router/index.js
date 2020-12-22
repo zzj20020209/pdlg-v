@@ -12,6 +12,7 @@ import Login from "../components/quan/login";
 import backstage from "../components/quan/backstage";
 import employee from "../components/quan/employee";
 import Shdl from "../components/Shanghu/Shdl";
+import editGoods from "../components/Goods/editGoods";
 
 Vue.use(VueRouter)
 
@@ -48,6 +49,10 @@ const routes = [
   {
     path: "/goods",
     component: Goods,
+    children: [{
+      path: "/goods/editGoods",
+      component: editGoods
+    }]
   },
   {
     path:"/sh",
