@@ -12,6 +12,8 @@ import Login from "../components/quan/login";
 import backstage from "../components/quan/backstage";
 import employee from "../components/quan/employee";
 import Shdl from "../components/Shanghu/Shdl";
+import search from "../components/shouye/search";
+import navigation from "../components/shouye/navigation";
 
 Vue.use(VueRouter)
 
@@ -70,13 +72,21 @@ const routes = [
     component:backstage
   },
   {
-    path:"/",
+    path:"/login",
     component:Login
-  }/*
+  },
   {
-    path:"/",
+    path: "/search",
+    component: search
+  },
+  {
+    path: "/",
+    component: navigation
+  },
+  {
+    path:"/shdl",
     component:Shdl
-  }*/
+  }
 ]
 const router = new VueRouter({
   base: process.env.BASE_URL,

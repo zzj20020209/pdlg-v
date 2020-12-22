@@ -2,17 +2,24 @@
   <div>
     <el-row>
       <el-col :span="24">
-        <div id="dage" style="height: 150px;width: 100%">
+        <div id="dage" style="height: 150px;width: 100%;">
           <h1>欢迎进入胖达乐购后台管理</h1>
+          <br>
+          欢迎：{{username}}
+          <br>
+          当前时间:
+          <br>
+          <br>
+          <a href="#" @click="zx">注销</a>
         </div>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="4">
         <el-menu
-          style="height: 750px"
-          background-color="#545c64"
-          text-color="#fff"
+          style="height: 750px;"
+          text-color="black"
+          background-color="whitesmoke"
           active-text-color="#ffd04b">
           <template v-for="menu in this.menuData">
             <el-submenu :key="menu.id" :index="menu.id">
@@ -63,6 +70,7 @@ export default {
       editableTabsValue: '1',
       editableTabs: [],
       tabIndex: 0,
+      username:sessionStorage.getItem("username")
     }
   }
   , components: {
@@ -95,6 +103,10 @@ export default {
         this.editableTabsValue = res[0].name;
       }
 
+    },
+    zx(){
+      sessionStorage.removeItem("username");
+      this.$router.push("/")
     },
     removeTab(targetName) {
       let tabs = this.editableTabs;
