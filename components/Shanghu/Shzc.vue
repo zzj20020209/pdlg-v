@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>商户注册</h3>
+    <h3 style="margin-right: 160px">商户注册</h3>
 
     <el-row>
 
@@ -11,15 +11,11 @@
           </el-form-item>
 
           <el-form-item label="商户账号">
-            <el-input v-model="shzh" placeholder="请输入商户账号"></el-input>
+            <el-input v-model="shzh" placeholder="请输入商户账号" disabled></el-input>
           </el-form-item>
 
           <el-form-item label="商户密码">
-            <el-input v-model="mm" placeholder="请输入密码" show-password></el-input>
-          </el-form-item>
-
-          <el-form-item label="商户密码">
-            <el-input v-model="qrmm" placeholder="请确认密码" show-password></el-input>
+            <el-input v-model="mm" placeholder="请输入密码" disabled></el-input>
           </el-form-item>
 
           <el-form-item label="商户地址">
@@ -49,16 +45,14 @@
       data(){
           return{
             shm:"",
-            shzh:"",
-            mm:"",
-            qrmm:"",
+            shzh:sessionStorage.getItem("username"),
+            mm:sessionStorage.getItem("password"),
             address:"",
             stele:""
           }
       },
       methods:{
           zcsq(){
-            if(this.mm==this.qrmm){
               var _this = this;
 
               var params = new URLSearchParams();
@@ -77,10 +71,9 @@
                 alert(error);
                 console.log(error)
               });
-            }
           },
         fhdl(){
-          this.$router.push("/");
+          this.$router.push("/shdl");
         }
       }
     }

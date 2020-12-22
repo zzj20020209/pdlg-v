@@ -38,7 +38,7 @@
             <el-avatar  id="tupian" :size="100" :src="circleUrl"></el-avatar>
             <br>
             <br>
-            <a href="#">退出</a>
+            <a href="#" @click="tc">退出</a>
           </div>
 
         </el-header>
@@ -87,6 +87,10 @@
            if(this.isCollapse==false){
 
            }
+        },
+        tc(){
+          this.$router.push("/")
+          sessionStorage.removeItem("sname")
         }
       }
     }

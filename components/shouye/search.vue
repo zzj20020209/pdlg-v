@@ -1,13 +1,42 @@
 <template>
   <div>
-    <div>
-      <dhl></dhl>
+    <div style="position: fixed;width: 100%;z-index: 999;">
+      <el-container>
+        <el-col :span="24">
+          <el-menu active-text-color="red" text-color="black"
+                   background-color="gainsboro" show-timeout="3000"
+                   :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+            <el-menu-item disabled class="el-icon-success">欢迎光临胖达乐购:</el-menu-item>
+            <el-submenu index="1">
+              <template slot="title">
+                <el-avatar :size="size" :src="circleUrl"></el-avatar>
+                雪梦情
+              </template>
+              <el-menu-item index="1-1">个人中心</el-menu-item>
+            </el-submenu>
+
+            <el-menu-item index="6" style="margin-left: 350px">
+              <el-input v-model="shang" placeholder="请输入要搜索的商品" @change="search" style="width: 500px"></el-input>
+            </el-menu-item>
+            <el-menu-item index="2" style="margin-left: 140px"><a href="#">【登录】|</a><a href="#">【注册】</a></el-menu-item>
+            <el-menu-item index="3"><i class="el-icon-phone-outline"></i>拨打热线:13787499481</el-menu-item>
+            <el-submenu index="4">
+              <template slot="title">更多</template>
+              <el-menu-item index="4-1">进入商户</el-menu-item>
+              <el-menu-item index="4-2" @click="houduan">进入后端</el-menu-item>
+            </el-submenu>
+            <el-menu-item index="5">
+              <i class="el-icon-shopping-cart-1"></i>
+            </el-menu-item>
+          </el-menu>
+        </el-col>
+      </el-container>
     </div>
-    <el-row style="padding-top: 62px;margin-left: 8px">
+    <el-row style="margin-left: 8px;padding-top: 60px">
       <el-col :span="6">
         <div align="left">
           <el-tabs type="border-card" :tab-position="tabs"
-                   style="position:fixed;z-index:998;height: 630px;width: 340px">
+                   style="position:fixed;z-index:998;height: 500px;width: 470px">
             <el-tab-pane label="精选肉类"><h4>精选肉类</h4></el-tab-pane>
             <el-tab-pane label="绿色鲜蔬"><h4>绿色鲜蔬</h4></el-tab-pane>
             <el-tab-pane label="粮油杂货"><h4>粮油杂货</h4></el-tab-pane>
@@ -40,13 +69,11 @@
         </div>
       </el-col>
     </el-row>
+
   </div>
 </template>
 
 <script>
-import dhl from './navigation';
-import fl from './classify';
-
 export default {
   name: "search",
   data() {
@@ -65,12 +92,9 @@ export default {
       loading: false,
       tabs: "left",
       drawer: false,
+      shang: ""
     }
-  }, components: {
-    dhl,
-    fl
-  }
-  , computed: {
+  }, computed: {
     noMore() {
       return this.count >= 1;
     },
@@ -85,6 +109,9 @@ export default {
         this.count += 2
         this.loading = false
       }, 1500)
+    },
+    houduan() {
+      this.$router.push("/login");
     }
   }
 }

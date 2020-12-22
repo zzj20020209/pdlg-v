@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form ref="registerForm" :model="registerForm" :rules="rules" label-width="80px" class="register-box">
-      <h3 class="register-title">注册</h3>
+      <h3 class="register-title">用户注册</h3>
       <el-form-item label="账号" prop="username">
         <el-input type="text" placeholder="请输入账号" v-model="registerForm.username" prefix-icon="el-icon-user-solid"/>
       </el-form-item>

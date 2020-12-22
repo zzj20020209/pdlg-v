@@ -19,9 +19,9 @@ export default {
   data() {
     return {
       imagebox: [
-        {id: 0, idView: require('../imgs/1.jpg')},
-        {id: 1, idView: require('../imgs/2.jpg')},
-        {id: 2, idView: require('../imgs/3.jpg')}
+        {id: 0, idView: 'imgs/1.jpg'},
+        {id: 1, idView: 'imgs/2.jpg'},
+        {id: 2, idView: 'imgs/3.jpg'}
       ],
       // 浏览器宽度
       screenWidth: 0

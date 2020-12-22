@@ -12,8 +12,9 @@ import Login from "../components/quan/login";
 import backstage from "../components/quan/backstage";
 import employee from "../components/quan/employee";
 import Shdl from "../components/Shanghu/Shdl";
-import editGoods from "../components/Goods/editGoods";
-import warehouse from "../components/Warehouse/warehouse";
+import search from "../components/shouye/search";
+import navigation from "../components/shouye/navigation";
+import ShSp from "../components/Shanghu/ShSp";
 
 Vue.use(VueRouter)
 
@@ -50,10 +51,6 @@ const routes = [
   {
     path: "/goods",
     component: Goods,
-    children: [{
-      path: "/goods/editGoods",
-      component: editGoods
-    }]
   },
   {
     path:"/sh",
@@ -76,17 +73,25 @@ const routes = [
     component:backstage
   },
   {
-    path:"/",
+    path:"/login",
     component:Login
   },
   {
-    path:"/warehouse",
-    component:warehouse
-  }/*
+    path: "/search",
+    component: search
+  },
   {
-    path:"/",
+    path: "/",
+    component: navigation
+  },
+  {
+    path:"/shdl",
     component:Shdl
-  }*/
+  },
+  {
+    path: "/shsp",
+    component: ShSp
+  }
 ]
 const router = new VueRouter({
   base: process.env.BASE_URL,

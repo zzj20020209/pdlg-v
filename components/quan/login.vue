@@ -1,11 +1,12 @@
 <template>
   <div>
+    <h3>员工登录</h3>
   <el-form ref="loginform" :model="loginform" label-width="80px">
     <el-form-item label="用户名">
       <el-input v-model="loginform.username"></el-input>
     </el-form-item>
     <el-form-item label="密码">
-      <el-input v-model="loginform.password"></el-input>
+      <el-input v-model="loginform.password" show-password></el-input>
     </el-form-item>
     <el-form-item>
       <el-button @click="logins">登录</el-button>
