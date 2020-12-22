@@ -76,7 +76,6 @@
         data(){
           return{
             imageUrl: '',
-            leixing:"",
             editSelect:[],
             editSelectt:[],
             sbid:0,
@@ -133,8 +132,8 @@
             var _this = this;
             console.log(res.msg)
             this.imageUrl = this.$host + res.msg;
-            this.data.gimage=res.msg
-           alert("编辑："+this.data.gimage )
+            this.data.gimage=res.msg;
+            alert(this.data.gimage);
           },
           beforeAvatarUpload(file) {
             const isJPG = file.type === 'image/jpeg';

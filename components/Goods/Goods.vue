@@ -76,47 +76,7 @@
       </div>
     </el-dialog>
 
-    <!--<el-dialog :visible.sync="editFormVisible">
-      <el-form  :model="editForm" >
-      &lt;!&ndash;  <el-form-item label="日期" :picker-options="pickerOptions">
-          <el-date-picker v-model="editForm.date" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日"
-                          value-format="yyyy-MM-dd"></el-date-picker>
-        </el-form-item>&ndash;&gt;
-        <el-row>
-          <el-col :span="8">
-        <el-form-item label="商品名称">
-          <el-input v-model="editForm.gname"></el-input>
-        </el-form-item></el-col>
-          <el-col :span="8">
-        <el-form-item label="商品规格">
-          <el-input v-model="editForm.gunit"></el-input>
-        </el-form-item></el-col>
-          <el-col :span="8">
-        <el-form-item label="商品价格">
-          <el-input v-model="editForm.gprice"></el-input>
-        </el-form-item></el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="8">
-        <el-form-item label="商品图片">
-          <el-input v-model="editForm.gunit"></el-input>
-        </el-form-item></el-col>
-          <el-col :span="8">
-        <el-form-item label="商品类型">
-          <el-select v-model="gsid" placeholder="请选择" >
-            <el-option v-for="e in editSelect"
-                       :key="e.gsid"
-                       :label="e.gsname"
-                       :value="e.gsid"></el-option>
-          </el-select>
-        </el-form-item></el-col>
-        </el-row>
-      </el-form>
-      <div>
-        <el-button @click="closeDialog()">取消</el-button>
-        <el-button type="primary" @click="sumbitEditRow()">确定</el-button>
-      </div>
-    </el-dialog>-->
+
 
     <el-dialog :visible.sync="addFormVisible">
       <el-form    ><!--:rules="rules"-->
@@ -125,22 +85,24 @@
                             value-format="yyyy-MM-dd"></el-date-picker>
           </el-form-item>-->
         <el-row>
-          <el-col :span="8">
+          <el-col :span="10">
             <el-form-item label="商品名称" prop="gname">
               <el-input v-model="addgname"></el-input>
             </el-form-item></el-col>
-          <el-col :span="8">
+          <el-col :span="10">
             <el-form-item label="商品规格" prop="gunit">
               <el-input v-model="addgunit"></el-input>
             </el-form-item></el-col>
-          <el-col :span="8">
+          <el-col :span="10">
             <el-form-item label="商品价格" prop="gprice">
               <el-input v-model="addgprice"></el-input>
             </el-form-item></el-col>
         </el-row>
         <el-row>
-          <el-col :span="8">
+          <el-col :span="10">
             <el-form-item label="商品图片">
+              <!--<el-input v-model="data.gunit"></el-input>-->
+
               <el-upload
                 class="avatar-uploader"
                 :action="$host + 'fileUpload'"
@@ -148,30 +110,32 @@
                 :on-success="handleAvatarSuccess"
                 :before-upload="beforeAvatarUpload"
                 name="file">
-                <img v-if="imageUrl" :src="$host + imageUrl" class="avatar">
+                <img v-if="imageUrl" :src="$host + imageUrl" class="avatar" style="width: 100px;height: 80px">
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-form-item></el-col>
          <el-col :span="8">
-         <!--  <el-form-item label="商品类型">
-             <el-select @change="selectChanged" v-model="sbid" placeholder="请选择" >
-               <el-option v-for="e in editSelectt"
+          <el-form-item label="商品类型">
+             <el-select @change="selectChangedf" v-model="sbid" placeholder="请选择" >
+               <el-option v-for="e in addSelect"
                           :key="e.gbsid"
                           :label="e.gbsname"
                           :value="e.gbsid"></el-option>
              </el-select>
 
-           </el-form-item>
+           </el-form-item></el-col>
+          <el-col :span="8">
            <el-form-item label="商品所属分类">
-             <el-select @change="selectChangedd" v-model="ssid"  placeholder="请选择" >
+             <el-select @change="selectChangedff" v-model="ssid"  placeholder="请选择" >
                <el-option v-for="e in getgss()"
                           :key="e.goodSmallsort.gssid"
                           :label="e.goodSmallsort.gssname"
                           :value="e.goodSmallsort.gssid"></el-option>
              </el-select>
 
-           </el-form-item>--></el-col>
+           </el-form-item></el-col>
         </el-row>
+        {{gsid}}
       </el-form>
       <div>
         <el-button @click="closeaddDialog()">取消</el-button>
@@ -213,9 +177,11 @@ export default {
           selectlength:0,
           str:"",
           imageUrl: '',
-         /* sbid:0,
-          ssid:0,
-          editSelectt:[],
+          sbid:"",
+          addSelect:[],
+          addSelectt:[],
+          ssid:"",
+        /*  editSelectt:[],
           editSelecttt:[]*/
          /* rules: {
             //需要校验的字段名
@@ -309,14 +275,16 @@ export default {
           //console.log(this.tableData[this.selectIndex])
           let data = this.tableData[this.selectIndex];
           var _this = this;
-          var params = new URLSearchParams();
-          params.append("gid", data.gid);
-          params.append("gname", data.gname);
-          params.append("gunit", data.gunit);
-          params.append("gprice", data.gprice);
-          params.append("gimage", data.gimage);
+         // data.gname = this.selectData.gname;
+         // alert(data.gname)
+        var params = new URLSearchParams();
+          params.append("gid", this.selectData.gid);
+          params.append("gname", this.selectData.gname);
+          params.append("gunit", this.selectData.gunit);
+          params.append("gprice", this.selectData.gprice);
+          params.append("gimage", this.selectData.gimage);
           params.append("gssid", parseInt(data.gsid.gsid));
-        alert("提交"+data.gimage)
+        alert("提交"+data.gname)
           this.$axios.post("updateGoods.action", params).
           then(function(result) {
             _this.$message({
@@ -340,9 +308,10 @@ export default {
         },
         add(){
           this.addFormVisible = true;
-         /* this.$axios.post("queryAllGoodBigSortall.action").
+          var _this = this;
+          this.$axios.post("queryAllGoodBigSortall.action").
           then(function(result) {
-            _this.editSelectt=result.data
+            _this.addSelect=result.data
 
           }).
           catch(function() {
@@ -350,12 +319,32 @@ export default {
           });
           this.$axios.post("queryGoodSort.action").
           then(function(result) {
-            _this.editSelecttt=result.data
+            _this.addSelectt=result.data
 
           }).
           catch(function() {
 
-          });*/
+          });
+        },
+        getgss(){
+          var sbid =this.sbid;
+          var temparr =this.addSelectt.filter(function(item){
+            return item.goodBigSort.gbsid ==sbid;
+          });
+          return temparr;
+        },
+        selectChangedf(){
+          this.ssid=""
+        },
+        selectChangedff(){
+          var _this = this;
+          var sbid =this.sbid;
+          var ssid =this.ssid;
+          this.addSelectt.filter(function(item){
+            if(item.goodBigSort.gbsid ==sbid &&item.goodSmallsort.gssid==ssid){
+              _this.gsid=item.gsid
+            }
+          });
         },
         pagechange(pageindex){
           this.tableData=[];
@@ -417,27 +406,32 @@ export default {
            })
           }
         },
-       /* selectChanged(){
-          this.ssid=""
-        },
-        getgss(){
-          var sbid =this.sbid;
-          var temparr =this.editSelecttt.filter(function(item){
-            return item.goodBigSort.gbsid ==sbid;
-          });
-          return temparr;
-        },
-        selectChangedd(){
+        sumbitaddRow(){
           var _this = this;
-          var sbid =this.sbid;
-          var ssid =this.ssid;
-          this.editSelecttt.filter(function(item){
-            if(item.goodBigSort.gbsid ==sbid &&item.goodSmallsort.gssid==ssid){
-              _this.gsid=item.gsid
-              _this.data.gsid.gsid=_this.gsid
-            }
-          });
-        },*/
+          var params = new URLSearchParams();
+          params.append("gname", _this.addgname);
+          params.append("gunit", _this.addgunit);
+          params.append("gprice", _this.addgprice);
+          params.append("gimage", _this.imageUrl);
+          params.append("gssid", _this.gsid);
+          this.$axios.post("addGoods.action", params).
+          then(function(result) {
+            _this.$message({
+              message: result.data,
+              type: 'success'
+            });
+            this.addFormVisible = false;
+            //刷新数据
+            _this.getData();
+
+          }).
+          catch(function() {
+            _this.$message({
+              message: '添加失败',
+              type: 'success'
+            });
+          })
+        },
         handleAvatarSuccess(res, file) {
           console.log(res.msg)
           this.imageUrl = res.msg;
