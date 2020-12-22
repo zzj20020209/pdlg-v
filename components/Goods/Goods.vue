@@ -7,10 +7,12 @@
       <el-form-item>
         <el-button type="primary" @click="onSubmit">查询</el-button>
         <el-button @click="add()" type="warning">添加商品</el-button>
+        <el-button @click="delduo()" type="warning">批量删除</el-button>
       </el-form-item>
     </el-form>
 
-    <el-table :data="tableData" stripe style="width: 100%">
+    <el-table :data="tableData" stripe style="width: 100%"
+              @selection-change="tableSelected">
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
@@ -20,12 +22,13 @@
             <el-form-item label="商品所属分类:">
               <span>{{ props.row.gsid.goodSmallsort.gssname }}</span>
             </el-form-item>
-            <el-form-item label="商品所属分类:">
-              <span>{{ props.row.gsid.goodSmallsort.gssname }}</span>
-            </el-form-item>
           </el-form>
 
         </template>
+      </el-table-column>
+      <el-table-column
+        type="selection"
+        width="55">
       </el-table-column>
       <el-table-column prop="gid" label="ID" width="180">
       </el-table-column>
@@ -37,11 +40,9 @@
       </el-table-column>
       <el-table-column label="商品图片">
         <template width="90" slot-scope="scope">
-          <img style="width:80px;height:80px;border:none;" :src="scope.row.gimage">
+            <img style="width:80px;height:80px;border:none;" :src="$host + scope.row.gimage">
         </template>
       </el-table-column>
-     <!-- <el-table-column prop="gsid.goodBigSort.gbsname" label="商品类型">
-      </el-table-column>-->
 
       <el-table-column label="操作">
         <template slot-scope="scope">
@@ -55,8 +56,7 @@
     </el-table>
 
     <el-pagination style="text-align: center;margin-top: 20px"
-                   @size-change="handleSizeChange" @current-change="pagechange"
-                   :current-page="page"
+                   @size-change="handleSizeChange" @current-change="pagechange"   :current-page="page"
                   layout="total, prev, pager, next,sizes" :total="total"
                    :page-size="pagesize" :page-sizes="[2,3,4]">
     </el-pagination>
@@ -76,83 +76,66 @@
       </div>
     </el-dialog>
 
-    <!--<el-dialog :visible.sync="editFormVisible">
-      <el-form  :model="editForm" >
-      &lt;!&ndash;  <el-form-item label="日期" :picker-options="pickerOptions">
-          <el-date-picker v-model="editForm.date" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日"
-                          value-format="yyyy-MM-dd"></el-date-picker>
-        </el-form-item>&ndash;&gt;
-        <el-row>
-          <el-col :span="8">
-        <el-form-item label="商品名称">
-          <el-input v-model="editForm.gname"></el-input>
-        </el-form-item></el-col>
-          <el-col :span="8">
-        <el-form-item label="商品规格">
-          <el-input v-model="editForm.gunit"></el-input>
-        </el-form-item></el-col>
-          <el-col :span="8">
-        <el-form-item label="商品价格">
-          <el-input v-model="editForm.gprice"></el-input>
-        </el-form-item></el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="8">
-        <el-form-item label="商品图片">
-          <el-input v-model="editForm.gunit"></el-input>
-        </el-form-item></el-col>
-          <el-col :span="8">
-        <el-form-item label="商品类型">
-          <el-select v-model="gsid" placeholder="请选择" >
-            <el-option v-for="e in editSelect"
-                       :key="e.gsid"
-                       :label="e.gsname"
-                       :value="e.gsid"></el-option>
-          </el-select>
-        </el-form-item></el-col>
-        </el-row>
-      </el-form>
-      <div>
-        <el-button @click="closeDialog()">取消</el-button>
-        <el-button type="primary" @click="sumbitEditRow()">确定</el-button>
-      </div>
-    </el-dialog>-->
+
 
     <el-dialog :visible.sync="addFormVisible">
-      <el-form    :rules="rules">
+      <el-form    ><!--:rules="rules"-->
         <!--  <el-form-item label="日期" :picker-options="pickerOptions">
             <el-date-picker v-model="editForm.date" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日"
                             value-format="yyyy-MM-dd"></el-date-picker>
           </el-form-item>-->
         <el-row>
-          <el-col :span="8">
+          <el-col :span="10">
             <el-form-item label="商品名称" prop="gname">
-              <el-input v-model="editgname"></el-input>
+              <el-input v-model="addgname"></el-input>
             </el-form-item></el-col>
-          <el-col :span="8">
+          <el-col :span="10">
             <el-form-item label="商品规格" prop="gunit">
-              <el-input v-model="editgunit"></el-input>
+              <el-input v-model="addgunit"></el-input>
             </el-form-item></el-col>
-          <el-col :span="8">
+          <el-col :span="10">
             <el-form-item label="商品价格" prop="gprice">
-              <el-input v-model="editgprice"></el-input>
+              <el-input v-model="addgprice"></el-input>
             </el-form-item></el-col>
         </el-row>
         <el-row>
-          <el-col :span="8">
+          <el-col :span="10">
             <el-form-item label="商品图片">
-              <el-input v-model="editgunit"></el-input>
+              <!--<el-input v-model="data.gunit"></el-input>-->
+
+              <el-upload
+                class="avatar-uploader"
+                :action="$host + 'fileUpload'"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+                name="file">
+                <img v-if="imageUrl" :src="$host + imageUrl" class="avatar" style="width: 100px;height: 80px">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
             </el-form-item></el-col>
-         <!-- <el-col :span="8">
-            <el-form-item label="商品类型" prop="leixing">
-              <el-select v-model="leixing" placeholder="请选择" >
-                <el-option v-for="e in editSelect"
-                           :key="e.gsid"
-                           :label="e.gsname"
-                           :value="e.gsid"></el-option>
-              </el-select>
-            </el-form-item></el-col>-->
+         <el-col :span="8">
+          <el-form-item label="商品类型">
+             <el-select @change="selectChangedf" v-model="sbid" placeholder="请选择" >
+               <el-option v-for="e in addSelect"
+                          :key="e.gbsid"
+                          :label="e.gbsname"
+                          :value="e.gbsid"></el-option>
+             </el-select>
+
+           </el-form-item></el-col>
+          <el-col :span="8">
+           <el-form-item label="商品所属分类">
+             <el-select @change="selectChangedff" v-model="ssid"  placeholder="请选择" >
+               <el-option v-for="e in getgss()"
+                          :key="e.goodSmallsort.gssid"
+                          :label="e.goodSmallsort.gssname"
+                          :value="e.goodSmallsort.gssid"></el-option>
+             </el-select>
+
+           </el-form-item></el-col>
         </el-row>
+        {{gsid}}
       </el-form>
       <div>
         <el-button @click="closeaddDialog()">取消</el-button>
@@ -164,7 +147,7 @@
 
 <script>
 
-/*  import EditGoods from "./editGoods.vue";*/
+  /*import EditGoods from "./editGoods.vue";*/
 
 
     import editGoods from "./editGoods";
@@ -174,6 +157,7 @@ export default {
       components: {editGoods: editGoods},
       data () {
         return {
+
           tableData: [],
           dialogFormVisible: false,
           addFormVisible:false,
@@ -184,13 +168,22 @@ export default {
           editSelect:[],
           gsid:0,
           goodsname:"",
-          editgname:"",
-          editgunit:"",
-          editgprice:"",
+          addgname:"",
+          addgunit:"",
+          addgprice:"",
           leixing:"",
           selectIndex:0,
           selectData:{},
-          rules: {
+          selectlength:0,
+          str:"",
+          imageUrl: '',
+          sbid:"",
+          addSelect:[],
+          addSelectt:[],
+          ssid:"",
+        /*  editSelectt:[],
+          editSelecttt:[]*/
+         /* rules: {
             //需要校验的字段名
             gname: [
               //每一个对象都是一个校验规则
@@ -201,7 +194,7 @@ export default {
               { required: true, message: '密码必填项', trigger: ['change','blur'] },
               { pattern: /^\w{3,12}$/, message: '密码必须是3-12的字符', trigger: ['blur', 'change'] }
             ]
-          }
+          }*/
         }
       },
       methods: {
@@ -232,7 +225,6 @@ export default {
               message: result.data,
               type: 'success'
             });
-
             //刷新数据
             _this.getData();
 
@@ -240,9 +232,9 @@ export default {
           catch(function() {
             _this.$message({
               message: '删除失败',
-              type: 'error'
+              type: 'success'
             });
-          });
+          })
 
         },
         selectAll(){
@@ -265,7 +257,7 @@ export default {
               this.selectData = {...this.tableData[i]};
             }
           }
-          /*var _this = this;
+          var _this = this;
           var params = new URLSearchParams();
           params.append("gid", val);
 
@@ -276,19 +268,83 @@ export default {
           }).
           catch(function() {
 
-          });*/
+          });
 
         },
         subEdit() {
           //console.log(this.tableData[this.selectIndex])
           let data = this.tableData[this.selectIndex];
-          data.gid = this.selectData.gid;
+          var _this = this;
+         // data.gname = this.selectData.gname;
+         // alert(data.gname)
+        var params = new URLSearchParams();
+          params.append("gid", this.selectData.gid);
+          params.append("gname", this.selectData.gname);
+          params.append("gunit", this.selectData.gunit);
+          params.append("gprice", this.selectData.gprice);
+          params.append("gimage", this.selectData.gimage);
+          params.append("gssid", parseInt(data.gsid.gsid));
+        alert("提交"+data.gname)
+          this.$axios.post("updateGoods.action", params).
+          then(function(result) {
+            _this.$message({
+              message: result.data,
+              type: 'success'
+            });
+            _this.dialogFormVisible=false
+            //刷新数据
+            _this.getData();
+
+          }).
+          catch(function() {
+            _this.$message({
+              message: '修改失败',
+              type: 'success'
+            });
+          })
         },
         onSubmit(){
           this.getData();
         },
         add(){
           this.addFormVisible = true;
+          var _this = this;
+          this.$axios.post("queryAllGoodBigSortall.action").
+          then(function(result) {
+            _this.addSelect=result.data
+
+          }).
+          catch(function() {
+
+          });
+          this.$axios.post("queryGoodSort.action").
+          then(function(result) {
+            _this.addSelectt=result.data
+
+          }).
+          catch(function() {
+
+          });
+        },
+        getgss(){
+          var sbid =this.sbid;
+          var temparr =this.addSelectt.filter(function(item){
+            return item.goodBigSort.gbsid ==sbid;
+          });
+          return temparr;
+        },
+        selectChangedf(){
+          this.ssid=""
+        },
+        selectChangedff(){
+          var _this = this;
+          var sbid =this.sbid;
+          var ssid =this.ssid;
+          this.addSelectt.filter(function(item){
+            if(item.goodBigSort.gbsid ==sbid &&item.goodSmallsort.gssid==ssid){
+              _this.gsid=item.gsid
+            }
+          });
         },
         pagechange(pageindex){
           this.tableData=[];
@@ -304,6 +360,93 @@ export default {
           this.pagesize = size;
           //根据pageindex  获取数据
           this.getData();
+        },
+        tableSelected(val){
+          /*console.log("人员信息val-",val);*/
+          if(val.length<1){
+            this.selectlength=0;
+          }
+          this.selectlength=val.length;
+          this.multipleSelection = [];
+          for (let i = 0; i < val.length; i++) {
+            if (this.multipleSelection.indexOf(val[i].gid) === -1) {
+              this.multipleSelection.push(val[i].gid)
+            }
+          }
+          let str="";
+          this.multipleSelection.forEach((item)=> {
+           str=str+item+","
+          })
+          this.str=str;
+          console.log("人员信息val--人员选中-",str);
+        },
+        delduo(){
+          alert(this.selectlength)
+         if(this.selectlength<1){
+             this.$message.error('请至少选择一条数据');
+          }else{
+           var _this = this;
+           var params = new URLSearchParams();
+           params.append("ids", _this.str);
+           this.$axios.post("deletezhanghao.action", params).
+           then(function(result) {
+             _this.$message({
+               message: result.data.msg,
+               type: 'success'
+             });
+             //刷新数据
+             _this.getData();
+
+           }).
+           catch(function() {
+             _this.$message({
+               message: '删除失败',
+               type: 'success'
+             });
+           })
+          }
+        },
+        sumbitaddRow(){
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("gname", _this.addgname);
+          params.append("gunit", _this.addgunit);
+          params.append("gprice", _this.addgprice);
+          params.append("gimage", _this.imageUrl);
+          params.append("gssid", _this.gsid);
+          this.$axios.post("addGoods.action", params).
+          then(function(result) {
+            _this.$message({
+              message: result.data,
+              type: 'success'
+            });
+            this.addFormVisible = false;
+            //刷新数据
+            _this.getData();
+
+          }).
+          catch(function() {
+            _this.$message({
+              message: '添加失败',
+              type: 'success'
+            });
+          })
+        },
+        handleAvatarSuccess(res, file) {
+          console.log(res.msg)
+          this.imageUrl = res.msg;
+        },
+        beforeAvatarUpload(file) {
+          const isJPG = file.type === 'image/jpeg';
+          const isLt2M = file.size / 1024 / 1024 < 2;
+
+          if (!isJPG) {
+            this.$message.error('上传头像图片只能是 JPG 格式!');
+          }
+          if (!isLt2M) {
+            this.$message.error('上传头像图片大小不能超过 2MB!');
+          }
+          return isJPG && isLt2M;
         }
       },
       created() { //钩子函数  vue对象初始化完成后  执行

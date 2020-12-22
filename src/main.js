@@ -8,8 +8,6 @@ import Axios from 'axios'
 import Router from '../router/index'
 //导入vuex定义的store文件
 import Store from '../vuex/store.js'
-import echarts from 'echarts'
-Vue.prototype.$echarts = echarts;
 Vue.config.productionTip = false
 
 
