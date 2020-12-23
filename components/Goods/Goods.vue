@@ -6,10 +6,7 @@
       </el-form-item>
       <el-form-item label="商品状态">
           <el-select v-model="gstatus"  placeholder="请选择" >
-            <el-option
-              key=''
-              label='请选择'
-              value=''></el-option>
+
             <el-option
                        key='0'
                        label='可用'
@@ -28,7 +25,11 @@
     </el-form>
 
     <el-table :data="tableData" stripe style="width: 100%"
-              @selection-change="tableSelected">
+              @selection-change="tableSelected"
+              v-loading="loading"
+              element-loading-text="拼命加载中"
+              element-loading-spinner="el-icon-loading"
+              element-loading-background="rgba(0, 0, 0, 0.8)">
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" inline class="demo-table-expand">
@@ -77,9 +78,9 @@
       </el-table-column>
     </el-table>
 
-    <el-pagination style="text-align: center;margin-top: 20px"
+    <el-pagination style="text-align: center;margin-top: 20px" background
                    @size-change="handleSizeChange" @current-change="pagechange"   :current-page="page"
-                  layout="total, prev, pager, next,sizes" :total="total"
+                  layout="total, prev, pager, next,jumper,sizes" :total="total"
                    :page-size="pagesize" :page-sizes="[2,3,4]">
     </el-pagination>
 
@@ -196,7 +197,7 @@ export default {
       components: {editGoods: editGoods},
       data () {
         return {
-
+          loading: true,
           tableData: [],
           dialogFormVisible: false,
           addFormVisible:false,
@@ -251,6 +252,7 @@ export default {
           params.append("gstatus", parseInt(this.gstatus));
           this.$axios.post("/queryGoods.action",params).
           then(function(result) {
+            _this.loading=false;
             _this.tableData = result.data.rows;
             _this.total = result.data.total;
           }).

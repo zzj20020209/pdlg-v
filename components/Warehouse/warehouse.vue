@@ -10,7 +10,11 @@
      <!-- <el-button @click="delduo()" type="warning">批量删除</el-button>-->
     </el-form-item>
   </el-form>
-  <el-table :data="tableData" stripe style="width: 100%">
+  <el-table :data="tableData" stripe style="width: 100%"
+            v-loading="loading"
+            element-loading-text="拼命加载中"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.8)">
     <el-table-column type="expand">
       <template slot-scope="props">
         <el-table :data="props.row.supplyList">
@@ -57,7 +61,7 @@
   </el-table>
   <el-pagination style="text-align: center;margin-top: 20px"
                  @size-change="handleSizeChange" @current-change="pagechange"   :current-page="page"
-                 layout="total, prev, pager, next,sizes" :total="total"
+                 layout="total, prev, pager, next,jumper,sizes" :total="total"
                  :page-size="pagesize" :page-sizes="[2,3,4]">
   </el-pagination>
 
@@ -79,6 +83,7 @@
       components: {AddWarehouse},
       data(){
           return{
+            loading: true,
             tableData: [],
             total:1,
             page:1,
@@ -98,6 +103,7 @@
           params.append("wname", this.wname);
           this.$axios.post("/queryWarehouse.action",params).
           then(function(result) {
+            _this.loading=false;
             _this.tableData = result.data.rows;
             _this.total = result.data.total;
           }).
