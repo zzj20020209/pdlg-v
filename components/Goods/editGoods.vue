@@ -51,7 +51,8 @@
                        :value="e.gbsid"></el-option>
           </el-select>
 
-        </el-form-item>
+        </el-form-item></el-col>
+      <el-col :span="8">
         <el-form-item label="商品所属分类">
           <el-select @change="selectChangedd" v-model="ssid"  placeholder="请选择" >
             <el-option v-for="e in getgss()"
@@ -62,7 +63,26 @@
 
         </el-form-item></el-col>
     </el-row>
+    <el-row>
+      <el-col>
+        <el-form-item label="商品详情图片">
+          <el-upload
+            :action="$host + 'fileUpload'"
+            :file-list="data.goodsImagelist"
+            list-type="picture-card"
+            :on-preview="handlePictureCardPreview"
+            :on-success="handleSuccess"
+            :on-remove="handleRemove">
+            <i class="el-icon-plus"></i>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible">
+            <img width="100%" :src="$host + dialogImageUrl" alt="">
+          </el-dialog>
+        </el-form-item>
+      </el-col>
+    </el-row>
     {{gsid}}
+    <el-button @click="showFileList">打印文件列表</el-button>
   </el-form>
 </template>
 
@@ -81,6 +101,9 @@
             sbid:0,
             ssid:0,
             gsid:0,
+            fileList: [],
+            dialogImageUrl: '',
+            dialogVisible: false
           }
         },
         methods:{
@@ -137,14 +160,41 @@
           },
           beforeAvatarUpload(file) {
             const isJPG = file.type === 'image/jpeg';
-            const isLt2M = file.size / 1024 / 1024 < 2;
+            const isLt2M = file.size / 1024 / 1024 < 5;
             if (!isJPG) {
               this.$message.error('上传头像图片只能是 JPG 格式!');
             }
             if (!isLt2M) {
-              this.$message.error('上传头像图片大小不能超过 2MB!');
+              this.$message.error('上传头像图片大小不能超过 5MB!');
             }
             return isJPG && isLt2M;
+          },
+          //移除图片
+          handleRemove(file, fileList) {
+            console.log(file, fileList);
+          },
+          //上传成功调用
+          handleSuccess(data,file, fileList) {
+            if (data.flag) {
+              this.$message.success("上传成功");
+              console.log("上传成功 ： ",data);
+              file.url = this.$host + data.msg;
+              file.path = data.msg;
+              this.fileList = fileList;
+            }else {
+              this.$message.error(data.msg);
+            }
+          },
+          //点击图片， 将图片传给模态框， 放大图片
+          handlePictureCardPreview(file) {
+            this.dialogImageUrl = file.url;
+            this.dialogVisible = true;
+          },
+          showFileList() {
+            console.log(this.fileList)
+            this.fileList.forEach(function(item){
+              alert(item.path)
+            });
           }
         },
         created() { //钩子函数  vue对象初始化完成后  执行
