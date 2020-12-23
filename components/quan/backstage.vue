@@ -60,6 +60,7 @@ import employee from "./employee";
 import Goods from "../Goods/Goods";
 import Sh from "../Shanghu/Sh";
 import ShSp from "../Shanghu/ShSp";
+import role from "./role";
 
 export default {
   name: "backstage",
@@ -78,7 +79,8 @@ export default {
     employee,
     Sh,
     Goods,
-    ShSp
+    ShSp,
+    role
   },
   methods: {
     getDate() {

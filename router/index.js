@@ -15,6 +15,7 @@ import Shdl from "../components/Shanghu/Shdl";
 import search from "../components/shouye/search";
 import navigation from "../components/shouye/navigation";
 import ShSp from "../components/Shanghu/ShSp";
+import role from "../components/quan/role";
 
 Vue.use(VueRouter)
 
@@ -91,6 +92,10 @@ const routes = [
   {
     path: "/shsp",
     component: ShSp
+  },
+  {
+    path: "/role",
+    component: role
   }
 ]
 const router = new VueRouter({

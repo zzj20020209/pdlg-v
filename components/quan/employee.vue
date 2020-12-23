@@ -5,22 +5,18 @@
       添加新的员工
     </el-button>
 
-    <el-button class="el-button el-icon-plus el-button--danger" @click="deleteall">
+    <el-button class="el-button el-icon-plus el-button--danger" @click="empdeleteall">
       批量删除
     </el-button>
 
-    <el-input style="width: 200px;margin-left: 20px" placeholder="请输入要查询的关键字" v-model="search" @blur="sou"></el-input>
+    <el-input style="width: 200px;margin-left: 100px" placeholder="请输入要查询的关键字" v-model="search" @blur="empsou"></el-input>
 
-    <el-select style="width: 210px" v-model="sex" @change="sexs">
-      <el-option value="全部性别">全部性别</el-option>
-      <el-option value="男">男</el-option>
-      <el-option value="女">女</el-option>
-    </el-select>
     <el-table
       ref="multipleTable"
       :data="tableData"
       tooltip-effect="dark"
       style="width: 100%;text-align: center"
+      :row-class-name="tableRowClassName"
       @selection-change="handleSelectionChange">
       <el-table-column
         type="selection"
@@ -61,12 +57,12 @@
           <el-button
             type="warning"
             size="mini"
-            @click="Edit(scope.row.id)">编辑
+            @click="empEdit(scope.row.id)">编辑
           </el-button>
           <el-button
             size="mini"
             type="danger"
-            @click="Delete(scope.row.id)" v-popover:popover5>删除
+            @click="empDelete(scope.row.id)" v-popover:popover5>删除
           </el-button>
         </template>
       </el-table-column>
@@ -75,18 +71,20 @@
       title="提示"
       :visible.sync="dialogVisible"
       width="50%"
+
       :before-close="addClose">
-      <el-form ref="empAdd" :model="empAdd" label-width="100px">
+      <el-form ref="empAdds" :model="empAdd" label-width="100px">
         <el-form-item label="员工名字:" prop="ename">
           <el-input placeholder="请输入内容" v-model="empAdd.ename"></el-input>
         </el-form-item>
         <el-row>
           <el-col :span="10">
             <el-form-item label="员工年龄:" prop="age">
-              <el-input style="width: 210px" placeholder="请输入内容" v-model="empAdd.age"></el-input>
+              <el-input-number style="width: 210px" :max="50" :min="18" placeholder="请输入内容"
+                               v-model="empAdd.age"></el-input-number>
             </el-form-item>
           </el-col>
-          <el-col :span="10" class="el-col-offset-3">
+          <el-col :span="10" class="el-col-offset-2">
             <el-form-item label="员工性别:" prop="sex">
               <el-select style="width: 210px" v-model="empAdd.sex" placeholder="请选择">
                 <el-option value="男">男</el-option>
@@ -100,11 +98,11 @@
         </el-form-item>
 
         <el-form-item label="密码:" prop="password">
-          <el-input placeholder="请输入内容" v-model="empAdd.password"></el-input>
+          <el-input type="password" placeholder="请输入内容" v-model="empAdd.password"></el-input>
         </el-form-item>
 
-        <el-form-item label="确认密码:">
-          <el-input placeholder="请输入内容" v-model="empAdd.password1"></el-input>
+        <el-form-item label="确认密码:" prop="password1">
+          <el-input type="password" placeholder="请输入内容" v-model="empAdd.password1"></el-input>
         </el-form-item>
 
         <el-form-item label="电话号码:" prop="phone">
@@ -120,7 +118,7 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button @click="empAddqu">取 消</el-button>
         <el-button type="primary" @click="empadd">确 定</el-button>
       </span>
     </el-dialog>
@@ -129,18 +127,19 @@
       title="提示"
       :visible.sync="upts"
       width="50%"
-      :before-close="addClose">
-      <el-form ref="empUpt" :model="empUpt" label-width="100px">
+      :before-close="uptClose">
+      <el-form ref="empUpts" :model="empUpt" label-width="100px">
         <el-form-item label="员工名字:" prop="ename">
           <el-input placeholder="请输入内容" v-model="empUpt.ename"></el-input>
         </el-form-item>
         <el-row>
           <el-col :span="10">
             <el-form-item label="员工年龄:" prop="age">
-              <el-input style="width: 210px" placeholder="请输入内容" v-model="empUpt.age"></el-input>
+              <el-input-number :max="50" :min="18" style="width: 210px" placeholder="请输入内容"
+                               v-model="empUpt.age"></el-input-number>
             </el-form-item>
           </el-col>
-          <el-col :span="10" class="el-col-offset-3">
+          <el-col :span="10" class="el-col-offset-2">
             <el-form-item label="员工性别:" prop="sex">
               <el-select style="width: 210px" v-model="empUpt.sex" placeholder="请选择">
                 <el-option value="男">男</el-option>
@@ -150,15 +149,15 @@
           </el-col>
         </el-row>
         <el-form-item label="用户名:" prop="username">
-          <el-input placeholder="请输入内容" v-model="empUpt.username"></el-input>
+          <el-input placeholder="请输入内容" v-model="empUpt.username" disabled="disabled"></el-input>
         </el-form-item>
 
         <el-form-item label="密码:" prop="password">
-          <el-input placeholder="请输入内容" v-model="empUpt.password"></el-input>
+          <el-input type="password" placeholder="请输入内容" v-model="empUpt.password"></el-input>
         </el-form-item>
 
-        <el-form-item label="确认密码:">
-          <el-input placeholder="请输入内容" v-model="empUpt.password1"></el-input>
+        <el-form-item label="确认密码:" prop="password1">
+          <el-input type="password" placeholder="请输入内容" v-model="empUpt.password1"></el-input>
         </el-form-item>
 
         <el-form-item label="电话号码:" prop="phone">
@@ -174,11 +173,19 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="upts = false">取 消</el-button>
-        <el-button type="primary" @click="empupt">确 定</el-button>
+        <el-button @click="empUptqu">取 消</el-button>
+        <el-button type="primary" @click="empupt(empUpt.id)">确 定</el-button>
       </span>
     </el-dialog>
-    <el-pagination @current-change="pagechange" layout="prev, pager, next" :total="total" :page-size="rows">
+
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="pagechange"
+      :current-page="page"
+      :page-sizes="[5, 10, 20, 50]"
+      :page-size="rows"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
     </el-pagination>
   </div>
 </template>
@@ -203,9 +210,9 @@ export default {
         password1: "",
         phone: "",
         idCard: "",
-        address: ""
+        address: "",
+        id: 0,
       },
-      sex: "",
       search: "",
       empAdd: {
         ename: "",
@@ -235,37 +242,33 @@ export default {
         alert(error)
       });
     },
-    sou() {
+    tableRowClassName({row, rowIndex}) {
+      if (rowIndex % 2 === 0) {
+        return 'warning-row';
+      }
+      return '';
+    },
+    empsou() {
       var _this = this;
       var pamar = new URLSearchParams();
       pamar.append("page", this.page);
       pamar.append("rows", this.rows);
       pamar.append("employees", this.search);
-      if (this.sex != "全部性别") {
-        pamar.append("sex", this.sex);
-      }
 
       this.$axios.post("/queryEmployeeCount.action", pamar).then(function (result) {
         _this.tableData = result.data.rows;
+        _this.total = result.data.total;
       }).catch(function (error) {
         alert(error)
       });
     },
-    sexs() {
-      var _this = this;
-      var pamar = new URLSearchParams();
-      pamar.append("page", this.page);
-      pamar.append("rows", this.rows);
-      pamar.append("employees", this.search);
-      if (this.sex != "全部性别") {
-        pamar.append("sex", this.sex);
-      }
-
-      this.$axios.post("/queryEmployeeCount.action", pamar).then(function (result) {
-        _this.tableData = result.data.rows;
-      }).catch(function (error) {
-        alert(error)
-      });
+    empAddqu() {
+      this.dialogVisible = false;
+      this.$refs.empAdds.resetFields();
+    },
+    empUptqu(){
+      this.upts = false;
+      this.$refs.empUpts.resetFields();
     },
     empadd(empadd) {
       let _this = this;
@@ -283,45 +286,62 @@ export default {
         _this.dialogVisible = false;
         _this.getData();
         _this.$message(result.data.msg);
+        _this.$refs.empAdds.resetFields();
       }).catch(function (error) {
         alert(error)
       })
     },
-    Edit() {
+    empEdit(id) {
+      let _this = this;
       this.$confirm('此操作将编辑该文件, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+        this.$axios.post("/queryEmployeeById.action?id=" + id).then(function (reust) {
+          _this.empUpt.ename = reust.data.ename;
+          _this.empUpt.sex = reust.data.sex;
+          _this.empUpt.age = reust.data.age;
+          _this.empUpt.username = reust.data.username;
+          _this.empUpt.password = reust.data.password;
+          _this.empUpt.phone = reust.data.phone;
+          _this.empUpt.idCard = reust.data.idCard;
+          _this.empUpt.address = reust.data.address;
+          _this.empUpt.id = reust.data.id;
+        }).catch(function (erreo) {
+          alert(erreo)
+        })
         this.upts = true
       }).catch(function (error) {
         _this.$message({
-          message: "已关闭",
+          message: "已撤消编辑",
           type: 'success'
         });
       });
     },
-  upts(){
-    let _this = this;
-    let pamer = new URLSearchParams();
-    pamer.append("ename", _this.empUpt.ename);
-    pamer.append("sex", _this.empUpt.sex);
-    pamer.append("age", _this.empUpt.age);
-    pamer.append("username", _this.empUpt.username);
-    pamer.append("password", _this.empUpt.password);
-    pamer.append("phone", _this.empUpt.phone);
-    pamer.append("idCard", _this.empUpt.idCard);
-    pamer.append("address", _this.empUpt.address);
-    /* this.$refs[this.empAdd].validate((valid) => {*/
-    this.$axios.post("/uptEmployee.action", pamer).then(function (result) {
-      _this.upts = false;
-      _this.getData();
-      _this.$message(result.data.msg);
-    }).catch(function (error) {
-      alert(error)
-    })
-  },
-    Delete(id) {
+    empupt(id) {
+      let _this = this;
+      let pamer = new URLSearchParams();
+      pamer.append("id", _this.empUpt.id);
+      pamer.append("ename", _this.empUpt.ename);
+      pamer.append("sex", _this.empUpt.sex);
+      pamer.append("age", _this.empUpt.age);
+      pamer.append("username", _this.empUpt.username);
+      pamer.append("password", _this.empUpt.password);
+      pamer.append("phone", _this.empUpt.phone);
+      pamer.append("idCard", _this.empUpt.idCard);
+      pamer.append("address", _this.empUpt.address);
+      /* this.$refs[this.empAdd].validate((valid) => {*/
+      this.$axios.post("/uptEmployee.action", pamer).then(function (result) {
+        _this.upts = false;
+        _this.getData();
+        _this.$message(result.data.msg);
+        _this.$refs.empUpts.resetFields();
+      }).catch(function (error) {
+        alert(error)
+      })
+    },
+    empDelete(id) {
       var _this = this;
       var pamar = new URLSearchParams();
       let ids = id + ","
@@ -354,13 +374,21 @@ export default {
     addClose(done) {
       this.$confirm('确认关闭？')
         .then(_ => {
+          this.$refs.empAdds.resetFields()
+          done();
+        })
+    },
+    uptClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          this.$refs.empUpts.resetFields()
           done();
         })
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
-    deleteall() {
+    empdeleteall() {
       var _this = this;
       var pamar = new URLSearchParams();
       if (_this.$refs.multipleTable.selection.length != 0) {
@@ -397,26 +425,40 @@ export default {
         _this.$message("请选择至少一条记录");
       }
     },
-    pagechange(pageindex) {  //页码变更时
+    pagechange(pageindex) {
       this.page = pageindex;
+      var _this = this;
+      var pamar = new URLSearchParams();
+      pamar.append("page", this.page);
+      pamar.append("rows", this.rows);
+      pamar.append("employees", this.search);
+
+      this.$axios.post("/queryEmployeeCount.action", pamar).then(function (result) {
+        _this.tableData = result.data.rows;
+        _this.total = result.data.total;
+      }).catch(function (error) {
+        alert(error)
+      });
+    },
+    handleSizeChange(size) {
+      this.rows = size;
 
       var _this = this;
       var pamar = new URLSearchParams();
       pamar.append("page", this.page);
       pamar.append("rows", this.rows);
       pamar.append("employees", this.search);
-      pamar.append("sex", this.sex);
 
       this.$axios.post("/queryEmployeeCount.action", pamar).then(function (result) {
         _this.tableData = result.data.rows;
+        _this.total = result.data.total;
       }).catch(function (error) {
         alert(error)
       });
-
-    }
+    },
   },
   created() {
-    this.getData()
+    this.getData();
   }
 }
 </script>
@@ -424,5 +466,13 @@ export default {
 <style scoped>
 .el-pagination {
   text-align: center;
+}
+
+.el-table .warning-row {
+  background: oldlace;
+}
+
+.el-table .success-row {
+  background: #f0f9eb;
 }
 </style>
