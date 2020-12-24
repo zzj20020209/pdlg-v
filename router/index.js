@@ -16,6 +16,7 @@ import search from "../components/shouye/search";
 import navigation from "../components/shouye/navigation";
 import ShSp from "../components/Shanghu/ShSp";
 import warehouse from "../components/Warehouse/warehouse";
+import Supply from "../components/Warehouse/Supply";
 
 Vue.use(VueRouter)
 
@@ -96,6 +97,10 @@ const routes = [
   {
     path: "/warehouse",
     component:warehouse
+  },
+  {
+    path: "/supply",
+    component:Supply
   }
 ]
 const router = new VueRouter({

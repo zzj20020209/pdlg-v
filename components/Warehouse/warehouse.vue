@@ -56,6 +56,8 @@
         <el-popconfirm title="确定删除这条记录吗？" @confirm="delwar(scope.row.wid)">
           <el-button type="danger" slot="reference">删除</el-button>
         </el-popconfirm>
+        <el-button type="primary" @click="zhuanyi(scope.row.wid)">转 移</el-button>
+        <el-button type="primary" @click="tuihuo(scope.row.wid)">退 货</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -73,14 +75,41 @@
       <el-button type="primary" @click="subAdd">确 定</el-button>
     </div>
   </el-dialog>
+  <el-dialog title="编辑页面" :visible.sync="dialogFormVisibleedit">
+    <edit-warehouse :data="selectData"></edit-warehouse>
+    <!--将编辑页面子组件加入到列表页面 -->
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="dialogFormVisibleedit = false">取 消</el-button>
+      <el-button type="primary" @click="subEdit">确 定</el-button>
+    </div>
+  </el-dialog>
+  <el-dialog title="转移界面" :visible.sync="dialogFormVisiblezhuan" width="80%" >
+    <zhuanyi :data="zhuantuidata,zhuancangku"></zhuanyi>
+    <!--将编辑页面子组件加入到列表页面 -->
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="dialogFormVisiblezhuan = false">取 消</el-button>
+      <el-button type="primary" @click="subAdd">确 定</el-button>
+    </div>
+  </el-dialog>
+  <el-dialog title="退货界面" :visible.sync="dialogFormVisibletui" width="80%" >
+    <tuihuo :data="zhuantuidata"></tuihuo>
+    <!--将编辑页面子组件加入到列表页面 -->
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="dialogFormVisibletui = false">取 消</el-button>
+      <el-button type="primary" @click="subAdd">确 定</el-button>
+    </div>
+  </el-dialog>
 </div>
 </template>
 
 <script>
     import AddWarehouse from "./addWarehouse";
+    import Zhuanyi from "./Zhuanyi";
+    import Tuihuo from "./Tuihuo";
+    import EditWarehouse from "./editWarehouse";
     export default {
         name: "warehouse",
-      components: {AddWarehouse},
+      components: {EditWarehouse, Tuihuo, Zhuanyi, AddWarehouse},
       data(){
           return{
             loading: true,
@@ -90,7 +119,15 @@
             pagesize:2,
             wname:"",
             dialogFormVisible:false,
-            addData:{}
+            addData:{},
+            dialogFormVisiblezhuan:false,
+            zhuantuidata:[],
+            dialogFormVisibletui:false,
+            zhuancangku:[],
+            dialogFormVisibleedit:false,
+            selectIndex:0,
+            selectData:[],
+            editForm:[]
           }
         },
       methods:{
@@ -156,6 +193,76 @@
           catch(function() {
             _this.$message({
               message: '添加失败',
+              type: 'success'
+            });
+          })
+        },
+        zhuanyi(id){
+          this.dialogFormVisiblezhuan=true;
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("wid", id);
+          this.$axios.post("/querySupplyBywid.action",params).
+          then(function(result) {
+            _this.zhuantuidata = result.data;
+          }).
+          catch(function(error) {
+            alert(error)
+          });
+          this.$axios.post("/queryAllWarehouseNOInwid.action",params).
+          then(function(result) {
+            _this.zhuancangku=result.data;
+           /* alert("aa"+_this.zhuancangku[0].wid)*/
+          }).
+          catch(function(error) {
+            alert(error)
+          });
+
+        },
+        tuihuo(id){
+          this.dialogFormVisibletui=true;
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("wid", id);
+          this.$axios.post("/querySupplyBywid.action",params).
+          then(function(result) {
+            _this.zhuantuidata = result.data;
+          }).
+          catch(function(error) {
+            alert(error)
+          });
+        },
+        editwar(val){
+          this.dialogFormVisibleedit=true;
+          for (let i = 0; i < this.tableData.length; i++) {
+            if(this.tableData[i].wid == val){
+              this.selectIndex = i;
+              this.selectData = {...this.tableData[i]};
+            }
+          }
+        },
+        subEdit(){
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("wid", this.selectData.wid);
+          params.append("wname", this.selectData.wname);
+          params.append("waddress", this.selectData.waddress);
+         /* params.append("wzkucun", this.selectData.wzkucun);
+          params.append("wskucun", this.selectData.wskucun);*/
+          this.$axios.post("updateWarehouse.action", params).
+          then(function(result) {
+            _this.$message({
+              message: result.data,
+              type: 'success'
+            });
+            _this.dialogFormVisibleedit=false
+            //刷新数据
+            _this.getData();
+
+          }).
+          catch(function() {
+            _this.$message({
+              message: '修改失败',
               type: 'success'
             });
           })
