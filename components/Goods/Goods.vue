@@ -7,10 +7,6 @@
       <el-form-item label="商品状态">
           <el-select v-model="gstatus"  placeholder="请选择" >
             <el-option
-              key='0'
-              label='请选择'
-              value='0'></el-option>
-            <el-option
                        key='1'
                        label='可用'
                        value='1'></el-option>
@@ -72,7 +68,7 @@
 
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button type="success" @click="editgoods(scope.row.gid)">编辑</el-button>
+          <el-button type="success" @click="editgoods(scope.row)">编辑</el-button>
 
           <el-popconfirm title="确定删除这条记录吗？" @confirm="delgoods(scope.row.gid)">
             <el-button type="danger" slot="reference">删除</el-button>
@@ -227,7 +223,7 @@ export default {
           addSelect:[],
           addSelectt:[],
           ssid:"",
-          gstatus:0,
+          gstatus:"",
           fileList: [],
           dialogImageUrl: '',
           dialogVisible: false
@@ -255,7 +251,12 @@ export default {
           params.append("page", this.page);
           params.append("size", this.pagesize);
           params.append("gname", this.goodsname);
-          params.append("gstatus", parseInt(this.gstatus));
+          if(this.gstatus==""){
+            params.append("gstatus", 0);
+          }else{
+            params.append("gstatus", parseInt(this.gstatus));
+          }
+
           this.$axios.post("/queryGoods.action",params).
           then(function(result) {
             _this.loading=false;
@@ -304,13 +305,11 @@ export default {
         editgoods(val) { //编辑按钮按下  打开编辑模态框
           //获取到要编辑的巨记录  通过val（id）
           this.dialogFormVisible = true;
-          for (let i = 0; i < this.tableData.length; i++) {
-            if(this.tableData[i].gid == val){
-              this.selectIndex = i;
-              this.selectData = {...this.tableData[i]};
-            }
-          }
-          /*var _this = this;
+          this.selectIndex = val.id;
+          this.selectData = {...val};
+          console.log("选择： ",val)
+
+         /* var _this = this;
           var params = new URLSearchParams();
           params.append("gid", val);
 
@@ -469,7 +468,6 @@ export default {
             mids=mids+item.path+","
           });
           mids=mids+_this.imageUrl
-          alert(mids)
           var params = new URLSearchParams();
           params.append("gname", _this.addgname);
           params.append("gunit", _this.addgunit);
