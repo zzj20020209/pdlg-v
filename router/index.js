@@ -16,7 +16,7 @@ import search from "../components/shouye/search";
 import navigation from "../components/shouye/navigation";
 import ShSp from "../components/Shanghu/ShSp";
 import warehouse from "../components/Warehouse/warehouse";
-import Supply from "../components/Warehouse/Supply";
+import role from "../components/quan/role";
 
 Vue.use(VueRouter)
 
@@ -99,8 +99,8 @@ const routes = [
     component:warehouse
   },
   {
-    path: "/supply",
-    component:Supply
+    path: "/role",
+    component: role
   }
 ]
 const router = new VueRouter({
