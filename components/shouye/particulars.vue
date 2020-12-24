@@ -1,46 +1,5 @@
 <template>
   <div>
-
-    <div style="position: fixed;width: 100%;z-index: 999;">
-      <el-container>
-        <el-col :span="24">
-          <el-menu active-text-color="red" text-color="black"
-                   background-color="gainsboro" show-timeout="3000"
-                   :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-            <el-menu-item index="10" @click="sy"><img src="img/pdlg01.jpg" style="width: 125px;"></el-menu-item>
-            <el-menu-item disabled class="el-icon-success">欢迎光临胖达乐购:</el-menu-item>
-
-            <el-submenu index="1"  v-if="user!=null">
-              <template slot="title">
-                <el-avatar :size="size" :src="circleUrl"></el-avatar>
-                {{user}}
-              </template>
-              <el-badge is-dot style="width: 200px">
-                <el-menu-item index="1-1">个人中心</el-menu-item>
-              </el-badge>
-              <el-menu-item index="1-2" @click="tcdl">退出登录</el-menu-item>
-            </el-submenu>
-
-            <el-menu-item index="1"  v-if="user==null">
-              未登录
-            </el-menu-item>
-            <el-menu-item index="2" style="margin-left: 900px" v-if="user==null" @click="dkdl">【登录】</el-menu-item>
-            <el-menu-item index="7" @click="dkzc" v-if="user==null">【注册】</el-menu-item>
-            <el-menu-item index="11" v-if="user!=null" style="margin-left: 1060px"><i class="el-icon-phone-outline" ></i>拨打热线:13787499481</el-menu-item>
-            <el-menu-item index="3" v-if="user==null"><i class="el-icon-phone-outline"></i>拨打热线:13787499481</el-menu-item>
-            <el-submenu index="4">
-              <template slot="title">更多</template>
-              <el-menu-item index="4-1" @click="shanghu">进入商户</el-menu-item>
-            </el-submenu>
-            <el-menu-item index="5" @click="pdrr">
-              <i class="el-icon-shopping-cart-1"></i>
-            </el-menu-item>
-
-          </el-menu>
-        </el-col>
-      </el-container>
-    </div>
-
     <div style="padding-top: 60px;" class="el-col-offset-2">
     </div>
     <div style="padding-top: 5px;">
@@ -68,16 +27,19 @@
                   <span class="zi" style="padding-left: 10px;padding-top: 20px">更多商品优惠，尽在胖达乐购APP</span>
                 </div>
                 <div>
-                  <el-row  style="padding-top: 25px">
+                  <el-row  style="padding-top: 50px">
                     <el-col :span="2">规格:</el-col>
                     <el-col :span="3"><table id="tab"><tr>{{tableData.gunit}}</tr></table></el-col>
                   </el-row>
 
-                  <el-row style="padding-top: 25px">
+                  <el-row style="padding-top: 50px">
                     <el-col :span="2">数量:</el-col>
-                    <el-col :span="4"><el-input-number style="width: 100px;text-align: left" v-model="num" controls-position="right" @change="handleChange" :min="1" :max="10"></el-input-number></el-col>
+                    <el-col :span="4"><el-input-number style="width: 100px;text-align: left" v-model="num" controls-position="right" @change="handleChange" :min="1" :max="99"></el-input-number></el-col>
                   </el-row>
-                  <el-col style="padding-top: 25px" :span="24"><el-button type="danger" style="width: 600px;height: 60px" class="el-button"  icon="el-icon-shopping-cart-2">购买</el-button></el-col>
+                  <el-col style="padding-top: 75px" :span="24">
+                      <el-button type="danger" style="width: 200px;height: 60px" class="el-button"  icon="el-icon-shopping-cart-2">购买</el-button>
+                    <el-button type="danger" style="width: 200px;height: 60px" class="el-button"  icon="el-icon-shopping-cart-2">加入购物车</el-button>
+                  </el-col>
                 </div>
               </div>
             </el-col>
@@ -85,6 +47,7 @@
         </el-card>
       </el-row>
     </div>
+
     <el-dialog id="yhdl" title="登录页面" :visible.sync="dlym" width="30%">
       <div >
         <el-form ref="loginForm" :model="form" :rules="rules" label-width="80px" class="login-box">
@@ -99,7 +62,6 @@
             <el-button type="warning" round v-on:click="resetForm('loginForm')">重置</el-button>
           </el-form-item>
         </el-form>
-
         <el-dialog
           title="温馨提示"
           :visible.sync="dialogVisible"
@@ -113,7 +75,7 @@
     </el-dialog>
 
     <el-dialog id="yhzc" title="注册页面" :visible.sync="zcym" width="30%">
-      <div >
+      <div>
         <el-form ref="registerForm" :model="registerForm" :rules="rules2" label-width="80px" class="register-box">
           <el-form-item label="账号" prop="username">
             <el-input type="text" placeholder="请输入账号" v-model="registerForm.username" prefix-icon="el-icon-user-solid"/>
@@ -128,6 +90,9 @@
         </el-form>
       </div>
     </el-dialog>
+    <div>
+      <img src="img/weibu.png" width="1918" height="324">
+    </div>
   </div>
 </template>
 
@@ -200,7 +165,8 @@ export default {
      this.$router.push("/")
     },
     pdrr(){
-      this.tk=true
+      this.tk=true;
+      this.$router.replace("particulars/gwc");
     },search() {
       this.$router.push("/search")
     },

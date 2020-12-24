@@ -5,11 +5,7 @@
         <el-input v-model="goodsname" placeholder="商品名称"></el-input>
       </el-form-item>
       <el-form-item label="商品状态">
-          <el-select v-model="gstatus"  placeholder="请选择" >
-            <el-option
-              key='0'
-              label='请选择'
-              value='0'></el-option>
+          <el-select v-model="gstatus" clearable  placeholder="请选择" >
             <el-option
                        key='1'
                        label='可用'
@@ -84,7 +80,7 @@
     <el-pagination style="text-align: center;margin-top: 20px" background
                    @size-change="handleSizeChange" @current-change="pagechange"   :current-page="page"
                   layout="total, prev, pager, next,jumper,sizes" :total="total"
-                   :page-size="pagesize" :page-sizes="[2,3,4]">
+                   :page-size="pagesize" :page-sizes="[4,5,6]">
     </el-pagination>
 
     <div>
@@ -209,7 +205,7 @@ export default {
           addFormVisible:false,
           total:1,
           page:1,
-          pagesize:2,
+          pagesize:4,
           editForm: [],
           editSelect:[],
           gsid:0,
@@ -227,7 +223,7 @@ export default {
           addSelect:[],
           addSelectt:[],
           ssid:"",
-          gstatus:0,
+          gstatus:'',
           fileList: [],
           dialogImageUrl: '',
           dialogVisible: false
@@ -255,7 +251,11 @@ export default {
           params.append("page", this.page);
           params.append("size", this.pagesize);
           params.append("gname", this.goodsname);
-          params.append("gstatus", parseInt(this.gstatus));
+          if(this.gstatus==""){
+            params.append("gstatus", "0");
+          }else {
+            params.append("gstatus", parseInt(this.gstatus));
+          }
           this.$axios.post("/queryGoods.action",params).
           then(function(result) {
             _this.loading=false;
@@ -483,7 +483,7 @@ export default {
               message: result.data,
               type: 'success'
             });
-            this.addFormVisible = false;
+            _this.addFormVisible=false
             //刷新数据
             _this.getData();
 

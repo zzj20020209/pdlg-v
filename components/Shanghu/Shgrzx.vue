@@ -89,7 +89,7 @@
            }
         },
         tc(){
-          this.$router.push("/")
+          this.$router.push("/navigation/shouyemian")
           sessionStorage.removeItem("sname")
         }
       }
@@ -111,6 +111,7 @@
 *{
   padding: 0px;
   margin: 0px;
+  text-align: center;
 }
   .el-menu-item{
     padding: 0 50px;
