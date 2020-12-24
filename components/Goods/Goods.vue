@@ -5,7 +5,7 @@
         <el-input v-model="goodsname" placeholder="商品名称"></el-input>
       </el-form-item>
       <el-form-item label="商品状态">
-          <el-select v-model="gstatus"  placeholder="请选择" >
+          <el-select v-model="gstatus" clearable  placeholder="请选择" >
             <el-option
                        key='1'
                        label='可用'
@@ -39,7 +39,7 @@
               <span>{{ props.row.gsid.goodSmallsort.gssname }}</span>
             </el-form-item>
             <el-form-item label="商品状态:">
-              <span>{{ props.row.gstatus==0?"可用":"不可用" }}</span>
+              <span>{{ props.row.gstatus==1?"可用":"不可用" }}</span>
             </el-form-item>
             <el-form-item label="商品详情图片:" v-if="props.row.goodsImagelist.length>0">
               <img v-for="e in props.row.goodsImagelist" style="width:80px;height:80px;border:none;" :src="$host + e.giurl">
@@ -80,7 +80,7 @@
     <el-pagination style="text-align: center;margin-top: 20px" background
                    @size-change="handleSizeChange" @current-change="pagechange"   :current-page="page"
                   layout="total, prev, pager, next,jumper,sizes" :total="total"
-                   :page-size="pagesize" :page-sizes="[2,3,4]">
+                   :page-size="pagesize" :page-sizes="[4,5,6]">
     </el-pagination>
 
     <div>
@@ -89,7 +89,7 @@
     </div>
 
 
-    <el-dialog title="编辑页面" :visible.sync="dialogFormVisible">
+    <el-dialog title="编辑页面" :visible.sync="dialogFormVisible" width="60%">
       <edit-goods :data="selectData" ref="editgoods"></edit-goods>
       <!--将编辑页面子组件加入到列表页面 -->
       <div slot="footer" class="dialog-footer">
@@ -100,7 +100,7 @@
 
 
 
-    <el-dialog :visible.sync="addFormVisible">
+    <el-dialog :visible.sync="addFormVisible" width="60%">
       <el-form    ><!--:rules="rules"-->
         <!--  <el-form-item label="日期" :picker-options="pickerOptions">
             <el-date-picker v-model="editForm.date" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日"
@@ -121,8 +121,6 @@
             </el-form-item></el-col>
           <el-col :span="10">
             <el-form-item label="商品图片">
-              <!--<el-input v-model="data.gunit"></el-input>-->
-
               <el-upload
                 class="avatar-uploader"
                 :action="$host + 'fileUpload'"
@@ -205,7 +203,7 @@ export default {
           addFormVisible:false,
           total:1,
           page:1,
-          pagesize:2,
+          pagesize:4,
           editForm: [],
           editSelect:[],
           gsid:0,
@@ -481,7 +479,7 @@ export default {
               message: result.data,
               type: 'success'
             });
-            this.addFormVisible = false;
+            _this.addFormVisible=false
             //刷新数据
             _this.getData();
 
