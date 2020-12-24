@@ -1,7 +1,7 @@
 <template>
   <div >
     <el-row>
-      <el-col :span="24">
+      <el-col :span="24" id="tp">
         <img src="img/pa.jpg" style="height: 100px;width: 300px">
       </el-col></el-row>
     <el-row style="border: 1px solid whitesmoke">
@@ -15,13 +15,13 @@
             <el-submenu :key="menu.id" :index="menu.id">
               <template slot="title">
                 <!-- <i :class="menu.icon"></i>-->
-                <span slot="title">{{ menu.lable }}</span>
+                <span slot="title">{{ menu.label }}</span>
               </template>
               <el-menu-item-group>
-                <div v-for="cmenu in menu.childMenu">
-                  <el-menu-item @click="addTab(cmenu.lable,cmenu.linkUrl)" :key="cmenu.id" :index="cmenu.id">
+                <div v-for="cmenu in menu.children">
+                  <el-menu-item @click="addTab(cmenu.label,cmenu.linkUrl)" :key="cmenu.id" :index="cmenu.id">
                     <!--<i :class="cmenu.icon"></i>-->
-                    <span slot="title">{{ cmenu.lable }}</span>
+                    <span slot="title">{{ cmenu.label }}</span>
                   </el-menu-item>
                 </div>
               </el-menu-item-group>
@@ -84,6 +84,7 @@
   import ShSp from "../Shanghu/ShSp";
   import warehouse from "../Warehouse/warehouse";
   import Supply from "../Warehouse/Supply";
+  import caigou from "../caigou/caigou";
 
   export default {
     name: "backstage",
@@ -106,7 +107,8 @@
       Goods,
       ShSp,
       warehouse,
-      Supply
+      Supply,
+      caigou
     },
     methods: {
       getDate() {
@@ -192,4 +194,8 @@
   #dage{
     text-align: center  ;
   }
+  #tp{
+    text-align: center;
+  }
+
 </style>
