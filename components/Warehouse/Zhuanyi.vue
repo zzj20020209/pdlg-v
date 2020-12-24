@@ -18,11 +18,13 @@
               <img style="width:80px;height:80px;border:none;" :src="$host + scope.row.goods.gimage">
             </template>
           </el-table-column>
+          <el-table-column prop="suinventory" label="库存数量" width="180">
+          </el-table-column>
           <el-table-column label="转移数量">
         <template slot-scope="scope">
                         <el-input
                           placeholder="请输入你要转移的数量"
-                          v-model="scope.row.suinventory"
+                          v-model="zhuancount"
                           type="number"
                          :max="scope.row.suinventory"
                           :min="2"

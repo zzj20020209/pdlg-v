@@ -331,6 +331,7 @@ export default {
           fileList.forEach(i =>{
             mids=mids+i.url.substring(22)+","
           })
+         // dd
           var params = new URLSearchParams();
           params.append("gid", this.selectData.gid);
           params.append("gname", this.selectData.gname);
