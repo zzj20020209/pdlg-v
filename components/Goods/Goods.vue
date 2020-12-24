@@ -1,20 +1,23 @@
 <template>
   <div id="Goods">
-    <el-form :inline="true"  class="demo-form-inline">
+    <el-form :inline="true"  lclass="demo-form-inine">
       <el-form-item label="商品名称">
         <el-input v-model="goodsname" placeholder="商品名称"></el-input>
       </el-form-item>
       <el-form-item label="商品状态">
           <el-select v-model="gstatus"  placeholder="请选择" >
-
             <el-option
-                       key='0'
+              key='0'
+              label='请选择'
+              value='0'></el-option>
+            <el-option
+                       key='1'
                        label='可用'
-                       value='0'></el-option>
+                       value='1'></el-option>
             <el-option
-              key="1"
+              key="2"
               label="不可用"
-              value="1"></el-option>
+              value="2"></el-option>
           </el-select>
       </el-form-item>
       <el-form-item>
@@ -42,7 +45,7 @@
             <el-form-item label="商品状态:">
               <span>{{ props.row.gstatus==0?"可用":"不可用" }}</span>
             </el-form-item>
-            <el-form-item label="商品详情图片:">
+            <el-form-item label="商品详情图片:" v-if="props.row.goodsImagelist.length>0">
               <img v-for="e in props.row.goodsImagelist" style="width:80px;height:80px;border:none;" :src="$host + e.giurl">
             </el-form-item>
           </el-form>
@@ -91,7 +94,7 @@
 
 
     <el-dialog title="编辑页面" :visible.sync="dialogFormVisible">
-      <edit-goods :data="selectData"></edit-goods>
+      <edit-goods :data="selectData" ref="editgoods"></edit-goods>
       <!--将编辑页面子组件加入到列表页面 -->
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -120,8 +123,6 @@
             <el-form-item label="商品价格" prop="gprice">
               <el-input v-model="addgprice"></el-input>
             </el-form-item></el-col>
-        </el-row>
-        <el-row>
           <el-col :span="10">
             <el-form-item label="商品图片">
               <!--<el-input v-model="data.gunit"></el-input>-->
@@ -137,6 +138,9 @@
                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
               </el-upload>
             </el-form-item></el-col>
+        </el-row>
+        <el-row>
+
          <el-col :span="8">
           <el-form-item label="商品类型">
              <el-select @change="selectChangedf" v-model="sbid" placeholder="请选择" >
@@ -157,6 +161,8 @@
              </el-select>
 
            </el-form-item></el-col>
+        </el-row>
+        <el-row>
           <el-col :span="8">
             <el-form-item label="商品详情图片">
               <el-upload
@@ -170,12 +176,12 @@
               <el-dialog :visible.sync="dialogVisible">
                 <img width="100%" :src="$host + dialogImageUrl" alt="">
               </el-dialog>
-             <!-- <img  v-for="e in fileList"
-                    style="width:80px;height:80px;border:none;" :src="$host+e.path">-->
+              <!-- <img  v-for="e in fileList"
+                     style="width:80px;height:80px;border:none;" :src="$host+e.path">-->
             </el-form-item>
           </el-col>
         </el-row>
-        {{gsid}}
+
       </el-form>
       <div>
         <el-button @click="closeaddDialog()">取消</el-button>
@@ -304,7 +310,7 @@ export default {
               this.selectData = {...this.tableData[i]};
             }
           }
-          var _this = this;
+          /*var _this = this;
           var params = new URLSearchParams();
           params.append("gid", val);
 
@@ -315,31 +321,25 @@ export default {
           }).
           catch(function() {
 
-          });
+          });*/
 
         },
         subEdit() {
           var _this = this;
-          console.log(this.fileList)
           let mids="";
-          this.fileList.forEach(function(item){
-            mids=mids+item.path+","
-          });
-          mids=mids+_this.imageUrl
-          alert(mids)
-          //console.log(this.tableData[this.selectIndex])
-          /*let data = this.tableData[this.selectIndex];
-          var _this = this;*/
-         // data.gname = this.selectData.gname;
-         // alert(data.gname)
-       /* var params = new URLSearchParams();
+        let fileList= this.$refs.editgoods.fileList
+          fileList.forEach(i =>{
+            mids=mids+i.url.substring(22)+","
+          })
+         // dd
+          var params = new URLSearchParams();
           params.append("gid", this.selectData.gid);
           params.append("gname", this.selectData.gname);
           params.append("gunit", this.selectData.gunit);
           params.append("gprice", this.selectData.gprice);
           params.append("gimage", this.selectData.gimage);
-          params.append("gssid", parseInt(data.gsid.gsid));
-        alert("提交"+data.gname)
+          params.append("gssid", parseInt(this.selectData.gsid.gsid));
+          params.append("mids", mids);
           this.$axios.post("updateGoods.action", params).
           then(function(result) {
             _this.$message({
@@ -356,7 +356,7 @@ export default {
               message: '修改失败',
               type: 'success'
             });
-          })*/
+          })
         },
         onSubmit(){
           this.getData();

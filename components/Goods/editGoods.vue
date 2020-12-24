@@ -23,24 +23,6 @@
         </el-form-item></el-col>
     </el-row>
     <el-row>
-      <el-col :span="8">
-        <el-form-item label="商品图片">
-          <!--<el-input v-model="data.gunit"></el-input>-->
-          <template width="90" >
-            <el-upload
-              class="avatar-uploader"
-              :action="$host + 'fileUpload'"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload"
-              name="file">
-              <el-image   v-if="imageUrl" :src="imageUrl" >
-              </el-image>
-
-            </el-upload>
-
-          </template>
-        </el-form-item></el-col>
 
       <el-col :span="8">
         <el-form-item label="商品类型">
@@ -62,13 +44,30 @@
           </el-select>
 
         </el-form-item></el-col>
+      <el-col :span="8">
+        <el-form-item label="商品图片">
+          <!--<el-input v-model="data.gunit"></el-input>-->
+          <template width="90" >
+            <el-upload
+              class="avatar-uploader"
+              :action="$host + 'fileUpload'"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+              name="file">
+              <el-image   v-if="imageUrl" :src="imageUrl" >
+              </el-image>
+            </el-upload>
+          </template>
+        </el-form-item></el-col>
     </el-row>
     <el-row>
       <el-col>
+        <!--{{data.goodsImagelist}}-->
         <el-form-item label="商品详情图片">
           <el-upload
             :action="$host + 'fileUpload'"
-            :file-list="data.goodsImagelist"
+            :file-list="fileList"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-success="handleSuccess"
@@ -81,8 +80,8 @@
         </el-form-item>
       </el-col>
     </el-row>
-    {{gsid}}
-    <el-button @click="showFileList">打印文件列表</el-button>
+  <!--  {{gsid}}
+    <el-button @click="showFileList">打印文件列表</el-button>-->
   </el-form>
 </template>
 
@@ -201,6 +200,16 @@
           this.selectAll();
 
         },
+        mounted() {
+            this.data.goodsImagelist.forEach(i => {
+              console.log(i);
+              this.fileList.push({
+                name: i.gid,
+                url: this.$host + i.giurl
+              })
+            })
+           console.log(this.fileList);
+        }
     }
 </script>
 

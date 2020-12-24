@@ -33,7 +33,14 @@
         </el-table-column>
       </el-table>
 
-      <el-pagination @current-change="pagechange" layout="prev, pager, next" :total="total" :page-size="5">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="pagechange"
+        :current-page="page"
+        :page-sizes="[5, 10, 20, 50]"
+        :page-size="rows"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total">
       </el-pagination>
 
       <el-dialog title="编辑页面" :visible.sync="dialogFormVisible">
@@ -73,8 +80,9 @@
       return {
         tableData: [],
         dialogFormVisible: false,
-        total:1,
-        page:1,
+        total: 1,
+        page: 1,
+        rows: 5,
         shm: "",
         yhm: "",
         password: "",
@@ -164,12 +172,37 @@
           alert("修改失败:"+error)
         });
       },
-      pagechange(pageindex){  //页码变更时
-        //console.log(pageindex)
+      pagechange(pageindex) {
         this.page = pageindex;
-        //根据pageindex  获取数据
-        this.getData();
-      }
+        var _this = this;
+        var pamar = new URLSearchParams();
+        pamar.append("page", this.page);
+        pamar.append("rows", this.rows);
+        pamar.append("sname", this.sname);
+
+        this.$axios.post("/shcxs", pamar).then(function (result) {
+          _this.tableData = result.data.rows;
+          _this.total = result.data.total;
+        }).catch(function (error) {
+          alert(error)
+        });
+      },
+      handleSizeChange(size) {
+        this.rows = size;
+
+        var _this = this;
+        var pamar = new URLSearchParams();
+        pamar.append("page", this.page);
+        pamar.append("rows", this.rows);
+        pamar.append("sname", this.sname);
+
+        this.$axios.post("/shcxs", pamar).then(function (result) {
+          _this.tableData = result.data.rows;
+          _this.total = result.data.total;
+        }).catch(function (error) {
+          alert(error)
+        });
+      },
     },
     created() { //钩子函数  vue对象初始化完成后  执行
       this.getData();
