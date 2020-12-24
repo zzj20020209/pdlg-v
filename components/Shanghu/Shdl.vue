@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <h3 style="margin-right: 160px">商户登录</h3>
+    <h3 style="margin-right: 160px;text-align: center">商户登录</h3>
     <el-row>
 
       <el-col :span="8" :offset="8">

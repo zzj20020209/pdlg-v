@@ -285,7 +285,10 @@ export default {
       this.$axios.post("/addEmployee.action", pamer).then(function (result) {
         _this.dialogVisible = false;
         _this.getData();
-        _this.$message(result.data.msg);
+        _this.$message({
+          message: result.data.msg,
+          type: 'success'
+        });
         _this.$refs.empAdds.resetFields();
       }).catch(function (error) {
         alert(error)
@@ -335,7 +338,10 @@ export default {
       this.$axios.post("/uptEmployee.action", pamer).then(function (result) {
         _this.upts = false;
         _this.getData();
-        _this.$message(result.data.msg);
+        _this.$message({
+          message: result.data.msg,
+          type: 'success'
+        });
         _this.$refs.empUpts.resetFields();
       }).catch(function (error) {
         alert(error)

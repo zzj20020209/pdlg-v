@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div id="shzc">
     <h3 style="margin-right: 160px">商户注册</h3>
+    <br>
 
     <el-row>
 
@@ -67,6 +68,7 @@
                   message: result.data,
                   type: 'success'
                 });
+                _this.$router.push("/shdl")
               }).catch(function (error) {
                 alert(error);
                 console.log(error)
@@ -81,4 +83,7 @@
 
 <style scoped>
 
+  #shzc{
+    text-align: center;
+  }
 </style>
