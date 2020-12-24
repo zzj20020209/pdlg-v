@@ -5,7 +5,8 @@
         <el-input v-model="goodsname" placeholder="商品名称"></el-input>
       </el-form-item>
       <el-form-item label="商品状态">
-          <el-select v-model="gstatus"  placeholder="请选择" >
+          <el-select v-model="gstatus" clearable  placeholder="请选择" >
+
             <el-option
                        key='1'
                        label='可用'

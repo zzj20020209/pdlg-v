@@ -1,7 +1,7 @@
 <template>
     <div>
-    <!--  {{this.data.warehouse.wid}}-->
       <el-table :data="data"
+
                 border
                 :header-cell-style="{'text-align':'center'}"
                 :cell-style="{'text-align':'center'}"
@@ -68,7 +68,9 @@
               str:"",
               selectlength:0,
               zhuancangku:[],
-              wid:0,
+              suidstr:"",
+              countstr:"",
+              cangstr:""
           }
       },
       methods:{
@@ -78,6 +80,7 @@
             this.selectlength=0;
           }
           this.selectlength=val.length;
+
           this.multipleSelection = [];
           /*this.multipleSelectionn = [];*/
           for (let i = 0; i < val.length; i++) {
@@ -90,12 +93,8 @@
           this.multipleSelection.forEach((item)=> {
             str=str+item+","
           })
-          /*let strr="";
-          this.multipleSelectionn.forEach((item)=> {
-            strr=strr+item+","
-          })
-          alert("kk"+strr)*/
-          this.str=str;
+          this.suidstr=str;
+
           console.log("人员信息val--人员选中-",str);
         },
         getcangku(){
@@ -110,15 +109,6 @@
             alert(error)
           });
         },
-        getSelectDeal(obj) {
-
-
-          let wid = this.data[obj].warehouse.wid;
-          let wname = this.data[obj].warehouse.wname;
-          alert(wname)
-          //自定义操作...
-          //...
-        }
       /*  numberChange(val,suid){
         let index=arrayFindIndex(this.data,{suid:suid})
           this.data[index].suinventory=toNumber(val)
