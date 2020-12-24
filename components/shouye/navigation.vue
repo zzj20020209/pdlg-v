@@ -89,10 +89,10 @@
     </div>
 
     <div style="width:94%;height:2px;margin:0px auto;padding:0px;background-color:gray;overflow:hidden;"></div>
-    <h1>蔬菜/肉食区</h1>
+    <h1>蔬菜区</h1>
     <el-row>
       <el-col :span="4" class="el-col-offset-1">
-        <div><img src="imgs/7.jpg" class="log"></div>
+        <div><img src="imgs/10.jpg" class="log"></div>
       </el-col>
       <el-col :span="17" class="el-col-offset-1">
         <table>
@@ -127,10 +127,10 @@
     </el-row>
 
     <div style="width:94%;height:2px;margin:0px auto;padding:0px;background-color:gray;overflow:hidden;"></div>
-    <h1>水果/饮品区</h1>
+    <h1>水果区</h1>
     <el-row>
       <el-col :span="4" class="el-col-offset-1">
-        <div><img src="imgs/10.jpg" class="log"></div>
+        <div><img src="imgs/7.jpg" class="log"></div>
       </el-col>
       <el-col :span="17" class="el-col-offset-1">
         <table style="table-layout:fixed">
@@ -216,6 +216,7 @@
     name: "navigation",
     data() {
       return {
+
         total:1,
         page:1,
         pagesize:8,

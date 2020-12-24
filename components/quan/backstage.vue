@@ -25,13 +25,13 @@
             <el-submenu :key="menu.id" :index="menu.id">
               <template slot="title">
                 <!-- <i :class="menu.icon"></i>-->
-                <span slot="title">{{ menu.lable }}</span>
+                <span slot="title">{{ menu.label }}</span>
               </template>
               <el-menu-item-group>
                 <div v-for="cmenu in menu.childMenu">
-                  <el-menu-item @click="addTab(cmenu.lable,cmenu.linkUrl)" :key="cmenu.id" :index="cmenu.id">
+                  <el-menu-item @click="addTab(cmenu.label,cmenu.linkUrl)" :key="cmenu.id" :index="cmenu.id">
                     <!--<i :class="cmenu.icon"></i>-->
-                    <span slot="title">{{ cmenu.lable }}</span>
+                    <span slot="title">{{ cmenu.label }}</span>
                   </el-menu-item>
                 </div>
               </el-menu-item-group>
