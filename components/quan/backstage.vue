@@ -61,6 +61,7 @@ import Goods from "../Goods/Goods";
 import Sh from "../Shanghu/Sh";
 import ShSp from "../Shanghu/ShSp";
 import role from "./role";
+import warehouse from "../Warehouse/warehouse";
 
 export default {
   name: "backstage",
@@ -80,7 +81,8 @@ export default {
     Sh,
     Goods,
     ShSp,
-    role
+    role,
+    warehouse
   },
   methods: {
     getDate() {
@@ -106,7 +108,6 @@ export default {
       } else {
         this.editableTabsValue = res[0].name;
       }
-
     },
     zx(){
       sessionStorage.removeItem("username");

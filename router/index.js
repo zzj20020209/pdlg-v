@@ -17,6 +17,7 @@ import navigation from "../components/shouye/navigation";
 import ShSp from "../components/Shanghu/ShSp";
 import warehouse from "../components/Warehouse/warehouse";
 import role from "../components/quan/role";
+import particulars from "../components/shouye/particulars";
 
 Vue.use(VueRouter)
 
@@ -101,6 +102,10 @@ const routes = [
   {
     path: "/role",
     component: role
+  },
+  {
+    path: "/particulars",
+    component: particulars
   }
 ]
 const router = new VueRouter({

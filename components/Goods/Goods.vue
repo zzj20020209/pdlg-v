@@ -5,16 +5,15 @@
         <el-input v-model="goodsname" placeholder="商品名称"></el-input>
       </el-form-item>
       <el-form-item label="商品状态">
-          <el-select v-model="gstatus"  placeholder="请选择" >
-
+          <el-select v-model="gstatus" placeholder="请选择" clearable>
             <el-option
-                       key='0'
+                       key='1'
                        label='可用'
-                       value='0'></el-option>
+                       value='1'></el-option>
             <el-option
-              key="1"
+              key="2"
               label="不可用"
-              value="1"></el-option>
+              value="2"></el-option>
           </el-select>
       </el-form-item>
       <el-form-item>
@@ -221,7 +220,7 @@ export default {
           addSelect:[],
           addSelectt:[],
           ssid:"",
-          gstatus:0,
+          gstatus:"",
           fileList: [],
           dialogImageUrl: '',
           dialogVisible: false
@@ -249,7 +248,11 @@ export default {
           params.append("page", this.page);
           params.append("size", this.pagesize);
           params.append("gname", this.goodsname);
-          params.append("gstatus", parseInt(this.gstatus));
+          if(this.gstatus==""){
+            params.append("gstatus", 0);
+          }else {
+            params.append("gstatus", this.gstatus);
+          }
           this.$axios.post("/queryGoods.action",params).
           then(function(result) {
             _this.loading=false;
@@ -501,13 +504,13 @@ export default {
         },
         beforeAvatarUpload(file) {
           const isJPG = file.type === 'image/jpeg';
-          const isLt2M = file.size / 1024 / 1024 < 2;
+          const isLt2M = file.size / 1024 / 1024 < 10;
 
           if (!isJPG) {
             this.$message.error('上传头像图片只能是 JPG 格式!');
           }
           if (!isLt2M) {
-            this.$message.error('上传头像图片大小不能超过 2MB!');
+            this.$message.error('上传头像图片大小不能超过 10MB!');
           }
           return isJPG && isLt2M;
         },

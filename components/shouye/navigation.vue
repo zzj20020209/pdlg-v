@@ -14,7 +14,9 @@
                   <el-avatar :size="size" :src="circleUrl"></el-avatar>
                   {{user}}
                 </template>
-                <el-menu-item index="1-1">个人中心</el-menu-item>
+                <el-badge is-dot style="width: 200px">
+                  <el-menu-item index="1-1">个人中心</el-menu-item>
+                </el-badge>
                 <el-menu-item index="1-2" @click="tcdl">退出登录</el-menu-item>
               </el-submenu>
 
@@ -27,22 +29,21 @@
             </el-menu-item>
             <el-menu-item index="2" style="margin-left: 140px" v-if="user==null" @click="dkdl">【登录】</el-menu-item>
             <el-menu-item index="7" @click="dkzc" v-if="user==null">【注册】</el-menu-item>
-            <el-menu-item index="3" v-if="user!=null" style="margin-left: 275px"><i class="el-icon-phone-outline"></i>拨打热线:13787499481</el-menu-item>
+            <el-menu-item index="11" v-if="user!=null" style="margin-left: 275px"><i class="el-icon-phone-outline" ></i>拨打热线:13787499481</el-menu-item>
             <el-menu-item index="3" v-if="user==null"><i class="el-icon-phone-outline"></i>拨打热线:13787499481</el-menu-item>
             <el-submenu index="4">
               <template slot="title">更多</template>
               <el-menu-item index="4-1" @click="shanghu">进入商户</el-menu-item>
             </el-submenu>
-            <el-menu-item index="5">
+            <el-menu-item index="5" @click="pdrr">
               <i class="el-icon-shopping-cart-1"></i>
             </el-menu-item>
+
           </el-menu>
         </el-col>
       </el-container>
       <div style="width:94%;height:2px;margin:0px auto;padding:0px;background-color:gray;overflow:hidden;">
       </div>
-
-
     </div>
     <div style="  position: fixed;width: 100%;top: 60px;z-index: 999;">
       <el-container>
@@ -67,6 +68,14 @@
       </el-container>
     </div>
 
+    <el-drawer
+      title="我是标题"
+      :visible.sync="tk"
+      :with-header="false"
+      size="40%">
+      <span>购物车</span>
+    </el-drawer>
+
     <div style="padding-top:90px">
       <el-container>
         <el-col :span="22" class="el-col-offset-1">
@@ -80,7 +89,7 @@
     </div>
 
     <div style="width:94%;height:2px;margin:0px auto;padding:0px;background-color:gray;overflow:hidden;"></div>
-    <h1>水果区</h1>
+    <h1>蔬菜/肉食区</h1>
     <el-row>
       <el-col :span="4" class="el-col-offset-1">
         <div><img src="imgs/7.jpg" class="log"></div>
@@ -90,22 +99,26 @@
           <tr v-for="(chapter,index) in msg2" v-if="index%4==0">
             <td>
               <div>
-                <a href="#">
-                  <img :src=msg2[index].ims class="imgs"><br>
-                  <label>{{ msg2[index].id | fmatter }}</label>
+                <a href="#" @click="spxq(msg2[index].gid)">
+                  <img :src="$host + msg2[index].gimage" class="imgs"><br>
+                  <label>{{ msg2[index].gname | fmatter }}</label><br>
+                  <label style="font-size: 18px"><font color="red">￥</font>{{ msg2[index].gprice}}</label>
                 </a>
               </div>
             </td>
             <td>
-              <a href="#"><img :src=msg2[index+1].ims class="imgs"><br>
-                <label>{{ msg2[index + 1].id }}</label>
+              <a href="#" @click="spxq(msg2[index + 1].gid)"><img :src="$host+msg2[index+1].gimage" class="imgs"><br>
+                <label>{{ msg2[index + 1].gname }}</label><br>
+                <label style="font-size: 18px"><font color="red">￥</font>{{ msg2[index+1].gprice}}</label>
               </a></td>
-            <td><a href="#"><img :src=msg2[index+2].ims class="imgs"><br>
-              <label>{{ msg2[index + 2].id }}</label>
+            <td><a href="#" @click="spxq(msg2[index + 2].gid)"><img :src="$host+msg2[index+2].gimage" class="imgs"><br>
+              <label>{{ msg2[index + 2].gname }}</label><br>
+              <label style="font-size: 18px"><font color="red">￥</font>{{ msg2[index+2].gprice}}</label>
             </a>
             </td>
-            <td><a href="#"><img :src=msg2[index+3].ims class="imgs"><br>
-              <label>{{ msg2[index + 3].id }}</label>
+            <td><a href="#" @click="spxq(msg2[index + 3].gid)"><img :src="$host+msg2[index+3].gimage" class="imgs"><br>
+              <label>{{ msg2[index + 3].gname }}</label><br>
+              <label style="font-size: 18px"><font color="red">￥</font>{{ msg2[index+3].gprice}}</label>
             </a>
             </td>
           </tr>
@@ -114,7 +127,7 @@
     </el-row>
 
     <div style="width:94%;height:2px;margin:0px auto;padding:0px;background-color:gray;overflow:hidden;"></div>
-    <h1>蔬菜区</h1>
+    <h1>水果/饮品区</h1>
     <el-row>
       <el-col :span="4" class="el-col-offset-1">
         <div><img src="imgs/10.jpg" class="log"></div>
@@ -151,13 +164,13 @@
     </el-row>
     <img src="imgs/11.jpg" style="width: 100%">
 
-    <el-dialog title="登录页面" :visible.sync="dlym" width="30%">
-      <div>
+    <el-dialog id="yhdl" title="登录页面" :visible.sync="dlym" width="30%">
+      <div >
         <el-form ref="loginForm" :model="form" :rules="rules" label-width="80px" class="login-box">
           <el-form-item label="账号" prop="username">
             <el-input type="text" placeholder="请输入账号" v-model="form.username" prefix-icon="el-icon-user-solid"/>
           </el-form-item>
-          <el-form-item label="密码" prop="password">
+          <el-form-item label="密码">
             <el-input type="password" placeholder="请输入密码" v-model="form.password" prefix-icon="el-icon-lock"/>
           </el-form-item>
           <el-form-item>
@@ -178,10 +191,9 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="注册页面" :visible.sync="zcym">
-      <div>
+    <el-dialog id="yhzc" title="注册页面" :visible.sync="zcym" width="30%">
+      <div >
         <el-form ref="registerForm" :model="registerForm" :rules="rules2" label-width="80px" class="register-box">
-          <h3 class="register-title">用户注册</h3>
           <el-form-item label="账号" prop="username">
             <el-input type="text" placeholder="请输入账号" v-model="registerForm.username" prefix-icon="el-icon-user-solid"/>
           </el-form-item>
@@ -204,6 +216,10 @@
     name: "navigation",
     data() {
       return {
+        total:1,
+        page:1,
+        pagesize:8,
+        tk:false,
         dialogVisible: false,
         user: sessionStorage.getItem("yhname"),
         circleUrl:"./img/2.png",
@@ -243,19 +259,34 @@
           {id: 1, idView: 'imgs/2.jpg'},
           {id: 2, idView: 'imgs/3.jpg'}
         ],
-        msg2: [
-          {id: 1, price: 13.5, ims: "imgs/1.jpg"},
-          {id: 2, price: 13.5, ims: "imgs/2.jpg"},
-          {id: 3, price: 13.5, ims: "imgs/3.jpg"},
-          {id: 4, price: 13.5, ims: "imgs/3.jpg"},
-          {id: 5, price: 13.5, ims: "imgs/3.jpg"},
-          {id: 6, price: 13.5, ims: "imgs/3.jpg"},
-          {id: 7, price: 13.5, ims: "imgs/3.jpg"},
-          {id: 8, price: 13.5, ims: "imgs/3.jpg"}
-        ]
+        msg2: []
       };
     },
     methods: {
+      getData() { //获取数据方法
+        this.msg2=[];
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("page", this.page);
+        params.append("size", this.pagesize);
+        this.$axios.post("/queryGoods.action",params).
+        then(function(result) {
+          _this.loading=false;
+          _this.msg2 = result.data.rows;
+          _this.total = result.data.total;
+        }).
+        catch(function(error) {
+          alert(error)
+        });
+      },
+
+      spxq(val){
+        this.$router.push("/particulars")
+        sessionStorage.setItem("gid",val)
+      },
+      pdrr(){
+        this.tk=true
+      },
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
       },
@@ -274,6 +305,7 @@
       tcdl(){
         sessionStorage.removeItem("username")
         sessionStorage.removeItem("password")
+        sessionStorage.removeItem("yhname")
         this.user=null
         this.$router.push("/")
       },
@@ -295,6 +327,7 @@
                     type: 'success',
                   })
                   _this.zcym=false
+                  this.$refs.registerForm.resetFields();
                   _this.$router.push("/")
                 } else {
                   //this.dialogVisible = true;
@@ -334,6 +367,7 @@
                   sessionStorage.setItem("yhname",result.data.yhname);
                   _this.user=result.data.yhname
                   _this.dlym=false
+                  this.$refs.loginForm.resetFields();
                   _this.$router.push("/")
                 } else {
                   this.dialogVisible = true;
@@ -349,6 +383,10 @@
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
+
+    },
+    created() { //钩子函数  vue对象初始化完成后  执行
+      this.getData();
     }
   }
 </script>
@@ -383,6 +421,9 @@
     height: 544px
   }
 
+  a{
+    text-decoration: none;
+  }
 
   table tr td {
     background-color: lightgreen;
@@ -407,5 +448,16 @@
 
   body {
     background-color: gainsboro;
+  }
+
+  #yhdl{
+    text-align: center;
+  }
+
+  #yhzc{
+    text-align: center;
+  }
+  *{
+    text-align: center;
   }
 </style>
