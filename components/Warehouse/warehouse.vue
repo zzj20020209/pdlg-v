@@ -83,20 +83,20 @@
       <el-button type="primary" @click="subEdit">确 定</el-button>
     </div>
   </el-dialog>
-  <el-dialog title="转移界面" :visible.sync="dialogFormVisiblezhuan" width="80%" >
+  <el-dialog title="转移界面" :visible.sync="dialogFormVisiblezhuan" width="100%" >
     <zhuanyi :data="zhuantuidata,zhuancangku"></zhuanyi>
     <!--将编辑页面子组件加入到列表页面 -->
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogFormVisiblezhuan = false">取 消</el-button>
-      <el-button type="primary" @click="subAdd">确 定</el-button>
+      <el-button type="primary" @click="zhuanbtn">确 定</el-button>
     </div>
   </el-dialog>
   <el-dialog title="退货界面" :visible.sync="dialogFormVisibletui" width="80%" >
-    <tuihuo :data="zhuantuidata"></tuihuo>
+    <tuihuo :data="zhuantuidata" ref="tuihuo"></tuihuo>
     <!--将编辑页面子组件加入到列表页面 -->
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogFormVisibletui = false">取 消</el-button>
-      <el-button type="primary" @click="subAdd">确 定</el-button>
+      <el-button type="primary" @click="tuihuobtn">确 定</el-button>
     </div>
   </el-dialog>
 </div>
@@ -266,6 +266,40 @@
               type: 'success'
             });
           })
+        },
+        delwar(val){
+
+        },
+        zhuanbtn(val){
+
+        },
+        tuihuobtn(){
+           /*   alert(this.$refs.tuihuo.suidstr)
+                    //countstr
+          //cangstr*/
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("suidstr", this.$refs.tuihuo.suidstr);
+          params.append("countstr", this.$refs.tuihuo.countstr);
+          params.append("cangstr", this.$refs.tuihuo.cangstr);
+          this.$axios.post("tuihuo.action", params).
+          then(function(result) {
+            _this.$message({
+              message: result.data,
+              type: 'success'
+            });
+            _this.dialogFormVisibletui=false
+            //刷新数据
+            _this.getData();
+
+          }).
+          catch(function() {
+            _this.$message({
+              message: '退货失败',
+              type: 'success'
+            });
+          })
+
         }
 
       },

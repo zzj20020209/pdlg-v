@@ -1,7 +1,10 @@
 <template>
     <div>
+    <!--  {{this.data.warehouse.wid}}-->
       <el-table :data="data"
                 border
+                :header-cell-style="{'text-align':'center'}"
+                :cell-style="{'text-align':'center'}"
                 @selection-change="tableSelected"
                 stripe style="width: 100%">
         <el-table-column label="请选择你要转移的商品以及数量">
@@ -24,10 +27,10 @@
         <template slot-scope="scope">
                         <el-input
                           placeholder="请输入你要转移的数量"
-                          v-model="zhuancount"
+                          v-model="scope.row.xuancount"
                           type="number"
                          :max="scope.row.suinventory"
-                          :min="2"
+                          :min="0"
                        >
                         </el-input>
                       </template>
@@ -70,7 +73,6 @@
       },
       methods:{
         tableSelected(val){
-
           console.log("人员信息val-",val);
           if(val.length<1){
             this.selectlength=0;
@@ -100,7 +102,6 @@
          // alert("jjs"+this.data[0].suid)
          var _this = this;
           var params = new URLSearchParams();
-
           this.$axios.post("/queryAllWarehouseall.action").
           then(function(result) {
             _this.zhuancangku= result.data;
@@ -110,6 +111,8 @@
           });
         },
         getSelectDeal(obj) {
+
+
           let wid = this.data[obj].warehouse.wid;
           let wname = this.data[obj].warehouse.wname;
           alert(wname)
@@ -123,7 +126,7 @@
       }
       ,
       created() { //钩子函数  vue对象初始化完成后  执行
-
+        /*alert("已经有了"+this.data.warehouse.wid)*/
       },
       mounted() {
           this.getcangku()

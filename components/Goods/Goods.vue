@@ -5,7 +5,7 @@
         <el-input v-model="goodsname" placeholder="商品名称"></el-input>
       </el-form-item>
       <el-form-item label="商品状态">
-          <el-select v-model="gstatus" clearable  placeholder="请选择" >
+          <el-select v-model="gstatus"  placeholder="请选择" >
             <el-option
                        key='1'
                        label='可用'
@@ -68,7 +68,7 @@
 
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button type="success" @click="editgoods(scope.row.gid)">编辑</el-button>
+          <el-button type="success" @click="editgoods(scope.row)">编辑</el-button>
 
           <el-popconfirm title="确定删除这条记录吗？" @confirm="delgoods(scope.row.gid)">
             <el-button type="danger" slot="reference">删除</el-button>
@@ -80,7 +80,7 @@
     <el-pagination style="text-align: center;margin-top: 20px" background
                    @size-change="handleSizeChange" @current-change="pagechange"   :current-page="page"
                   layout="total, prev, pager, next,jumper,sizes" :total="total"
-                   :page-size="pagesize" :page-sizes="[4,5,6]">
+                   :page-size="pagesize" :page-sizes="[2,3,4]">
     </el-pagination>
 
     <div>
@@ -205,7 +205,7 @@ export default {
           addFormVisible:false,
           total:1,
           page:1,
-          pagesize:4,
+          pagesize:2,
           editForm: [],
           editSelect:[],
           gsid:0,
@@ -223,7 +223,7 @@ export default {
           addSelect:[],
           addSelectt:[],
           ssid:"",
-          gstatus:'',
+          gstatus:"",
           fileList: [],
           dialogImageUrl: '',
           dialogVisible: false
@@ -252,10 +252,11 @@ export default {
           params.append("size", this.pagesize);
           params.append("gname", this.goodsname);
           if(this.gstatus==""){
-            params.append("gstatus", "0");
-          }else {
+            params.append("gstatus", 0);
+          }else{
             params.append("gstatus", parseInt(this.gstatus));
           }
+
           this.$axios.post("/queryGoods.action",params).
           then(function(result) {
             _this.loading=false;
@@ -304,13 +305,11 @@ export default {
         editgoods(val) { //编辑按钮按下  打开编辑模态框
           //获取到要编辑的巨记录  通过val（id）
           this.dialogFormVisible = true;
-          for (let i = 0; i < this.tableData.length; i++) {
-            if(this.tableData[i].gid == val){
-              this.selectIndex = i;
-              this.selectData = {...this.tableData[i]};
-            }
-          }
-          /*var _this = this;
+          this.selectIndex = val.id;
+          this.selectData = {...val};
+          console.log("选择： ",val)
+
+         /* var _this = this;
           var params = new URLSearchParams();
           params.append("gid", val);
 
@@ -469,7 +468,6 @@ export default {
             mids=mids+item.path+","
           });
           mids=mids+_this.imageUrl
-          alert(mids)
           var params = new URLSearchParams();
           params.append("gname", _this.addgname);
           params.append("gunit", _this.addgunit);
@@ -483,7 +481,7 @@ export default {
               message: result.data,
               type: 'success'
             });
-            _this.addFormVisible=false
+            this.addFormVisible = false;
             //刷新数据
             _this.getData();
 

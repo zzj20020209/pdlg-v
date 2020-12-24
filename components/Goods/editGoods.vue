@@ -3,7 +3,7 @@
     <input type="text" v-model="data.gid"/><br>m*;
     <input type="text" />
   </div>-->
-  <el-form  :model="data" >
+  <el-form  :model="data" ref="r" >
       <!--<el-form-item label="日期" :picker-options="pickerOptions">
     <el-date-picker v-model="editForm.date" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日"
                     value-format="yyyy-MM-dd"></el-date-picker>
@@ -25,7 +25,7 @@
     <el-row>
 
       <el-col :span="8">
-        <el-form-item label="商品类型">
+        <el-form-item label="商品类型" prop="gbsname">
           <el-select @change="selectChanged" v-model="sbid" placeholder="请选择" >
             <el-option v-for="e in editSelect"
                        :key="e.gbsid"
@@ -45,7 +45,7 @@
 
         </el-form-item></el-col>
       <el-col :span="8">
-        <el-form-item label="商品图片">
+        <el-form-item label="商品图片" prop="img">
           <!--<el-input v-model="data.gunit"></el-input>-->
           <template width="90" >
             <el-upload
@@ -63,7 +63,6 @@
     </el-row>
     <el-row>
       <el-col>
-        <!--{{data.goodsImagelist}}-->
         <el-form-item label="商品详情图片">
           <el-upload
             :action="$host + 'fileUpload'"
@@ -105,8 +104,24 @@
             dialogVisible: false
           }
         },
+        watch: {
+          data() {
+            this.selectAll();
+            this.fileList = [];
+            this.data.goodsImagelist.forEach(i => {
+              console.log(i);
+              this.fileList.push({
+                name: i.gid,
+                url: this.$host + i.giurl
+              })
+
+            })
+            console.log(this.fileList);
+          }
+        },
         methods:{
           selectAll(){
+
             var _this = this;
             _this.sbid=this.data.gsid.goodBigSort.gbsid
             _this.ssid=this.data.gsid.goodSmallsort.gssid
@@ -128,6 +143,7 @@
             catch(function() {
 
             });
+
           },
           getgss(){
             var sbid =this.sbid;
@@ -155,7 +171,7 @@
             console.log(res.msg)
             this.imageUrl = this.$host + res.msg;
             this.data.gimage=res.msg;
-            alert(this.data.gimage);
+
           },
           beforeAvatarUpload(file) {
             const isJPG = file.type === 'image/jpeg';
@@ -197,18 +213,20 @@
           }
         },
         created() { //钩子函数  vue对象初始化完成后  执行
-          this.selectAll();
+
 
         },
         mounted() {
-            this.data.goodsImagelist.forEach(i => {
-              console.log(i);
-              this.fileList.push({
-                name: i.gid,
-                url: this.$host + i.giurl
-              })
+          this.selectAll();
+          this.data.goodsImagelist.forEach(i => {
+            console.log(i);
+            this.fileList.push({
+              name: i.gid,
+              url: this.$host + i.giurl
             })
-           console.log(this.fileList);
+
+          })
+          console.log(this.fileList);
         }
     }
 </script>
