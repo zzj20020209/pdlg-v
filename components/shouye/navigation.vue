@@ -146,16 +146,16 @@
             <td>
               <a href="#"><img :src=msg2[index+1].ims class="imgs"><br>
                 <label>{{ msg2[index + 1].id }}</label><br>
-                <label>{{ msg2[index + 1].price }}</label>
+                <label>{{ msg2[index + 1].price}}</label>
               </a></td>
             <td><a href="#"><img :src=msg2[index+2].ims class="imgs"><br>
               <label>{{ msg2[index + 2].id }}</label><br>
-              <label>{{ msg2[index + 2].price }}</label>
+              <label>{{ msg2[index + 2].price}}</label>
             </a>
             </td>
             <td><a href="#"><img :src=msg2[index+3].ims class="imgs"><br>
               <label>{{ msg2[index + 3].id }}</label><br>
-              <label>{{ msg2[index + 3].price }}</label>
+              <label>{{ msg2[index + 3].price}}</label>
             </a>
             </td>
           </tr>
@@ -270,6 +270,7 @@
         var params = new URLSearchParams();
         params.append("page", this.page);
         params.append("size", this.pagesize);
+        params.append("gbsname","水果蔬菜")
         this.$axios.post("/queryGoods.action",params).
         then(function(result) {
           _this.loading=false;
