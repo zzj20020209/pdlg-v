@@ -14,7 +14,7 @@
     <el-row>
       <el-col :span="8">
         <el-form-item label="仓库库存">
-          <el-input v-model="data.wzkucun" :disabled="true"></el-input>
+          <el-input v-model="data.wzkucun"  :disabled="true"></el-input>
         </el-form-item></el-col>
       <el-col :span="8">
         <el-form-item label="仓库剩余库存">

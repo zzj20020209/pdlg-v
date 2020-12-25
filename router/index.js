@@ -21,6 +21,7 @@ import particulars from "../components/shouye/particulars";
 import Gwc from "../components/Goods/Gwc";
 import shouyemian from "../components/shouye/shouyemian";
 import caigou from "../components/caigou/caigou";
+import goodsort from "../components/Goods/goodsort";
 
 Vue.use(VueRouter)
 
@@ -123,6 +124,10 @@ const routes = [
   {
     path: "/role",
     component: role
+  },
+  {
+    path: "/goodsort",
+    component: goodsort
   }
 ]
 const router = new VueRouter({
