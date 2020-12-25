@@ -24,6 +24,7 @@ import caigou from "../components/caigou/caigou";
 import goodsort from "../components/Goods/goodsort";
 import rolelink from "../components/quan/rolelink";
 import jurisdiction from "../components/quan/jurisdiction";
+import UserCenter from "../components/User/UserCenter";
 
 Vue.use(VueRouter)
 
@@ -116,6 +117,10 @@ const routes = [
       {
         path: "/navigation/shouyemian",
         component:shouyemian
+      },
+      {
+        path: "/navigation/userCenter",
+        component: UserCenter
       }
     ]
   },

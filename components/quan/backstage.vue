@@ -88,7 +88,7 @@
   import caigou from "../caigou/caigou";
   import role from "./role";
   import rolelink from "./rolelink";
-
+  import UserList from "../User/UserList";
   export default {
     name: "backstage",
     data() {
@@ -114,7 +114,8 @@
       caigou,
       jurisdiction,
       role,
-      rolelink
+      rolelink,
+      UserList
     },
     methods: {
       getDate() {

@@ -35,13 +35,14 @@ export default {
       this.$axios.post("/menuLogin.action",pamer).
       then(function (result) {
         if (result.data.code == "0") {
-          //登录成功  跳转 首页
-          alert(result.data.msg);
-
           //将登录成功的用户名存入store中
           sessionStorage.setItem("username",result.data.username)
           sessionStorage.setItem("id",result.data.id)
 
+          _this.$message({
+            message: "欢迎您:"+result.data.username,
+            type: 'success'
+          });
           _this.$router.push("/backstages");
 
 
