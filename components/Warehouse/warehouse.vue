@@ -371,7 +371,7 @@
               type: 'error'
             });
           }
-          var params = new URLSearchParams();
+         /* var params = new URLSearchParams();
           params.append("suidstr", this.$refs.zhuanyi.suidstr);
           params.append("gidstr", this.$refs.zhuanyi.gidstr);
           params.append("countstr", this.$refs.zhuanyi.countstr);
@@ -393,7 +393,7 @@
               message: '转移失败',
               type: 'success'
             });
-          })
+          })*/
 
         },
         tuihuobtn(){
