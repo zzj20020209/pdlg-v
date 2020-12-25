@@ -55,7 +55,7 @@
     </el-drawer>
     </div>
 
-    <router-view></router-view>
+    <router-view v-if="bo"></router-view>
 
 
     <el-dialog id="yhdl" title="登录页面" :visible.sync="dlym" width="30%">
@@ -147,12 +147,13 @@
           password: [
             {required: true, message: '密码不可为空', trigger: 'blur'}
           ]
-        }
+        },bo:true
       };
     },
     methods: {
       sy(){
         this.$router.push("/navigation/shouyemian")
+        this.shang=""
       },
       load () {
         this.count += 2
@@ -164,7 +165,21 @@
         console.log(key, keyPath);
       },
       search() {
-        this.$router.push("/navigation/search")
+        let goodsName = this.shang;
+        //this.$router.push({path:"/demo1/v1",query:{goodsName}});
+        var _this = this;
+        this.bo =false
+        this.$nextTick(function(){
+          this.bo = true
+        })
+        _this.$router.push({path:"/navigation/search",query:{goodsName}});
+       // this.bo =true
+        //setInterval(function () {
+
+        //},100)
+
+
+        this.shang=""
       },
       shanghu() {
         this.$router.push("/shdl")

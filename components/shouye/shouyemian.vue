@@ -196,6 +196,7 @@
       },
       created() { //钩子函数  vue对象初始化完成后  执行
         this.getData();
+        this.gname=sessionStorage.getItem("gname")
         this.load();
       }
     }

@@ -12,14 +12,14 @@
           background-color="whitesmoke"
           active-text-color="#ffd04b">
           <template v-for="menu in this.menuData">
-            <el-submenu :key="menu.id" :index="menu.id">
+            <el-submenu :key="menu.id" :index="menu.id+''">
               <template slot="title">
                 <!-- <i :class="menu.icon"></i>-->
                 <span slot="title">{{ menu.label }}</span>
               </template>
               <el-menu-item-group>
                 <div v-for="cmenu in menu.children">
-                  <el-menu-item @click="addTab(cmenu.label,cmenu.linkUrl)" :key="cmenu.id" :index="cmenu.id">
+                  <el-menu-item @click="addTab(cmenu.label,cmenu.linkUrl)" :key="cmenu.id" :index="cmenu.id+''">
                     <!--<i :class="cmenu.icon"></i>-->
                     <span slot="title">{{ cmenu.label }}</span>
                   </el-menu-item>
