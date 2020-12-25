@@ -24,6 +24,8 @@
     </el-form>
 
     <el-table :data="tableData" stripe style="width: 100%"
+              :header-cell-style="{'text-align':'center'}"
+              :cell-style="{'text-align':'center'}"
               @selection-change="tableSelected"
               v-loading="loading"
               element-loading-text="拼命加载中"
@@ -38,9 +40,9 @@
             <el-form-item label="商品所属分类:">
               <span>{{ props.row.gsid.goodSmallsort.gssname }}</span>
             </el-form-item>
-            <el-form-item label="商品状态:">
+           <!-- <el-form-item label="商品状态:">
               <span>{{ props.row.gstatus==1?"可用":"不可用" }}</span>
-            </el-form-item>
+            </el-form-item>-->
             <el-form-item label="商品详情图片:" v-if="props.row.goodsImagelist.length>0">
               <img v-for="e in props.row.goodsImagelist" style="width:80px;height:80px;border:none;" :src="$host + e.giurl">
             </el-form-item>
