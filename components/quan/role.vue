@@ -120,7 +120,7 @@ export default {
       let _this = this;
       let parmer = new URLSearchParams();
       parmer.append("page", this.page);
-      parmer.append("rows", this.rows);
+      parmer.append("rows", _this.rows);
       _this.$axios.post("/queryRoleCount.action", parmer).then(function (reuslt) {
         _this.tabData = reuslt.data.rows;
         _this.total = reuslt.data.total;
@@ -151,15 +151,7 @@ export default {
         this.addRoles = false;
         this.$refs.roleaddDialog.resetFields();
         this.getData();
-        if (!this.$message({
-          message: result.data.msg,
-          type: 'success'
-        })) {
-          this.$message({
-            message: result.data.msg,
-            type: 'warning'
-          })
-        }
+        this.$message(result.data.msg);
       }).catch(error => {
         alert(error)
       })
@@ -206,15 +198,7 @@ export default {
         this.uptRoles = false;
         this.$refs.roleuptDialog.resetFields();
         this.getData();
-        if (!this.$message({
-          message: result.data.msg,
-          type: 'success'
-        })){
-          this.$message({
-            message: result.data.msg,
-            type: 'warning'
-          })
-        }
+        this.$message(result.data.msg);
       }).catch(function (error) {
         _this.$message({
           message: "已撤消编辑",

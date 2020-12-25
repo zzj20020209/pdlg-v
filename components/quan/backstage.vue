@@ -79,12 +79,15 @@
 
 <script>
   import employee from "./employee";
+  import jurisdiction from "./jurisdiction";
   import Goods from "../Goods/Goods";
   import Sh from "../Shanghu/Sh";
   import ShSp from "../Shanghu/ShSp";
   import warehouse from "../Warehouse/warehouse";
   import Supply from "../Warehouse/Supply";
   import caigou from "../caigou/caigou";
+  import role from "./role";
+  import rolelink from "./rolelink";
 
   export default {
     name: "backstage",
@@ -108,12 +111,15 @@
       ShSp,
       warehouse,
       Supply,
-      caigou
+      caigou,
+      jurisdiction,
+      role,
+      rolelink
     },
     methods: {
       getDate() {
         let _this = this;
-        this.$axios.post("/queryMenuAll.action").then(function (result) {
+        this.$axios.post("/queryMenuAll.action?id="+sessionStorage.getItem("id")).then(function (result) {
           _this.menuData = result.data;
         }).catch(function (erreo) {
           alert(erreo)
