@@ -38,7 +38,8 @@
             <template slot-scope="scope">
             <el-select  v-model="scope.row.warehouse.wid"
                         placeholder="请选择" >
-            <el-option v-for="e in zhuancangku" v-if="e.wid!=scope.row.warehouse.wid"
+              <el-option value="1">请选择</el-option>
+            <el-option v-for="e in zhuancangku"
                        :key="e.wid"
                        :label="e.wname"
                        :value="e.wid"></el-option>
@@ -130,10 +131,10 @@
           var params = new URLSearchParams();
           this.$axios.post("/queryAllWarehouseall.action").
           then(function(result) {
-            var s=result.data.filter(function(item){
+          /*  var s=result.data.filter(function(item){
               return item.wid!=_this.data[0].warehouse.wid;
-            })
-            _this.zhuancangku=s
+            })*/
+            _this.zhuancangku=result.data
           }).
           catch(function(error) {
             alert(error)

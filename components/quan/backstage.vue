@@ -85,6 +85,7 @@
   import warehouse from "../Warehouse/warehouse";
   import Supply from "../Warehouse/Supply";
   import caigou from "../caigou/caigou";
+  import goodsort from "../Goods/goodsort";
 
   export default {
     name: "backstage",
@@ -108,7 +109,9 @@
       ShSp,
       warehouse,
       Supply,
-      caigou
+      caigou,
+      goodsort
+
     },
     methods: {
       getDate() {

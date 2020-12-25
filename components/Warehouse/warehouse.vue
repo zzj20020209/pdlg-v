@@ -372,7 +372,7 @@
               type: 'error'
             });
           }
-          var params = new URLSearchParams();
+         /* var params = new URLSearchParams();
           params.append("suidstr", this.$refs.zhuanyi.suidstr);
           params.append("gidstr", this.$refs.zhuanyi.gidstr);
           params.append("countstr", this.$refs.zhuanyi.countstr);
@@ -394,7 +394,7 @@
               message: '转移失败',
               type: 'success'
             });
-          })
+          })*/
 
         },
         tuihuobtn(){
@@ -428,8 +428,17 @@
 
       },
       created() { //钩子函数  vue对象初始化完成后  执行
+        //this.getData();
+      },
+      mounted(){
         this.getData();
       },
+      watch:{
+          data(){
+          this.getData();
+        }
+        //this.getData();
+      }
     }
 </script>
 

@@ -60,7 +60,7 @@
       </el-table-column>
       <el-table-column prop="gunit" label="商品规格">
       </el-table-column>
-      <el-table-column prop="gprice" label="商品价格">
+      <el-table-column prop="gshangjiaprice" label="商品价格">
       </el-table-column>
       <el-table-column label="商品图片">
         <template width="90" slot-scope="scope">
@@ -75,6 +75,8 @@
           <el-popconfirm title="确定删除这条记录吗？" @confirm="delgoods(scope.row.gid)">
             <el-button type="danger" slot="reference">删除</el-button>
           </el-popconfirm>
+          <el-button type="success" v-if="scope.row.gisshangjia==1" @click="xiajia(scope.row.gid)">下架</el-button>
+          <el-button type="success" v-if="scope.row.gisshangjia==2" @click="shangjia(scope.row.gid)">上架</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -489,6 +491,48 @@ export default {
           catch(function() {
             _this.$message({
               message: '添加失败',
+              type: 'success'
+            });
+          })
+        },
+        shangjia(gid){
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("gid", gid);
+          this.$axios.post("goodsshangjia.action", params).
+          then(function(result) {
+            _this.$message({
+              message: result.data,
+              type: 'success'
+            });
+            //刷新数据
+            _this.getData();
+
+          }).
+          catch(function() {
+            _this.$message({
+              message: '上架失败',
+              type: 'success'
+            });
+          })
+        },
+        xiajia(gid){
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("gid", gid);
+          this.$axios.post("goodsxiajia.action", params).
+          then(function(result) {
+            _this.$message({
+              message: result.data,
+              type: 'success'
+            });
+            //刷新数据
+            _this.getData();
+
+          }).
+          catch(function() {
+            _this.$message({
+              message: '下架失败',
               type: 'success'
             });
           })
