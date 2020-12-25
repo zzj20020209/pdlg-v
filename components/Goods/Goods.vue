@@ -5,11 +5,7 @@
         <el-input v-model="goodsname" placeholder="商品名称"></el-input>
       </el-form-item>
       <el-form-item label="商品状态">
-          <el-select v-model="gstatus"  placeholder="请选择" >
-            <el-option
-              key='0'
-              label='请选择'
-              value='0'></el-option>
+          <el-select v-model="gstatus" clearable  placeholder="请选择" >
             <el-option
                        key='1'
                        label='可用'
@@ -28,6 +24,8 @@
     </el-form>
 
     <el-table :data="tableData" stripe style="width: 100%"
+              :header-cell-style="{'text-align':'center'}"
+              :cell-style="{'text-align':'center'}"
               @selection-change="tableSelected"
               v-loading="loading"
               element-loading-text="拼命加载中"
@@ -42,9 +40,9 @@
             <el-form-item label="商品所属分类:">
               <span>{{ props.row.gsid.goodSmallsort.gssname }}</span>
             </el-form-item>
-            <el-form-item label="商品状态:">
-              <span>{{ props.row.gstatus==0?"可用":"不可用" }}</span>
-            </el-form-item>
+           <!-- <el-form-item label="商品状态:">
+              <span>{{ props.row.gstatus==1?"可用":"不可用" }}</span>
+            </el-form-item>-->
             <el-form-item label="商品详情图片:" v-if="props.row.goodsImagelist.length>0">
               <img v-for="e in props.row.goodsImagelist" style="width:80px;height:80px;border:none;" :src="$host + e.giurl">
             </el-form-item>
@@ -72,7 +70,7 @@
 
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button type="success" @click="editgoods(scope.row.gid)">编辑</el-button>
+          <el-button type="success" @click="editgoods(scope.row)">编辑</el-button>
 
           <el-popconfirm title="确定删除这条记录吗？" @confirm="delgoods(scope.row.gid)">
             <el-button type="danger" slot="reference">删除</el-button>
@@ -84,7 +82,7 @@
     <el-pagination style="text-align: center;margin-top: 20px" background
                    @size-change="handleSizeChange" @current-change="pagechange"   :current-page="page"
                   layout="total, prev, pager, next,jumper,sizes" :total="total"
-                   :page-size="pagesize" :page-sizes="[2,3,4]">
+                   :page-size="pagesize" :page-sizes="[4,5,6]">
     </el-pagination>
 
     <div>
@@ -93,7 +91,7 @@
     </div>
 
 
-    <el-dialog title="编辑页面" :visible.sync="dialogFormVisible">
+    <el-dialog title="编辑页面" :visible.sync="dialogFormVisible" width="60%">
       <edit-goods :data="selectData" ref="editgoods"></edit-goods>
       <!--将编辑页面子组件加入到列表页面 -->
       <div slot="footer" class="dialog-footer">
@@ -104,7 +102,7 @@
 
 
 
-    <el-dialog :visible.sync="addFormVisible">
+    <el-dialog :visible.sync="addFormVisible" width="60%">
       <el-form    ><!--:rules="rules"-->
         <!--  <el-form-item label="日期" :picker-options="pickerOptions">
             <el-date-picker v-model="editForm.date" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日"
@@ -125,8 +123,6 @@
             </el-form-item></el-col>
           <el-col :span="10">
             <el-form-item label="商品图片">
-              <!--<el-input v-model="data.gunit"></el-input>-->
-
               <el-upload
                 class="avatar-uploader"
                 :action="$host + 'fileUpload'"
@@ -209,7 +205,7 @@ export default {
           addFormVisible:false,
           total:1,
           page:1,
-          pagesize:2,
+          pagesize:4,
           editForm: [],
           editSelect:[],
           gsid:0,
@@ -227,7 +223,7 @@ export default {
           addSelect:[],
           addSelectt:[],
           ssid:"",
-          gstatus:0,
+          gstatus:"",
           fileList: [],
           dialogImageUrl: '',
           dialogVisible: false
@@ -255,7 +251,12 @@ export default {
           params.append("page", this.page);
           params.append("size", this.pagesize);
           params.append("gname", this.goodsname);
-          params.append("gstatus", parseInt(this.gstatus));
+          if(this.gstatus==""){
+            params.append("gstatus", 0);
+          }else{
+            params.append("gstatus", parseInt(this.gstatus));
+          }
+
           this.$axios.post("/queryGoods.action",params).
           then(function(result) {
             _this.loading=false;
@@ -304,13 +305,11 @@ export default {
         editgoods(val) { //编辑按钮按下  打开编辑模态框
           //获取到要编辑的巨记录  通过val（id）
           this.dialogFormVisible = true;
-          for (let i = 0; i < this.tableData.length; i++) {
-            if(this.tableData[i].gid == val){
-              this.selectIndex = i;
-              this.selectData = {...this.tableData[i]};
-            }
-          }
-          /*var _this = this;
+          this.selectIndex = val.id;
+          this.selectData = {...val};
+          console.log("选择： ",val)
+
+         /* var _this = this;
           var params = new URLSearchParams();
           params.append("gid", val);
 
@@ -469,7 +468,6 @@ export default {
             mids=mids+item.path+","
           });
           mids=mids+_this.imageUrl
-          alert(mids)
           var params = new URLSearchParams();
           params.append("gname", _this.addgname);
           params.append("gunit", _this.addgunit);
@@ -483,7 +481,7 @@ export default {
               message: result.data,
               type: 'success'
             });
-            this.addFormVisible = false;
+            _this.addFormVisible=false
             //刷新数据
             _this.getData();
 

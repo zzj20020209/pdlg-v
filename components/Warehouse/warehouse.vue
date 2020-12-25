@@ -11,6 +11,8 @@
     </el-form-item>
   </el-form>
   <el-table :data="tableData" stripe style="width: 100%"
+            :header-cell-style="{'text-align':'center'}"
+            :cell-style="{'text-align':'center'}"
             v-loading="loading"
             element-loading-text="拼命加载中"
             element-loading-spinner="el-icon-loading"
@@ -56,8 +58,8 @@
         <el-popconfirm title="确定删除这条记录吗？" @confirm="delwar(scope.row.wid)">
           <el-button type="danger" slot="reference">删除</el-button>
         </el-popconfirm>
-        <el-button type="primary" @click="zhuanyi(scope.row.wid)">转 移</el-button>
-        <el-button type="primary" @click="tuihuo(scope.row.wid)">退 货</el-button>
+        <el-button type="primary" @click="zhuanyi(scope.row.wid)">转移</el-button>
+        <el-button type="primary" @click="tuihuo(scope.row.wid)">退货</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -71,7 +73,7 @@
     <add-warehouse :data="addData"></add-warehouse>
     <!--将编辑页面子组件加入到列表页面 -->
     <div slot="footer" class="dialog-footer">
-      <el-button @click="dialogFormVisible = false">取 消</el-button>
+      <el-button @click="dialogFormVisible = false">取消</el-button>
       <el-button type="primary" @click="subAdd">确 定</el-button>
     </div>
   </el-dialog>
@@ -83,20 +85,20 @@
       <el-button type="primary" @click="subEdit">确 定</el-button>
     </div>
   </el-dialog>
-  <el-dialog title="转移界面" :visible.sync="dialogFormVisiblezhuan" width="80%" >
-    <zhuanyi :data="zhuantuidata,zhuancangku"></zhuanyi>
+  <el-dialog title="转移界面" :visible.sync="dialogFormVisiblezhuan" width="100%" >
+    <zhuanyi :data="zhuantuidata" ref="zhuanyi"></zhuanyi>
     <!--将编辑页面子组件加入到列表页面 -->
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogFormVisiblezhuan = false">取 消</el-button>
-      <el-button type="primary" @click="subAdd">确 定</el-button>
+      <el-button type="primary" @click="zhuanbtn">确 定</el-button>
     </div>
   </el-dialog>
   <el-dialog title="退货界面" :visible.sync="dialogFormVisibletui" width="80%" >
-    <tuihuo :data="zhuantuidata"></tuihuo>
+    <tuihuo :data="zhuantuidata" ref="tuihuo"></tuihuo>
     <!--将编辑页面子组件加入到列表页面 -->
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogFormVisibletui = false">取 消</el-button>
-      <el-button type="primary" @click="subAdd">确 定</el-button>
+      <el-button type="primary" @click="tuihuobtn">确 定</el-button>
     </div>
   </el-dialog>
 </div>
@@ -127,7 +129,8 @@
             dialogFormVisibleedit:false,
             selectIndex:0,
             selectData:[],
-            editForm:[]
+            editForm:[],
+            xwid:0,
           }
         },
       methods:{
@@ -202,6 +205,7 @@
           var _this = this;
           var params = new URLSearchParams();
           params.append("wid", id);
+          _this.xwid=id;
           this.$axios.post("/querySupplyBywid.action",params).
           then(function(result) {
             _this.zhuantuidata = result.data;
@@ -209,14 +213,14 @@
           catch(function(error) {
             alert(error)
           });
-          this.$axios.post("/queryAllWarehouseNOInwid.action",params).
+         /* this.$axios.post("/queryAllWarehouseNOInwid.action",params).
           then(function(result) {
             _this.zhuancangku=result.data;
-           /* alert("aa"+_this.zhuancangku[0].wid)*/
+           /!* alert("aa"+_this.zhuancangku[0].wid)*!/
           }).
           catch(function(error) {
             alert(error)
-          });
+          });*/
 
         },
         tuihuo(id){
@@ -266,6 +270,160 @@
               type: 'success'
             });
           })
+        },
+        delwar(val){
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("wid", val);
+          this.$axios.post("deleteWarehouse.action", params).
+          then(function(result) {
+            _this.$message({
+              message: result.data,
+              type: 'success'
+            });
+            //刷新数据
+            _this.getData();
+
+          }).
+          catch(function() {
+            _this.$message({
+              message: '删除失败',
+              type: 'success'
+            });
+          })
+         /* this.$axios.post("queryAllGoodsBywid.action", params).
+          then(function(result) {
+              console.log("hhh",result.data)
+              if(result.data.length>0){
+                _this.$message({
+                  message: '请先将仓库清空在删除!',
+                  type: 'error'
+                });
+              }else{
+
+                this.$axios.post("deleteWarehouse.action",params).
+                then(function(result) {
+                  _this.$message({
+                    message: result.data,
+                    type: 'success'
+                  });
+
+                }).
+                catch(function() {
+                  _this.$message({
+                    message: '删除失败',
+                    type: 'success'
+                  });
+                });
+              }
+
+
+
+          }).
+          catch(function() {
+            _this.$message({
+              message: '转移失败',
+              type: 'success'
+            });
+          })*/
+        },
+        zhuanbtn(){
+          var _this = this;
+          if(this.$refs.zhuanyi.selectlength<1){
+            _this.$message({
+              message: '至少选择一条数据',
+              type: 'error'
+            });
+          }
+          var num=0;
+          var countstrids =this.$refs.zhuanyi.countstr.split(",");
+          var m1 = [];
+          for(var i = 0; i < countstrids.length - 1; i++){
+            m1.push(countstrids[i]);
+          }
+          m1.some(function(item){
+            if(item==0) {
+              num++;
+              _this.$message({
+                message: '请输入你要转移的数量',
+                type: 'error'
+              });
+              return true;
+            }
+          });
+          var cangstrids =this.$refs.zhuanyi.cangstr.split(",");
+          var m2 = [];
+          for(var i = 0; i < cangstrids.length - 1; i++){
+            m2.push(cangstrids[i]);
+          }
+          m2.some(function(item){
+            if(item==_this.xwid) {
+              num++;
+              _this.$message({
+                message: '请选择你要转移的仓库',
+                type: 'error'
+              });
+              return true;
+            }
+          });
+          if(num==2){
+            _this.$message({
+              message: '转移数量以及转移仓库均不能为空!',
+              type: 'error'
+            });
+          }
+          var params = new URLSearchParams();
+          params.append("suidstr", this.$refs.zhuanyi.suidstr);
+          params.append("gidstr", this.$refs.zhuanyi.gidstr);
+          params.append("countstr", this.$refs.zhuanyi.countstr);
+          params.append("cangstr", this.$refs.zhuanyi.cangstr);
+          params.append("wid", this.xwid);
+          this.$axios.post("zhuanyi.action", params).
+          then(function(result) {
+            _this.$message({
+              message: result.data,
+              type: 'success'
+            });
+            _this.dialogFormVisiblezhuan=false
+            //刷新数据
+            _this.getData();
+
+          }).
+          catch(function() {
+            _this.$message({
+              message: '转移失败',
+              type: 'success'
+            });
+          })
+
+        },
+        tuihuobtn(){
+           /*   alert(this.$refs.tuihuo.suidstr)
+                    //countstr
+          //cangstr*/
+          var _this = this;
+          var params = new URLSearchParams();
+          params.append("suidstr", this.$refs.tuihuo.suidstr);
+          params.append("countstr", this.$refs.tuihuo.countstr);
+          params.append("cangstr", this.$refs.tuihuo.cangstr);
+          this.$axios.post("tuihuo.action", params).
+          then(function(result) {
+            _this.$message({
+              message: result.data,
+              type: 'success'
+            });
+            _this.dialogFormVisibletui=false
+            //刷新数据
+            _this.getData();
+
+          }).
+          catch(function() {
+            _this.$message({
+              message: '退货失败',
+              type: 'success'
+            });
+          })
+
         }
 
       },

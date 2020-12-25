@@ -18,6 +18,10 @@ import ShSp from "../components/Shanghu/ShSp";
 import warehouse from "../components/Warehouse/warehouse";
 import role from "../components/quan/role";
 import particulars from "../components/shouye/particulars";
+import Gwc from "../components/Goods/Gwc";
+import shouyemian from "../components/shouye/shouyemian";
+import caigou from "../components/caigou/caigou";
+import goodsort from "../components/Goods/goodsort";
 
 Vue.use(VueRouter)
 
@@ -56,6 +60,10 @@ const routes = [
     component: Goods,
   },
   {
+    path: "/caigou",
+    component: caigou,
+  },
+  {
     path:"/sh",
     component:Sh
   },
@@ -80,12 +88,26 @@ const routes = [
     component:Login
   },
   {
-    path: "/search",
-    component: search
-  },
-  {
     path: "/",
-    component: navigation
+    component: navigation,
+    children: [
+      {
+        path: "/navigation/gwc",
+        component: Gwc
+      },
+      {
+        path: "/navigation/particulars",
+        component: particulars
+      },
+      {
+        path: "/navigation/search",
+        component: search
+      },
+      {
+        path: "/navigation/shouyemian",
+        component:shouyemian
+      }
+    ]
   },
   {
     path:"/shdl",
@@ -104,8 +126,8 @@ const routes = [
     component: role
   },
   {
-    path: "/particulars",
-    component: particulars
+    path: "/goodsort",
+    component: goodsort
   }
 ]
 const router = new VueRouter({

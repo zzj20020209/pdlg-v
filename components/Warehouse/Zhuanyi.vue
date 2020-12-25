@@ -2,6 +2,8 @@
     <div>
       <el-table :data="data"
                 border
+                :header-cell-style="{'text-align':'center'}"
+                :cell-style="{'text-align':'center'}"
                 @selection-change="tableSelected"
                 stripe style="width: 100%">
         <el-table-column label="请选择你要转移的商品以及数量">
@@ -24,15 +26,15 @@
         <template slot-scope="scope">
                         <el-input
                           placeholder="请输入你要转移的数量"
-                          v-model="zhuancount"
+                          v-model="scope.row.xuancount"
                           type="number"
                          :max="scope.row.suinventory"
-                          :min="2"
+                          :min="0"
                        >
                         </el-input>
                       </template>
           </el-table-column>
-          <el-table-column>
+          <el-table-column label="转移仓库">
             <template slot-scope="scope">
             <el-select  v-model="scope.row.warehouse.wid"
                         placeholder="请选择" >
@@ -40,7 +42,7 @@
                        :key="e.wid"
                        :label="e.wname"
                        :value="e.wid"></el-option>
-              {{scope.row.warehouse.wid}}
+         <!--     {{scope.row.warehouse.wid}}-->
             </el-select>
             </template>
             <!--<el-select  v-model="wid" placeholder="请选择" >
@@ -53,69 +55,90 @@
         </el-table-column>
       </el-table>
     </div>
+
 </template>
 
 <script>
     export default {
         name: "Zhuanyi",
-        props: ['data','cangku'],
+        props: ['data'],
         data(){
           return{
               zhuancount:0,
               str:"",
               selectlength:0,
               zhuancangku:[],
-              wid:0,
+              suidstr:"",
+              cangstr:"",
+              countstr:"",
+              gidstr:"",
+
           }
       },
       methods:{
         tableSelected(val){
-
           console.log("人员信息val-",val);
           if(val.length<1){
             this.selectlength=0;
           }
           this.selectlength=val.length;
+
           this.multipleSelection = [];
+          this.multipleSelectioncount = [];
+          this.multipleSelectioncang = [];
+          this.multipleSelectiongid = [];
           /*this.multipleSelectionn = [];*/
           for (let i = 0; i < val.length; i++) {
             if (this.multipleSelection.indexOf(val[i].suid) === -1) {
               this.multipleSelection.push(val[i].suid)
-          /*    this.multipleSelectionn.push(val[i].suinventory)*/
+              this.multipleSelectioncount.push(val[i].xuancount)
+              this.multipleSelectioncang.push(val[i].warehouse.wid)
+              this.multipleSelectiongid.push(val[i].goods.gid)
             }
           }
+
           let str="";
           this.multipleSelection.forEach((item)=> {
             str=str+item+","
           })
-          /*let strr="";
-          this.multipleSelectionn.forEach((item)=> {
-            strr=strr+item+","
+          this.suidstr=str;
+          /*  alert("id"+this.suidstr)*/
+
+          let strcang="";
+          this.multipleSelectioncang.forEach((item)=> {
+            strcang=strcang+item+","
           })
-          alert("kk"+strr)*/
-          this.str=str;
-          console.log("人员信息val--人员选中-",str);
+          this.cangstr=strcang;
+          /* alert("cang"+this.cangstr)*/
+
+          let strcount="";
+          this.multipleSelectioncount.forEach((item)=> {
+            strcount=strcount+item+","
+          })
+          this.countstr=strcount;
+
+          let strgid="";
+          this.multipleSelectiongid.forEach((item)=> {
+            strgid=strgid+item+","
+          })
+          this.gidstr=strgid;
+
         },
         getcangku(){
          // alert("jjs"+this.data[0].suid)
          var _this = this;
           var params = new URLSearchParams();
-
           this.$axios.post("/queryAllWarehouseall.action").
           then(function(result) {
-            _this.zhuancangku= result.data;
+            var s=result.data.filter(function(item){
+              return item.wid!=_this.data[0].warehouse.wid;
+            })
+            _this.zhuancangku=s
           }).
           catch(function(error) {
             alert(error)
           });
         },
-        getSelectDeal(obj) {
-          let wid = this.data[obj].warehouse.wid;
-          let wname = this.data[obj].warehouse.wname;
-          alert(wname)
-          //自定义操作...
-          //...
-        }
       /*  numberChange(val,suid){
         let index=arrayFindIndex(this.data,{suid:suid})
           this.data[index].suinventory=toNumber(val)
@@ -123,7 +146,7 @@
       }
       ,
       created() { //钩子函数  vue对象初始化完成后  执行
-
+        /*alert("已经有了"+this.data.warehouse.wid)*/
       },
       mounted() {
           this.getcangku()
