@@ -22,6 +22,8 @@ import Gwc from "../components/Goods/Gwc";
 import shouyemian from "../components/shouye/shouyemian";
 import caigou from "../components/caigou/caigou";
 import goodsort from "../components/Goods/goodsort";
+import rolelink from "../components/quan/rolelink";
+import jurisdiction from "../components/quan/jurisdiction";
 
 Vue.use(VueRouter)
 
@@ -82,6 +84,14 @@ const routes = [
   {
     path:"/backstages",
     component:backstage
+  },
+  {
+    path: "/rolelink",
+    component: rolelink
+  },
+  {
+    path: "/jurisdiction",
+    component: jurisdiction
   },
   {
     path:"/login",

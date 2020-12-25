@@ -40,6 +40,7 @@ export default {
 
           //将登录成功的用户名存入store中
           sessionStorage.setItem("username",result.data.username)
+          sessionStorage.setItem("id",result.data.id)
 
           _this.$router.push("/backstages");
 

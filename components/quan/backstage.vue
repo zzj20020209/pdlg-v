@@ -86,6 +86,8 @@
   import Supply from "../Warehouse/Supply";
   import caigou from "../caigou/caigou";
   import goodsort from "../Goods/goodsort";
+  import role from "./role";
+  import rolelink from "./rolelink";
 
   export default {
     name: "backstage",
@@ -110,13 +112,15 @@
       warehouse,
       Supply,
       caigou,
-      goodsort
-
+      goodsort,
+      jurisdiction,
+      role,
+      rolelink
     },
     methods: {
       getDate() {
         let _this = this;
-        this.$axios.post("/queryMenuAll.action").then(function (result) {
+        this.$axios.post("/queryMenuAll.action?id="+sessionStorage.getItem("id")).then(function (result) {
           _this.menuData = result.data;
         }).catch(function (erreo) {
           alert(erreo)

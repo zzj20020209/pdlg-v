@@ -13,11 +13,6 @@
     <el-dialog title="添加用户" :visible.sync="addFormVisible" center
                :before-close="handleClose">
       <el-form label-width="auto">
-        <el-form-item label="头像" prop="image">
-          <el-avatar>
-
-          </el-avatar>
-        </el-form-item>
         <el-form-item label="用户名" prop="username">
           <el-input v-model="addUserForm.username"></el-input>
         </el-form-item>
@@ -47,9 +42,6 @@
     <el-dialog title="修改用户" :visible.sync="editFormVisible" center
                :before-close="handleClose">
       <el-form label-width="auto">
-        <el-form-item label="头像" prop="image">
-          <input type="file"/>
-        </el-form-item>
         <el-form-item label="用户名" prop="username">
           <el-input v-model="editUserForm.username"></el-input>
         </el-form-item>
@@ -69,6 +61,9 @@
         <el-form-item label="地址" prop="address">
           <el-input v-model="editUserForm.address"></el-input>
         </el-form-item>
+        <el-form-item label="余额" prop="address">
+          <el-input v-model="editUserForm.price"></el-input>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button type="warning" size="mini" @click="clearEditForm">取消</el-button>
@@ -81,15 +76,8 @@
 
       stripe>
       <el-table-column
-        prop="uid"
+        prop="id"
         label="ID">
-      </el-table-column>
-      <el-table-column
-        prop="image"
-        label="头像">
-        <template slot-scope="scope">
-          <img :src="scope.row.image" alt="">
-        </template>
       </el-table-column>
       <el-table-column
         prop="username"
@@ -123,8 +111,8 @@
         prop=""
         label="操作">
         <template slot-scope="scope">
-          <el-button type="success" size="mini" @click="getEditUser(scope.row.uid)">编辑</el-button>
-          <el-popconfirm title="确定删除这条记录吗？" @confirm="delUserData(scope.row.uid)">
+          <el-button type="success" size="mini" @click="getEditUser(scope.row.id)">编辑</el-button>
+          <el-popconfirm title="确定删除这条记录吗？" @confirm="delUserData(scope.row.id)">
             <el-button type="danger" size="mini" slot="reference">删除</el-button>
           </el-popconfirm>
         </template>
@@ -150,8 +138,7 @@ export default {
       tableData: [],
       addFormVisible: false,
       editFormVisible: false,
-      uid: '',
-      image: '',
+      id: '',
       username: '',
       password: '',
       name: '',
@@ -163,7 +150,6 @@ export default {
       page: 1,
       rows: 5,
       addUserForm: {
-        image: '',
         username: '',
         password: '',
         name: '',
@@ -173,15 +159,18 @@ export default {
       },
       editUserForm: {
         id: '',
-        image: '',
         username: '',
         password: '',
         name: '',
         sex: '',
         phone: '',
         address: '',
+        price:'',
       },
     }
+  },
+  computed: {
+
   },
   methods: {
     handleClose(done) {
@@ -211,7 +200,6 @@ export default {
     },
     addUser() {
       let params = new URLSearchParams();
-      params.append("image", this.addUserForm.image);
       params.append("username", this.addUserForm.username);
       params.append("password", this.addUserForm.password);
       params.append("name", this.addUserForm.name);
@@ -262,8 +250,7 @@ export default {
       this.editFormVisible = true;
       this.$axios.post("user/queryUserById.action", params)
         .then(result => {
-          this.editUserForm.id = result.data.uid;
-          this.editUserForm.image = result.data.image;
+          this.editUserForm.id = result.data.id;
           this.editUserForm.username = result.data.username;
           this.editUserForm.password = result.data.password;
           this.editUserForm.name = result.data.name;
@@ -282,7 +269,6 @@ export default {
     editUser() {
       let params = new URLSearchParams();
       params.append("id", this.editUserForm.id);
-      params.append("image", this.editUserForm.image);
       params.append("username", this.editUserForm.username);
       params.append("password", this.editUserForm.password);
       params.append("name", this.editUserForm.name);
