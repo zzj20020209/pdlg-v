@@ -27,6 +27,7 @@ import jurisdiction from "../components/quan/jurisdiction";
 import userorder from "../components/order/userorder";
 import shangorder from "../components/order/shangorder";
 import zongorder from "../components/order/zongorder";
+import UserCenter from "../components/User/UserCenter";
 
 Vue.use(VueRouter)
 
@@ -119,6 +120,10 @@ const routes = [
       {
         path: "/navigation/shouyemian",
         component:shouyemian
+      },
+      {
+        path: "/navigation/userCenter",
+        component: UserCenter
       }
     ]
   },

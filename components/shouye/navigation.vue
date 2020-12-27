@@ -15,7 +15,7 @@
                   {{user}}
                 </template>
                 <el-badge is-dot style="width: 200px">
-                  <el-menu-item index="1-1">个人中心</el-menu-item>
+                  <el-menu-item index="1-1" @click="grzx">个人中心</el-menu-item>
                 </el-badge>
                 <el-menu-item index="1-2" @click="tcdl">退出登录</el-menu-item>
               </el-submenu>
@@ -57,14 +57,13 @@
 
     <router-view v-if="bo"></router-view>
 
-
     <el-dialog id="yhdl" title="登录页面" :visible.sync="dlym" width="30%">
       <div >
         <el-form ref="loginForm" :model="form" :rules="rules" label-width="80px" class="login-box">
           <el-form-item label="账号" prop="username">
             <el-input type="text" placeholder="请输入账号" v-model="form.username" prefix-icon="el-icon-user-solid"/>
           </el-form-item>
-          <el-form-item label="密码">
+          <el-form-item label="密码" prop="password">
             <el-input type="password" placeholder="请输入密码" v-model="form.password" prefix-icon="el-icon-lock"/>
           </el-form-item>
           <el-form-item>
@@ -191,11 +190,15 @@
         this.zcym=true;
       },
       tcdl(){
+
         sessionStorage.removeItem("username")
         sessionStorage.removeItem("password")
         sessionStorage.removeItem("yhname")
         this.user=null
         this.$router.push("/navigation/shouyemian")
+      },
+      grzx(){
+        this.$router.push("/navigation/userCenter")
       },
       zconSubmit(formName) {
         let _this = this;
@@ -249,7 +252,7 @@
                     message: result.data.mag,
                     type: 'success',
                   })
-
+                  sessionStorage.setItem("id",result.data.id);
                   sessionStorage.setItem("username",result.data.username);
                   sessionStorage.setItem("password",result.data.mm);
                   sessionStorage.setItem("yhname",result.data.yhname);

@@ -20,7 +20,6 @@
     <el-table-column type="expand">
       <template slot-scope="props">
         <el-table :data="props.row.supplyList">
-
           <el-table-column prop="goods.gname" label="商品名称">
           </el-table-column>
           <el-table-column prop="goods.gimage" label="商品图片">

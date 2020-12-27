@@ -46,12 +46,6 @@
          <!--     {{scope.row.warehouse.wid}}-->
             </el-select>
             </template>
-            <!--<el-select  v-model="wid" placeholder="请选择" >
-              <el-option v-for="e in zhuancangku"
-                         :key="e.wid"
-                         :label="e.wname"
-                         :value="e.wid"></el-option>
-            </el-select>-->
           </el-table-column>
         </el-table-column>
       </el-table>

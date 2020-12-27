@@ -2,15 +2,16 @@
   <div class="center">
     <el-row>
       <el-col>
+        <br>
         <el-divider content-position="center" style="color: indianred">个人中心</el-divider>
         <br>
       </el-col>
     </el-row>
-    <el-tabs tab-position="left" style="height: auto;width: 50%">
-      <el-tab-pane label="个人信息">
+    <el-tabs tab-position="left" style="height: 500px;width:100% ;font-size: 30px">
+      <el-tab-pane label="个人信息" style="font-size: 30px">
         <el-card class="box-card">
           <div slot="header">
-            <span>个人中心</span>
+            <span>个人信息</span>
             <el-button type="text" @click="openEditData">修改信息</el-button>
           </div>
           <div>
@@ -162,11 +163,4 @@ export default {
 </script>
 
 <style scoped>
- *{
-   margin: 0;
-   padding: 0;
- }
- .center{
-   margin: 100px auto;
- }
 </style>

@@ -443,7 +443,6 @@ export default {
           console.log("人员信息val--人员选中-",str);
         },
         delduo(){
-          alert(this.selectlength)
          if(this.selectlength<1){
              this.$message.error('请至少选择一条数据');
           }else{
