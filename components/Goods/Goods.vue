@@ -1,25 +1,25 @@
 <template>
   <div id="Goods">
     <el-form :inline="true"  lclass="demo-form-inine">
-      <el-form-item label="商品名称">
+      <el-form-item >
         <el-input v-model="goodsname" placeholder="商品名称"></el-input>
       </el-form-item>
-      <el-form-item label="商品状态">
-          <el-select v-model="gstatus" clearable  placeholder="请选择" >
+      <el-form-item >
+          <el-select v-model="gstatus" clearable  placeholder="商品状态" >
             <el-option
                        key='1'
-                       label='可用'
+                       label='启用'
                        value='1'></el-option>
             <el-option
               key="2"
-              label="不可用"
+              label="禁用"
               value="2"></el-option>
           </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">查询</el-button>
         <el-button @click="add()" type="warning">添加商品</el-button>
-        <el-button @click="delduo()" type="warning">批量删除</el-button>
+       <!-- <el-button @click="delduo()" type="warning">批量删除</el-button>-->
       </el-form-item>
     </el-form>
 
@@ -67,16 +67,25 @@
             <img style="width:80px;height:80px;border:none;" :src="$host + scope.row.gimage">
         </template>
       </el-table-column>
-
+      <el-table-column label="商品状态">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.gstatus==1 ?'success':'info'">{{scope.row.gstatus==1?'启用':'禁用'}}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="商品上架状态">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.gisshangjia==1 ?'success':'info'" v-if="scope.row.gstatus==1">{{scope.row.gisshangjia==1?'上架':'未上架'}}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button type="success" @click="editgoods(scope.row)">编辑</el-button>
+          <el-button type="success" @click="editgoods(scope.row)" v-if="scope.row.gstatus==1">编辑</el-button>
 
           <el-popconfirm title="确定删除这条记录吗？" @confirm="delgoods(scope.row.gid)">
-            <el-button type="danger" slot="reference">删除</el-button>
+            <el-button type="danger" slot="reference" v-if="scope.row.gstatus==1&&scope.row.gisshangjia==2">删除</el-button>
           </el-popconfirm>
-          <el-button type="success" v-if="scope.row.gisshangjia==1" @click="xiajia(scope.row.gid)">下架</el-button>
-          <el-button type="success" v-if="scope.row.gisshangjia==2" @click="shangjia(scope.row.gid)">上架</el-button>
+          <el-button type="success" v-if="scope.row.gisshangjia==1&&scope.row.gstatus==1" @click="xiajia(scope.row.gid)">下架</el-button>
+          <el-button type="success" v-if="scope.row.gisshangjia==2&&scope.row.gstatus==1" @click="shangjia(scope.row.gid)">上架</el-button>
         </template>
       </el-table-column>
     </el-table>

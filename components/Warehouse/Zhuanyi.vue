@@ -1,6 +1,8 @@
 <template>
     <div>
+     <!-- show-summary :summary-method="getSummaries"-->
       <el-table :data="data"
+
                 border
                 :header-cell-style="{'text-align':'center'}"
                 :cell-style="{'text-align':'center'}"
@@ -22,7 +24,7 @@
           </el-table-column>
           <el-table-column prop="suinventory" label="库存数量" width="180">
           </el-table-column>
-          <el-table-column label="转移数量">
+          <el-table-column label="转移数量" prop="xuancount">
         <template slot-scope="scope">
                         <el-input
                           placeholder="请输入你要转移的数量"
@@ -67,10 +69,39 @@
               cangstr:"",
               countstr:"",
               gidstr:"",
+             /* sums:[]*/
 
           }
       },
       methods:{
+        /*getSummaries(param) {
+          const { columns, data } = param;
+          const sums = [];
+          columns.forEach((column, index) => {
+            if (index === 0) {
+              sums[index] = '总价';
+              return;
+            }
+            const values = data.map(item => Number(item[column.property]));
+            if (column.property === 'xuancount' ) {
+              sums[index] = values.reduce((prev, curr) => {
+                const value = Number(curr);
+                if (!isNaN(value)) {
+                  return prev + curr;
+                } else {
+                  return prev;
+                }
+              }, 0);
+              sums[index];
+
+            }else{
+              sums[index]='--'
+
+            }
+
+          });
+          return this.sums=sums;
+        },*/
         tableSelected(val){
           console.log("人员信息val-",val);
           if(val.length<1){
