@@ -3,6 +3,7 @@
     <input type="text" v-model="data.gid"/><br>m*;
     <input type="text" />
   </div>-->
+
   <el-form  :model="data" ref="r" >
       <!--<el-form-item label="日期" :picker-options="pickerOptions">
     <el-date-picker v-model="editForm.date" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日"
@@ -53,6 +54,7 @@
               :action="$host + 'fileUpload'"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
+              :on-remove="handleRemove"
               :before-upload="beforeAvatarUpload"
               name="file">
               <el-image   v-if="imageUrl" :src="imageUrl" >
@@ -186,7 +188,18 @@
           },
           //移除图片
           handleRemove(file, fileList) {
+            alert("aaa")
             console.log(file, fileList);
+            this.fileList=fileList
+            alert(this.fileList.length)
+            alert(this.fileList)
+         /*   // 1.获取将要删除图片的临时路径
+            const filePath = file.response.data.tmp_path
+            // 2.从pics数组中，找到图片对应的索引值
+            const i = this.fileList.findIndex(x => x.pic === filePath)
+            // 3.调用splice方法，移除图片信息
+            this.formData.splice(i, 1)*/
+
           },
           //上传成功调用
           handleSuccess(data,file, fileList) {

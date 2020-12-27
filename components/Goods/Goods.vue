@@ -54,13 +54,13 @@
         type="selection"
         width="55">
       </el-table-column>
-      <el-table-column prop="gid" label="ID" width="180">
+      <el-table-column prop="gid" label="ID" width="180" sortable>
       </el-table-column>
       <el-table-column prop="gname" label="商品名称" width="180">
       </el-table-column>
       <el-table-column prop="gunit" label="商品规格">
       </el-table-column>
-      <el-table-column prop="gshangjiaprice" label="商品价格">
+      <el-table-column prop="gshangjiaprice" label="商品价格" sortable>
       </el-table-column>
       <el-table-column label="商品图片">
         <template width="90" slot-scope="scope">
@@ -329,9 +329,15 @@ export default {
           var _this = this;
           let mids="";
         let fileList= this.$refs.editgoods.fileList
-          fileList.forEach(i =>{
-            mids=mids+i.url.substring(22)+","
-          })
+          if(fileList.length<1){
+            alert("没有图片")
+            mids="";
+          }else{
+            fileList.forEach(i =>{
+              mids=mids+i.url.substring(22)+","
+            })
+          }
+
          // dd
           var params = new URLSearchParams();
           params.append("gid", this.selectData.gid);
@@ -555,6 +561,7 @@ export default {
         },
         //移除图片
         handleRemove(file, fileList) {
+          this.fileList=fileList;
           console.log(file, fileList);
         },
         //上传成功调用

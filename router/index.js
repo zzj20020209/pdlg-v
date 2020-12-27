@@ -24,6 +24,9 @@ import caigou from "../components/caigou/caigou";
 import goodsort from "../components/Goods/goodsort";
 import rolelink from "../components/quan/rolelink";
 import jurisdiction from "../components/quan/jurisdiction";
+import userorder from "../components/order/userorder";
+import shangorder from "../components/order/shangorder";
+import zongorder from "../components/order/zongorder";
 
 Vue.use(VueRouter)
 
@@ -138,6 +141,18 @@ const routes = [
   {
     path: "/goodsort",
     component: goodsort
+  },
+  {
+    path: "/userorder",
+    component: userorder
+  },
+  {
+    path: "/shangorder",
+    component: shangorder
+  },
+  {
+    path: "/zongorder",
+    component: zongorder
   }
 ]
 const router = new VueRouter({
