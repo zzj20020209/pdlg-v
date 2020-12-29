@@ -90,6 +90,8 @@
   import rolelink from "./rolelink";
   import UserList from "../User/UserList";
   import jurisdiction  from "./jurisdiction";
+  import zongorder from "../order/zongorder";
+
   export default {
     name: "backstage",
     data() {
@@ -117,7 +119,9 @@
       jurisdiction,
       role,
       rolelink,
-      UserList
+      UserList,
+      zongorder
+
     },
     methods: {
       getDate() {
