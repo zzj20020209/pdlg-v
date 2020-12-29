@@ -12,14 +12,14 @@
           background-color="whitesmoke"
           active-text-color="#ffd04b">
           <template v-for="menu in this.menuData">
-            <el-submenu :key="menu.id" :index="menu.id">
+            <el-submenu :key="menu.id" :index="menu.id+''">
               <template slot="title">
                 <!-- <i :class="menu.icon"></i>-->
                 <span slot="title">{{ menu.label }}</span>
               </template>
               <el-menu-item-group>
                 <div v-for="cmenu in menu.children">
-                  <el-menu-item @click="addTab(cmenu.label,cmenu.linkUrl)" :key="cmenu.id" :index="cmenu.id">
+                  <el-menu-item @click="addTab(cmenu.label,cmenu.linkUrl)" :key="cmenu.id" :index="cmenu.id+''">
                     <!--<i :class="cmenu.icon"></i>-->
                     <span slot="title">{{ cmenu.label }}</span>
                   </el-menu-item>
@@ -29,7 +29,7 @@
           </template>
         </el-menu>
       </el-col>
-      <el-col :span="18"  >
+      <el-col :span="18" >
         <!-- <div v-if="editableTabsValue==0">
            <span>aaaaa</span>
          </div>-->
@@ -38,8 +38,8 @@
             <span slot="label"><i class="el-icon-date"></i> 首页</span>
             <el-row >
               <el-col :span="7" >
-                  <el-col :span="24" >
-                    <el-row ><el-col :span="24" style="padding-left: 3px;border: 1px solid whitesmoke">
+                  <el-col :span="24" class="el-col-offset-2">
+                    <el-row ><el-col :span="24" style="height: 250px;padding-left: 3px;border: 1px solid whitesmoke">
                       <div class="block"><el-avatar :size="100" src="imgs/1.jpg"></el-avatar>
                         <div class="inline" ><span>{{username}}</span> <a href="#" @click="zx">注销</a>
                           <br> <span>{{nowDate}}</span> </div></div>
@@ -47,10 +47,11 @@
 
                     </el-row>
                   </el-col>
-
+              </el-col>
+              <el-col :span="14" class="el-col-offset-2">
+                <div id="main" style="width:650px;height:300px;"></div>
               </el-col>
             </el-row>
-
           </el-tab-pane>
           <el-tab-pane
             v-for="(item, index) in editableTabs"
@@ -79,6 +80,8 @@
   import rolelink from "./rolelink";
   import UserList from "../User/UserList";
   import jurisdiction  from "./jurisdiction";
+  import statistics from "./statistics";
+
   export default {
     name: "backstage",
     data() {
@@ -90,7 +93,8 @@
         tabIndex: 0,
         username:sessionStorage.getItem("username"),
         nowDate: "",
-
+        time:[],
+        price:[]
       }
     }
     ,
@@ -106,7 +110,8 @@
       jurisdiction,
       role,
       rolelink,
-      UserList
+      UserList,
+      statistics,
     },
     methods: {
       getDate() {
@@ -115,6 +120,39 @@
           _this.menuData = result.data;
         }).catch(function (erreo) {
           alert(erreo)
+        })
+      },
+      gedata() {
+        var echarts = require('echarts/lib/echarts');
+        require('echarts/lib/chart/bar');
+        require('echarts/lib/component/tooltip');
+        require('echarts/lib/component/title');
+
+        var yue = "5,4,3,2,1,0"
+        this.$axios.post("/queryStatistics.action?yue=" + yue).
+        then(result => {
+          result.data.forEach((item)=>{
+            this.time.push(item.nian+"年"+item.times+"月");
+            this.price.push(item.price);
+          })
+          var myChart = echarts.init(document.getElementById('main'));
+          myChart.setOption({
+            title: {
+              text: '总店最近六月收入'
+            },
+            tooltip: {},
+            xAxis: {
+              data: this.time
+            },
+            yAxis: {},
+            series: [{
+              name: '总收入',
+              type: 'bar',
+              data: this.price
+            }]
+          })
+        }).catch(error => {
+          alert(error)
         })
       },
       addTab(titleName, comval) {
@@ -136,7 +174,7 @@
       },
       zx(){
         sessionStorage.removeItem("username");
-        this.$router.push("/login")
+        this.$router.push("/")
       },
       removeTab(targetName) {
         let tabs = this.editableTabs;
@@ -174,6 +212,7 @@
       }
     },
     mounted() {
+      this.gedata()
       this.currentTime();
     },
     // 销毁定时器

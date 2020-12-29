@@ -28,6 +28,7 @@ import shangorder from "../components/order/shangorder";
 import zongorder from "../components/order/zongorder";
 import UserCenter from "../components/User/UserCenter";
 import fenlei from "../components/shouye/fenlei";
+import statistics from "../components/quan/statistics";
 
 Vue.use(VueRouter)
 
@@ -88,6 +89,10 @@ const routes = [
   {
     path: "/jurisdiction",
     component: jurisdiction
+  },
+  {
+    path: "/statistics",
+    component: statistics
   },
   {
     path:"/login",
