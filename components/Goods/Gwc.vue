@@ -13,24 +13,9 @@
       <el-col>
         <div style="overflow:auto">
           <a href="#">
-            <!--<ul v-for="cu in msg2"
-                class="list"
-                v-infinite-scroll="load"
-                infinite-scroll-disabled="disabled">
-              <li v-for="i in count" class="list-item">
-                <el-card :body-style="{ padding: '0px' }">
-                  <img :src="cu.ims" class="imgs">
-                  <div style="padding: 14px;">
-                    <time class="time">名称:{{ cu.id }}</time>
-                    <br>
-                    <time class="time">价格:{{ cu.price }}/1个</time>
-                  </div>
-                </el-card>
-              </li>
-            </ul>-->
-
               <el-table
                 :data="msg2"
+                ref="gwcb"
                 @selection-change="fxk"
                 style="width: 770px">
                 <el-table-column
@@ -39,16 +24,24 @@
                 >
                 </el-table-column>
                 <el-table-column
-                  width="650" align="center" label="购物车">
+                  width="600" align="center" label="购物车">
                   <template slot-scope="scope">
-                    <img style="width:200px;height:200px;border:none;" :src="scope.row.ims"><br>
-                    <label>{{ scope.row.id | fmatter }}</label><br>
-                    <label style="font-size: 18px"><font color="red">￥</font>{{scope.row.price}}</label>
+                    <a href="#" @click="jrxq(scope.row.gwname)">
+                    <img style="width:200px;height:200px;border:none;" :src="$host+scope.row.gwimage"><br>
+                    <label>{{scope.row.gwname}}</label><br>
+                    <label style="font-size: 18px"><font color="red">￥</font>{{scope.row.gwprice}}|{{scope.row.gwunit}}</label><br>
+                    </a>
+                      <el-input
+                      placeholder="请输入你要采购的数量"
+                      v-model="scope.row.gwsl"
+                      type="number"
+                      :min="1"
+                      style="width: 85px;text-align: center"
+                    >
+                    </el-input>
                   </template>
                 </el-table-column>
               </el-table>
-
-
             <!--<table style="text-align: center" width="100%">
               <tr v-for="cu in msg2"
                   class="list">
@@ -63,39 +56,82 @@
                 </td>
               </tr>
             </table>-->
-
           </a>
         </div>
       </el-col>
     </el-row>
     </div>
     <el-col style="padding-top: 25px" :span="24">
-      <el-button type="danger" style="width: 200px;height: 60px" class="el-button"  icon="el-icon-shopping-cart-2">购买</el-button>
-      <el-button type="danger" style="width: 200px;height: 60px" class="el-button"  icon="el-icon-shopping-cart-2">删除</el-button>
+      <el-button type="danger" style="width: 200px;height: 60px" class="el-button"  icon="el-icon-shopping-cart-2" @click="dpd">购买</el-button>
+      <el-button type="danger" style="width: 200px;height: 60px" class="el-button"  icon="el-icon-shopping-cart-2" @click="scgwc">删除</el-button>
     </el-col>
+    <label>共选择：<font style="color: red">{{xz}}</font>条</label>
+    <label>总计：￥<font style="color: red">{{zprice}}</font></label>
   </div>
 </template>
 
 <script>
   export default {
     name: "Gwc",
+    props:['drawer'],
     data() {
       return {
-        msg2: [
-          {id: 1, price: 13.5, ims: "imgs/1.jpg"},
-          {id: 2, price: 13.5, ims: "imgs/2.jpg"},
-          {id: 3, price: 13.5, ims: "imgs/3.jpg"},
-          {id: 4, price: 13.5, ims: "imgs/3.jpg"},
-          {id: 5, price: 13.5, ims: "imgs/3.jpg"},
-          {id: 6, price: 13.5, ims: "imgs/3.jpg"},
-          {id: 7, price: 13.5, ims: "imgs/3.jpg"},
-          {id: 8, price: 13.5, ims: "imgs/3.jpg"},
-        ],
+        zprice:0,
+        xz:0,
+        gid:0,
+        id:"",
+        msg2: [],
         count: 1,
-        innerDrawer: false,
+        innerDrawer: false
       }
     },
     methods: {
+      jrxq(val){
+        var _this=this
+        var gname=val;
+        var params = new URLSearchParams();
+        params.append("gname",gname);
+        this.$axios.post("/goodscx.action",params).
+        then(function(result) {
+          sessionStorage.setItem("gid",result.data.gid)
+          _this.$router.push("/navigation/particulars");
+        }).
+        catch(function(error) {
+          alert(error)
+        });
+        this.drawer.gwc.hide();
+      },
+      scgwc(){
+        var _this=this;
+        if(_this.$refs.gwcb.selection.length<1){
+          _this.$message({
+            message: '至少选择一条数据',
+            type: 'error'
+          });
+        }else {
+          var params = new URLSearchParams();
+          params.append("gwid", this.gid);
+          this.$axios.post("scgwc.action", params).
+          then(function(result) {
+            _this.$message({
+              message: result.data,
+              type: 'success'
+            });
+            //刷新数据
+            _this.getData();
+          }).
+          catch(function() {
+            _this.$message({
+              message: '删除失败！',
+              type: 'error'
+            });
+          })
+        }
+      },
+      dpd(){
+        this.drawer.gwc.hide();
+        this.$router.push("/navigation/userCenter")
+      },
       handleClose(done) {
         this.$confirm('还有未保存的工作哦确定关闭吗？')
           .then(_ => {
@@ -105,8 +141,39 @@
           });
       },
       fxk(val){
-
-      }
+        this.msg=[];
+        var num=0;
+        for (let i = 0; i < val.length; i++) {
+          if (this.msg.indexOf(val[i].gwid) === -1) {
+            this.msg.push(val[i].gwid)
+            num+=(val[i].gwprice*val[i].gwsl)
+          }
+        }
+        let str="";
+        this.msg.forEach((item)=> {
+          str=str+item+","
+        })
+        this.gid=str;
+        this.xz=this.msg.length
+        this.zprice=num
+      },
+      getData() { //获取数据方法
+        this.msg2=[];
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("uid", this.id);
+        this.$axios.post("/gwcx.action",params).
+        then(function(result) {
+          _this.loading=false;
+          _this.msg2 = result.data;
+        }).
+        catch(function(error) {
+          alert(error)
+        });
+      },
+    },created() { //钩子函数  vue对象初始化完成后执行
+      this.id=sessionStorage.getItem("id")
+      this.getData();
     }
   }
 </script>
@@ -140,7 +207,6 @@
     width: 750px;
     display: block;
   }
-
   .clearfix:before,
   .clearfix:after {
     display: table;
@@ -151,5 +217,8 @@
   }
   *{
     text-align: center;
+  }
+  a{
+    text-decoration: none;
   }
 </style>

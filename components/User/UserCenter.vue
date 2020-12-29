@@ -131,6 +131,7 @@ export default {
 
     },
     editData() {
+      var _this=this
       let params = new URLSearchParams();
       params.append("id", this.userVo.id);
       params.append("name", this.userVo.name);
@@ -145,6 +146,7 @@ export default {
               type: 'success'
             })
             this.clearEditForm();
+            sessionStorage.setItem("yhname",_this.userVo.name);
             this.getData();
           }
         })

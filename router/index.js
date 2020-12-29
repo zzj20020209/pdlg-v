@@ -11,7 +11,6 @@ import Shzc from "../components/Shanghu/Shzc";
 import Login from "../components/quan/login";
 import backstage from "../components/quan/backstage";
 import employee from "../components/quan/employee";
-import Shdl from "../components/Shanghu/Shdl";
 import search from "../components/shouye/search";
 import navigation from "../components/shouye/navigation";
 import ShSp from "../components/Shanghu/ShSp";
@@ -74,14 +73,6 @@ const routes = [
     component:Sh
   },
   {
-    path:"/shgrzx",
-    component:Shgrzx
-  },
-  {
-    path: "/shzc",
-    component: Shzc
-  },
-  {
     path:"/employee",
     component:employee
   },
@@ -124,12 +115,12 @@ const routes = [
       {
         path: "/navigation/userCenter",
         component: UserCenter
+      },
+      {
+        path:"/navigation/shgrzx",
+        component:Shgrzx
       }
     ]
-  },
-  {
-    path:"/shdl",
-    component:Shdl
   },
   {
     path: "/shsp",

@@ -1,39 +1,12 @@
 <template>
-  <div class="homeWrap">
+  <div>
   <el-container style="height:100%" direction="vertical">
-    <el-header class="el-header">
-      <el-menu
-        :default-active="activeIndex2"
-        class="el-menu-demo"
-        mode="horizontal"
-        background-color="#545c64"
-        text-color="#fff"
-        active-text-color="#ffd04b">
-        <el-menu-item index="1">处理中心</el-menu-item>
-        <el-submenu index="2">
-          <template slot="title">我的工作台</template>
-          <el-menu-item index="2-1">选项1</el-menu-item>
-          <el-menu-item index="2-2">选项2</el-menu-item>
-          <el-menu-item index="2-3">选项3</el-menu-item>
-          <el-submenu index="2-4">
-            <template slot="title">选项4</template>
-            <el-menu-item index="2-4-1">选项1</el-menu-item>
-            <el-menu-item index="2-4-2">选项2</el-menu-item>
-            <el-menu-item index="2-4-3">选项3</el-menu-item>
-          </el-submenu>
-        </el-submenu>
-        <el-menu-item index="3" disabled>消息中心</el-menu-item>
-        <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
-      </el-menu>
-    </el-header>
-
-
     <el-container>
       <el-aside class="el-aside">
-        <el-header class="el-header" style="height: 200px">
+        <el-header class="el-header" style="height: 200px;margin-top: 60px">
           <div style="background-color: cornsilk;height: 220px;width: 200px">
             <br>
-            <span>欢迎[{{shm}}]登录了！</span>
+            <span>欢迎进入：[{{shm}}]！</span>
             <br>
             <el-avatar  id="tupian" :size="100" :src="circleUrl"></el-avatar>
             <br>
@@ -60,8 +33,8 @@
         </el-main>
       </el-aside>
 
-      <el-main class="el-main">
-          <h1>这里是首页</h1>
+      <el-main class="el-main" style="margin-top: 60px">
+          <h1>这里是商户页面</h1>
       </el-main>
     </el-container>
 
@@ -83,11 +56,6 @@
         }
       },
       methods: {
-        kai(){
-           if(this.isCollapse==false){
-
-           }
-        },
         tc(){
           this.$router.push("/navigation/shouyemian")
           sessionStorage.removeItem("sname")
@@ -100,13 +68,6 @@
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
     min-height: 640px;
-  }
-  .homeWrap {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
   }
 *{
   padding: 0px;

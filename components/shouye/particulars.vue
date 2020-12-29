@@ -22,7 +22,7 @@
                 <br>
                 <br>
                 <div style="background-color: white;margin-top: 30px;border-radius:8px;width: 90%;height: 75px">
-                  <span style="padding-left: 10px">价格:</span><span style="font-size: 30px;font-weight: bold;color: red;padding-left: 30px">￥{{tableData.gprice}}</span>
+                  <span style="padding-left: 10px">价格:</span><span style="font-size: 30px;font-weight: bold;color: red;padding-left: 30px">￥{{tableData.gshangjiaprice}}</span>
                   <div style="width:60%;height:1px;padding:0px;background-color:gray;overflow:hidden;"></div>
                   <span class="zi" style="padding-left: 10px;padding-top: 20px">更多商品优惠，尽在胖达乐购APP</span>
                 </div>
@@ -34,11 +34,11 @@
 
                   <el-row style="padding-top: 50px">
                     <el-col :span="2">数量:</el-col>
-                    <el-col :span="4"><el-input-number style="width: 100px;text-align: left" v-model="num" controls-position="right" @change="handleChange" :min="1" :max="99"></el-input-number></el-col>
+                    <el-col :span="4"><el-input-number style="width: 100px;text-align: left" v-model="num" controls-position="right" @change="handleChange" :min="1" :max=kc></el-input-number><br>当前剩余库存：{{kc}}</el-col>
                   </el-row>
                   <el-col style="padding-top: 75px" :span="24">
                       <el-button type="danger" style="width: 200px;height: 60px" class="el-button"  icon="el-icon-shopping-cart-2">购买</el-button>
-                    <el-button type="danger" style="width: 200px;height: 60px" class="el-button"  icon="el-icon-shopping-cart-2">加入购物车</el-button>
+                    <el-button type="danger" style="width: 200px;height: 60px" class="el-button"  icon="el-icon-shopping-cart-2" @click="jrgwc">加入购物车</el-button>
                   </el-col>
                 </div>
               </div>
@@ -47,49 +47,6 @@
         </el-card>
       </el-row>
     </div>
-
-    <el-dialog id="yhdl" title="登录页面" :visible.sync="dlym" width="30%">
-      <div >
-        <el-form ref="loginForm" :model="form" :rules="rules" label-width="80px" class="login-box">
-          <el-form-item label="账号" prop="username">
-            <el-input type="text" placeholder="请输入账号" v-model="form.username" prefix-icon="el-icon-user-solid"/>
-          </el-form-item>
-          <el-form-item label="密码">
-            <el-input type="password" placeholder="请输入密码" v-model="form.password" prefix-icon="el-icon-lock"/>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" round v-on:click="onSubmit('loginForm')">登录</el-button>
-            <el-button type="warning" round v-on:click="resetForm('loginForm')">重置</el-button>
-          </el-form-item>
-        </el-form>
-        <el-dialog
-          title="温馨提示"
-          :visible.sync="dialogVisible"
-          width="30%">
-          <span>请输入正确的账号和密码</span>
-          <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-      </span>
-        </el-dialog>
-      </div>
-    </el-dialog>
-
-    <el-dialog id="yhzc" title="注册页面" :visible.sync="zcym" width="30%">
-      <div>
-        <el-form ref="registerForm" :model="registerForm" :rules="rules2" label-width="80px" class="register-box">
-          <el-form-item label="账号" prop="username">
-            <el-input type="text" placeholder="请输入账号" v-model="registerForm.username" prefix-icon="el-icon-user-solid"/>
-          </el-form-item>
-          <el-form-item label="密码" prop="password">
-            <el-input type="password" placeholder="请输入密码" v-model="registerForm.password" prefix-icon="el-icon-lock"/>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" round v-on:click="zconSubmit('registerForm')">确定</el-button>
-            <el-button type="warning" round v-on:click="zcresetForm('registerForm')">重置</el-button>
-          </el-form-item>
-        </el-form>
-      </div>
-    </el-dialog>
     <div>
       <img src="img/weibu.png" width="1918" height="324">
     </div>
@@ -105,42 +62,14 @@ export default {
       selectIndex:0,
       selectData:{},
       tableData: [],
+      kc:0,
       gname:"",
       gid:5,
       currentDate: new Date(),
       num: 1,
-      tk:false,
       dialogVisible: false,
-      user: sessionStorage.getItem("yhname"),
-      circleUrl:"./img/2.png",
-      zcym:false,
-      dlym:false,
-      form:{
-        username: '',
-        password: ''
-      },
-      registerForm: {
-        username: '',
-        password: ''
-      },
-      // 表单验证，需要在 el-form-item 元素中增加 prop 属性
-      rules2: {
-        username: [
-          {required: true, message: '账号不可为空', trigger: 'blur'}
-        ],
-        password: [
-          {required: true, message: '密码不可为空', trigger: 'blur'}
-        ]
-      },
-      // 表单验证，需要在 el-form-item 元素中增加 prop 属性
-      rules: {
-        username: [
-          {required: true, message: '账号不可为空', trigger: 'blur'}
-        ],
-        password: [
-          {required: true, message: '密码不可为空', trigger: 'blur'}
-        ]
-      },
+      user:null,
+      circleUrl:"./img/2.png"
     };
   },methods: {
     getData() { //获取数据方法
@@ -156,110 +85,59 @@ export default {
 
       });
 
+      this.$axios.post("/kccx.action",params).
+        then(function (result) {
+        if(result.data.suinventory=="" || result.data.suinventory==null){
+          _this.kc=0;
+        }else {
+          _this.kc=result.data.suinventory;
+        }
+      })
     },
+    jrgwc(){
+      this.user=sessionStorage.getItem("yhname");
+      var _this=this;
+      if(this.user!=null){
 
-    handleChange(value) {
-      console.log(value);
-    },
-    sy(){
-     this.$router.push("/")
-    },
-    pdrr(){
-      this.tk=true;
-      this.$router.replace("particulars/gwc");
-    },search() {
-      this.$router.push("/search")
-    },
-    shanghu() {
-      this.$router.push("/shdl")
-    },
-    dkdl(){
-      this.dlym=true;
-    },
-    dkzc(){
-      this.zcym=true;
-    },
-    tcdl(){
-      sessionStorage.removeItem("username")
-      sessionStorage.removeItem("password")
-      sessionStorage.removeItem("yhname")
-      this.user=null
-      this.$router.push("/")
-    },
-    zconSubmit(formName) {
-      let _this = this;
-      let params = new URLSearchParams();
-      params.append("username", this.registerForm.username);
-      params.append("password", this.registerForm.password);
-      // 为表单绑定验证功能
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
-          //this.$router.push("/main");
-          this.$axios.post('user/register.action',params)
-            .then(result => {
-              if (result.data.flag==true){
-                _this.$message({
-                  message: '注册成功',
-                  type: 'success',
-                })
-                _this.zcym=false
-                this.$refs.registerForm.resetFields();
-                _this.$router.push("/")
-              } else {
-                //this.dialogVisible = true;
-                _this.$message({
-                  message: '该用户已存在',
-                  type: 'warning',
-                })
-              }
-            })
-            .catch(error => {
+        if(this.kc==0){
+          _this.$message({
+            message: "该商品库存不足",
+            type: 'error'
+          });
+        }else {
+          var param=new URLSearchParams();
+          var pa=new URLSearchParams();
+          param.append("gid", this.gid);
+          this.$axios.post("/queryGoodsBygid.action",param).then(function (result) {
+            pa.append("uid",sessionStorage.getItem("id"));
+            pa.append("gwname",result.data.gname);
+            pa.append("gwunit",result.data.gunit);
+            pa.append("gwprice",result.data.gshangjiaprice);
+            pa.append("gwimage",result.data.gimage);
+            pa.append("gwsl",_this.num)
+            _this.$axios.post("/gw.action",pa).then(function (result) {
+              _this.$message({
+                message: result.data,
+                type: 'success'
+              });
+              _this.$router.push("/navigation/shouyemian")
+            }).catch(function (error) {
               alert(error)
             })
+          }).catch(function (error) {
+            alert(error)
+          })
         }
-      });
+      }else {
+        _this.$message({
+          message: "请先登录",
+          type: 'error'
+        });
+      }
     },
-    onSubmit(formName) {
-      let _this = this;
-      let params = new URLSearchParams();
-      params.append("username", this.form.username);
-      params.append("password", this.form.password);
-      // 为表单绑定验证功能
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
-          //this.$router.push("/main");
-          this.$axios.post('user/login.action',params)
-            .then(result => {
-              if (result.data.code==="0"){
-                //将登录成功的用户名存入store中
-                _this.$message({
-                  message: result.data.mag,
-                  type: 'success',
-                })
-
-                sessionStorage.setItem("username",result.data.username);
-                sessionStorage.setItem("password",result.data.mm);
-                sessionStorage.setItem("yhname",result.data.yhname);
-                _this.user=result.data.yhname
-                _this.dlym=false
-                this.$refs.loginForm.resetFields();
-                _this.$router.push("/")
-              } else {
-                this.dialogVisible = true;
-                return false;
-              }
-            })
-            .catch(error => {
-              alert(result.data.mag);
-            })
-        }
-      });
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
+    handleChange(value) {
+      console.log(value);
+    }
   },
   created() { //钩子函数  vue对象初始化完成后  执行
     this.gid=sessionStorage.getItem("gid")
