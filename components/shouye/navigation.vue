@@ -485,7 +485,8 @@
             })
             //将登录成功的用户名存入store中
             sessionStorage.setItem("sname",result.data.yhm)
-
+            sessionStorage.setItem("sid",result.data.sid)
+            sessionStorage.setItem("y",result.data.y)
             _this.$router.push("/navigation/shgrzx");
             _this.shdlym=false;
           } else {

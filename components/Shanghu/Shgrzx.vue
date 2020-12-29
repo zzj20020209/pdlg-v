@@ -21,11 +21,7 @@
             <i class="el-icon-menu"></i>
             <span slot="title">我的订单</span>
           </el-menu-item>
-          <el-menu-item index="3">
-            <i class="el-icon-document"></i>
-            <span slot="title">我的收入</span>
-          </el-menu-item>
-          <el-menu-item index="4">
+          <el-menu-item index="4" @click="xx">
             <i class="el-icon-setting"></i>
             <span slot="title">信息/隐私</span>
           </el-menu-item>
@@ -34,7 +30,9 @@
       </el-aside>
 
       <el-main class="el-main">
-          <shangorder v-if="this.dingdan==true"></shangorder>
+          <shangorder v-if="this.dingdan==true" style="margin-top: 130px"></shangorder>
+          <shxx v-if="this.xinxi==true" style="margin-top: 130px"></shxx>
+          <ks v-if="this.ks==true"></ks>
       </el-main>
     </el-container>
 
@@ -44,9 +42,11 @@
 
 <script>
     import Shangorder from "../order/shangorder";
+    import shxx from "./shxx";
+    import ks from "./ks";
     export default {
       name: "Shgrzx",
-      components: {Shangorder},
+      components: {Shangorder,shxx,ks},
       data(){
         return {
           shm: sessionStorage.getItem('sname'),
@@ -56,6 +56,8 @@
           icon:"el-icon-s-fold",
           circleUrl:"./img/1.jpg",
           dingdan:false,
+          xinxi:false,
+          ks:true
         }
       },
       methods: {
@@ -70,6 +72,13 @@
         },
         ding(){
           this.dingdan=true;
+          this.xinxi=false;
+          this.ks=false;
+        },
+        xx(){
+          this.dingdan=false;
+          this.xinxi=true;
+          this.ks=false;
         }
       }
     }

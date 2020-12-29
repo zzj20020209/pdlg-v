@@ -47,7 +47,9 @@
 
                     </el-row>
                   </el-col>
-
+              </el-col>
+              <el-col :span="14" class="el-col-offset-2">
+                <div id="main" style="width:650px;height:300px;"></div>
               </el-col>
             </el-row>
 
@@ -81,6 +83,8 @@
   import jurisdiction  from "./jurisdiction";
   import zongorder from "../order/zongorder";
 
+  import statistics from "./statistics";
+
   export default {
     name: "backstage",
     data() {
@@ -92,7 +96,8 @@
         tabIndex: 0,
         username:sessionStorage.getItem("username"),
         nowDate: "",
-
+        time:[],
+        price:[]
       }
     }
     ,
@@ -109,8 +114,8 @@
       role,
       rolelink,
       UserList,
-      zongorder
-
+      zongorder,
+      statistics,
     },
     methods: {
       getDate() {
@@ -119,6 +124,39 @@
           _this.menuData = result.data;
         }).catch(function (erreo) {
           alert(erreo)
+        })
+      },
+      gedata() {
+        var echarts = require('echarts/lib/echarts');
+        require('echarts/lib/chart/bar');
+        require('echarts/lib/component/tooltip');
+        require('echarts/lib/component/title');
+
+        var yue = "5,4,3,2,1,0"
+        this.$axios.post("/queryStatistics.action?yue=" + yue).
+        then(result => {
+          result.data.forEach((item)=>{
+            this.time.push(item.nian+"年"+item.times+"月");
+            this.price.push(item.price);
+          })
+          var myChart = echarts.init(document.getElementById('main'));
+          myChart.setOption({
+            title: {
+              text: '总店最近六月收入'
+            },
+            tooltip: {},
+            xAxis: {
+              data: this.time
+            },
+            yAxis: {},
+            series: [{
+              name: '总收入',
+              type: 'bar',
+              data: this.price
+            }]
+          })
+        }).catch(error => {
+          alert(error)
         })
       },
       addTab(titleName, comval) {
@@ -178,6 +216,7 @@
       }
     },
     mounted() {
+      this.gedata()
       this.currentTime();
     },
     // 销毁定时器

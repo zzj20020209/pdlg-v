@@ -85,13 +85,13 @@ export default {
 
       });
 
-      this.$axios.post("/kccx.action",params).
+      var num=0;
+      this.$axios.post("/querySupplyBygid.action",params).
         then(function (result) {
-        if(result.data.suinventory=="" || result.data.suinventory==null){
-          _this.kc=0;
-        }else {
-          _this.kc=result.data.suinventory;
-        }
+        result.data.forEach(i =>{
+          num+=i.suinventory
+        })
+          _this.kc=num;
       })
     },
     jrgwc(){
