@@ -1,25 +1,5 @@
 <template>
     <div>
-      <div style="  position: fixed;width: 100%;top: 60px;z-index: 999;">
-      <el-container>
-        <el-col :span="24">
-          <el-collapse accordion>
-            <el-collapse-item>
-              <template slot="title" style="text-center:center">
-                全部商品<i class="header-icon el-icon-info"></i>
-              </template>
-              <div align="left" style="padding-left:20px">
-                <el-tabs type="border-card" :tab-position="tabs" style="height: 250px;">
-                    <el-tab-pane v-for="d in fl" :label="d.gbsname">
-                      <div style="text-align: left" v-for="x in xfl(d.gbsid)"><a href="#" @click="tiaochaxun(d.gbsid,x.gssid)">{{x.gssname}}</a></div>
-                    </el-tab-pane>
-                </el-tabs>
-              </div>
-            </el-collapse-item>
-          </el-collapse>
-        </el-col>
-      </el-container>
-    </div>
       <div>
         <el-drawer
           title="我是标题"
@@ -154,7 +134,6 @@
             total:1,
             page:1,
             pagesize:8,
-            tabs: "left",
             imagebox: [
               {id: 0, idView: 'imgs/走马灯1.jpg'},
               {id: 1, idView: 'imgs/走马灯2.jpg'},
@@ -162,9 +141,7 @@
             ],
             msg2: [],
             msg3:[],
-            fl:[],
-            xf:[],
-            pdrr:[]
+
           }
       },
       methods: {
@@ -204,34 +181,6 @@
           catch(function(error) {
             alert(error)
           });
-
-          this.$axios.post("/queryAllGoodBigSortall.action").
-          then(function(result) {
-            _this.fl = result.data;
-            //console.log(result)
-            var daid=[];
-            for (let i = 0; i < result.data.length; i++) {
-              var params1 = new URLSearchParams();
-              params1.append("gbsid", result.data[i].gbsid);
-              _this.$axios.post("/queryGoodSmallsortBygbsid.action",params1).
-              then(function(result1) {
-               _this.pdrr[result.data[i].gbsid]=result1.data;
-                _this.pdrr.push()
-              }).
-              catch(function(error) {
-                alert(error)
-              });
-            }
-          }).
-          catch(function(error) {
-            alert(error)
-          });
-        },
-        xfl(val){
-          return this.pdrr[val]
-        },
-        tiaochaxun(dfl,spxfl){
-          _this.$router.push({path:"/navigation/fenlei",query:{dfl,spxfl}});
         },
         spxq(val){
           this.$router.push("/navigation/particulars")

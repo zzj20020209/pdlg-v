@@ -44,6 +44,26 @@
       </el-container>
       <div style="width:94%;height:2px;margin:0px auto;padding:0px;background-color:gray;overflow:hidden;">
       </div>
+      <div style="  position: fixed;width: 100%;top: 60px;z-index: 999;">
+        <el-container>
+          <el-col :span="24">
+            <el-collapse accordion>
+              <el-collapse-item>
+                <template slot="title" style="text-center:center">
+                  全部商品<i class="header-icon el-icon-info"></i>
+                </template>
+                <div align="left" style="padding-left:20px">
+                  <el-tabs type="border-card" :tab-position="tabs" style="height: 250px;">
+                    <el-tab-pane v-for="d in fl" :label="d.gbsname">
+                      <div style="text-align: left" v-for="x in xfl(d.gbsid)"><a href="#" @click="tiaochaxun(d.gbsid,x.gssid)">{{x.gssname}}</a></div>
+                    </el-tab-pane>
+                  </el-tabs>
+                </div>
+              </el-collapse-item>
+            </el-collapse>
+          </el-col>
+        </el-container>
+      </div>
     </div>
     <div>
     <el-drawer
@@ -180,6 +200,9 @@
     components: {Gwc},
     data() {
       return {
+        fl:[],
+        xf:[],
+        pdrr:[],
         gbgwc:this.$refs,
         stele:"",
         address:"",
@@ -236,6 +259,43 @@
       };
     },
     methods: {
+      getData(){
+        var _this=this
+        this.$axios.post("/queryAllGoodBigSortall.action").
+        then(function(result) {
+          _this.fl = result.data;
+          //console.log(result)
+          var daid=[];
+          for (let i = 0; i < result.data.length; i++) {
+            var params1 = new URLSearchParams();
+            params1.append("gbsid", result.data[i].gbsid);
+            _this.$axios.post("/queryGoodSmallsortBygbsid.action",params1).
+            then(function(result1) {
+              _this.pdrr[result.data[i].gbsid]=result1.data;
+              _this.pdrr.push()
+            }).
+            catch(function(error) {
+              alert(error)
+            });
+          }
+        }).
+        catch(function(error) {
+          alert(error)
+        });
+      },
+      xfl(val){
+        return this.pdrr[val]
+      },
+      tiaochaxun(dfl,spxfl){
+        sessionStorage.setItem("dfl",dfl)
+        sessionStorage.setItem("spxfl",spxfl)
+        var _this=this
+        this.bo =false
+        this.$nextTick(function(){
+          this.bo = true
+        })
+        _this.$router.push("/navigation/fenlei");
+      },
       fhdl(){
         this.shdlym=true;
         this.shzcym=false;
@@ -442,6 +502,7 @@
       },
     },
     created() { //钩子函数  vue对象初始化完成后  执行
+      this.getData();
       this.$router.push("/navigation/shouyemian")
     }
   }

@@ -27,6 +27,7 @@ import userorder from "../components/order/userorder";
 import shangorder from "../components/order/shangorder";
 import zongorder from "../components/order/zongorder";
 import UserCenter from "../components/User/UserCenter";
+import fenlei from "../components/shouye/fenlei";
 
 Vue.use(VueRouter)
 
@@ -119,6 +120,10 @@ const routes = [
       {
         path:"/navigation/shgrzx",
         component:Shgrzx
+      },
+      {
+        path: "/navigation/fenlei",
+        component: fenlei
       }
     ]
   },
