@@ -28,6 +28,7 @@ import shangorder from "../components/order/shangorder";
 import zongorder from "../components/order/zongorder";
 import UserCenter from "../components/User/UserCenter";
 import fenlei from "../components/shouye/fenlei";
+import success from "../components/order/success";
 
 Vue.use(VueRouter)
 
@@ -154,6 +155,10 @@ const routes = [
   {
     path: "/zongorder",
     component: zongorder
+  },
+  {
+    path: "/success",
+    component:success
   }
 ]
 const router = new VueRouter({

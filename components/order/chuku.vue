@@ -116,7 +116,17 @@
         }
       },
       created() {
+
+
+      },
+      mounted(){
+        this.getcang();
+      },
+      watch:{
+        data(){
           this.getcang();
+        }
+        //this.getData();
       }
     }
 </script>
