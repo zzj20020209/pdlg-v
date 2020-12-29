@@ -26,13 +26,14 @@
     </el-table-column>
     <el-table-column  label="请选择你要出库的数量" prop="xuancount" >
       <template slot-scope="scope">
-        <el-input-number
+        <el-input
+          @input.native="inputshu"
           placeholder="请输入你要转移的数量"
           v-model="scope.row.xuancount"
           type="number"
           :max="scope.row.suinventory"
           :min="0">
-        </el-input-number>
+        </el-input>
       </template>
     </el-table-column>
   </el-table>
@@ -56,6 +57,10 @@
           }
         },
       methods:{
+        inputshu({target}){
+            target.value=target.value.replace(/\[^0-9\]/gi,"");
+
+        },
           getcang(){
             var _this = this;
             var params = new URLSearchParams();
