@@ -1,27 +1,5 @@
 <template>
     <div>
-      <div style="  position: fixed;width: 100%;top: 60px;z-index: 999;">
-      <el-container>
-        <el-col :span="24">
-          <el-collapse accordion>
-            <el-collapse-item>
-              <template slot="title" style="text-center:center">
-                全部商品<i class="header-icon el-icon-info"></i>
-              </template>
-              <div align="left" style="padding-left:20px">
-                <el-tabs type="border-card" :tab-position="tabs" style="height: 250px;">
-                  <el-tab-pane label="精选肉类"><h4>精选肉类</h4></el-tab-pane>
-                  <el-tab-pane label="绿色鲜蔬"><h4>绿色鲜蔬</h4></el-tab-pane>
-                  <el-tab-pane label="粮油杂货"><h4>粮油杂货</h4></el-tab-pane>
-                  <el-tab-pane label="食品饮料"><h4>食品饮料</h4></el-tab-pane>
-                  <el-tab-pane label="新鲜水果"><h4>新鲜水果</h4></el-tab-pane>
-                </el-tabs>
-              </div>
-            </el-collapse-item>
-          </el-collapse>
-        </el-col>
-      </el-container>
-    </div>
       <div>
         <el-drawer
           title="我是标题"
@@ -45,7 +23,7 @@
       </div>
 
       <div style="width:94%;height:2px;margin:0px auto;padding:0px;background-color:gray;overflow:hidden;"></div>
-      <h1>蔬菜区</h1>
+      <h1>蔬菜水果区</h1>
       <el-row>
         <el-col :span="4" class="el-col-offset-1">
           <div><img src="imgs/10.jpg" class="log"></div>
@@ -61,7 +39,7 @@
                     <img :src="$host + msg2[index].gimage" class="imgs"><br>
 
                     <label>{{ msg2[index].gname | fmatter }}</label><br>
-                    <label style="font-size: 18px"><font color="red">￥</font>{{ msg2[index].gprice}}</label>
+                    <label style="font-size: 18px"><font color="red">￥</font>{{ msg2[index].gshangjiaprice}}</label>
                   </a>
                   </el-card>
                 </div>
@@ -70,7 +48,7 @@
                 <el-card shadow="hover">
                 <a href="#" @click="spxq(msg2[index + 1].gid)"><img :src="$host+msg2[index+1].gimage" class="imgs"><br>
                   <label>{{ msg2[index + 1].gname }}</label><br>
-                  <label style="font-size: 18px"><font color="red">￥</font>{{ msg2[index+1].gprice}}</label>
+                  <label style="font-size: 18px"><font color="red">￥</font>{{ msg2[index+1].gshangjiaprice}}</label>
                 </a>
                 </el-card>
               </td>
@@ -79,7 +57,7 @@
                 <a href="#" @click="spxq(msg2[index + 2].gid)">
                   <img :src="$host+msg2[index+2].gimage" class="imgs"><br>
                   <label>{{ msg2[index + 2].gname }}</label><br>
-                  <label style="font-size: 18px"><font color="red">￥</font>{{ msg2[index+2].gprice}}</label>
+                  <label style="font-size: 18px"><font color="red">￥</font>{{ msg2[index+2].gshangjiaprice}}</label>
                 </a>
                 </el-card>
               </td>
@@ -87,7 +65,7 @@
                 <el-card shadow="hover">
                 <a href="#" @click="spxq(msg2[index + 3].gid)"><img :src="$host+msg2[index+3].gimage" class="imgs"><br>
                 <label>{{ msg2[index + 3].gname }}</label><br>
-                <label style="font-size: 18px"><font color="red">￥</font>{{ msg2[index+3].gprice}}</label>
+                <label style="font-size: 18px"><font color="red">￥</font>{{ msg2[index+3].gshangjiaprice}}</label>
               </a>
                 </el-card>
               </td>
@@ -97,45 +75,45 @@
       </el-row>
 
       <div style="width:94%;height:2px;margin:0px auto;padding:0px;background-color:gray;overflow:hidden;"></div>
-      <h1>水果区</h1>
+      <h1>海鲜生肉区</h1>
       <el-row>
         <el-col :span="4" class="el-col-offset-1">
-          <div><img src="imgs/7.jpg" class="log"></div>
+          <div><img src="imgs/竖着.jpg" class="log"></div>
         </el-col>
         <el-col :span="17" class="el-col-offset-1">
           <table style="table-layout:fixed">
-            <tr v-for="(chapter,index) in msg2" v-if="index%4==0">
+            <tr v-for="(chapter,index) in msg3" v-if="index%4==0">
               <td>
                 <el-card shadow="hover">
-                <a href="#">
-                  <img :src=msg2[index].ims class="imgs"><br>
-                    <label>{{ msg2[index].id }}</label><br>
-                    <label>{{ msg2[index].price }}</label>
+                <a href="#" @click="spxq(msg3[index].gid)">
+                  <img :src="$host+msg3[index].gimage" class="imgs"><br>
+                    <label>{{ msg3[index].gname }}</label><br>
+                    <label>{{ msg3[index].gshangjiaprice }}</label>
 
                 </a>
                 </el-card>
               </td>
               <td>
                 <el-card shadow="hover">
-                <a href="#"><img :src=msg2[index+1].ims class="imgs"><br>
-                  <label>{{ msg2[index + 1].id }}</label><br>
-                  <label>{{ msg2[index + 1].price}}</label>
+                <a href="#" @click="spxq(msg3[index + 1].gid)"><img :src="$host+msg3[index+1].gimage" class="imgs"><br>
+                  <label>{{ msg3[index + 1].gname }}</label><br>
+                  <label>{{ msg3[index + 1].gshangjiaprice}}</label>
                 </a>
                 </el-card>
               </td>
               <td>
                 <el-card shadow="hover">
-                <a href="#"><img :src=msg2[index+2].ims class="imgs"><br>
-                <label>{{ msg2[index + 2].id }}</label><br>
-                <label>{{ msg2[index + 2].price}}</label>
+                <a href="#" @click="spxq(msg3[index + 2].gid)"><img :src="$host+msg3[index+2].gimage" class="imgs"><br>
+                <label>{{ msg3[index + 2].gname }}</label><br>
+                <label>{{ msg3[index + 2].gshangjiaprice}}</label>
               </a>
                 </el-card>
               </td>
               <td>
                 <el-card shadow="hover">
-                <a href="#"><img :src=msg2[index+3].ims class="imgs"><br>
-                <label>{{ msg2[index + 3].id }}</label><br>
-                <label>{{ msg2[index + 3].price}}</label>
+                <a href="#" @click="spxq(msg3[index + 3].gid)"><img :src="$host+msg3[index+3].gimage" class="imgs"><br>
+                <label>{{ msg3[index + 3].gname }}</label><br>
+                <label>{{ msg3[index + 3].gshangjiaprice}}</label>
               </a>
                 </el-card>
               </td>
@@ -156,13 +134,14 @@
             total:1,
             page:1,
             pagesize:8,
-            tabs: "left",
             imagebox: [
-              {id: 0, idView: 'imgs/1.jpg'},
-              {id: 1, idView: 'imgs/2.jpg'},
-              {id: 2, idView: 'imgs/3.jpg'}
+              {id: 0, idView: 'imgs/走马灯1.jpg'},
+              {id: 1, idView: 'imgs/走马灯2.jpg'},
+              {id: 2, idView: 'imgs/走马灯3.jpg'}
             ],
-            msg2: []
+            msg2: [],
+            msg3:[],
+
           }
       },
       methods: {
@@ -171,15 +150,32 @@
         },
         getData() { //获取数据方法
           this.msg2=[];
+          this.msg3=[];
           var _this = this;
           var params = new URLSearchParams();
+          var pa=new URLSearchParams();
           params.append("page", this.page);
           params.append("size", this.pagesize);
           params.append("gbsname","水果蔬菜")
+          params.append("gisshangjia",1)
+          pa.append("page", this.page);
+          pa.append("size", this.pagesize);
+          pa.append("gbsname","海鲜生肉")
+          pa.append("gisshangjia",1)
           this.$axios.post("/queryGoods.action",params).
           then(function(result) {
             _this.loading=false;
             _this.msg2 = result.data.rows;
+            _this.total = result.data.total;
+          }).
+          catch(function(error) {
+            alert(error)
+          });
+
+          this.$axios.post("/queryGoods.action",pa).
+          then(function(result) {
+            _this.loading=false;
+            _this.msg3 = result.data.rows;
             _this.total = result.data.total;
           }).
           catch(function(error) {

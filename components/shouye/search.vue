@@ -1,21 +1,8 @@
 <template>
   <div>
     <el-row style="margin-left: 8px;padding-top: 60px">
-      <el-col :span="6">
-        <div align="left">
-          <el-tabs type="border-card" :tab-position="tabs"
-                   style="position:fixed;z-index:998;height: 500px;width: 470px">
-            <el-tab-pane label="精选肉类"><h4>精选肉类</h4></el-tab-pane>
-            <el-tab-pane label="绿色鲜蔬"><h4>绿色鲜蔬</h4></el-tab-pane>
-            <el-tab-pane label="粮油杂货"><h4>粮油杂货</h4></el-tab-pane>
-            <el-tab-pane label="食品饮料"><h4>食品饮料</h4></el-tab-pane>
-            <el-tab-pane label="新鲜水果"><h4>新鲜水果</h4></el-tab-pane>
-          </el-tabs>
-        </div>
-      </el-col>
-      <el-col :span="18" class="el-col-offset-6">
+      <el-col :span="12" class="el-col-offset-6">
         <div style="overflow:auto">
-
             <ul v-for="cu in msg2"
                 class="list"
                 v-infinite-scroll="load"
@@ -26,7 +13,7 @@
                   <div style="padding: 14px;">
                     <time class="time">名称:{{ cu.gname }}</time>
                     <br>
-                    <time class="time">价格:{{ cu.gprice }}/{{cu.gunit}}</time>
+                    <time class="time">价格:{{ cu.gshangjiaprice }}/{{cu.gunit}}</time>
                   </div>
                 </el-card>
               </a>

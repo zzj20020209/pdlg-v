@@ -370,6 +370,7 @@ export default {
           params.append("gprice", this.selectData.gprice);
           params.append("gimage", this.selectData.gimage);
           params.append("gssid", parseInt(this.selectData.gsid.gsid));
+          params.append("gstatus",1);
           params.append("mids", mids);
           this.$axios.post("updateGoods.action", params).
           then(function(result) {

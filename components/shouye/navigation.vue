@@ -35,7 +35,7 @@
               <template slot="title">更多</template>
               <el-menu-item index="4-1" @click="shanghu">进入商户</el-menu-item>
             </el-submenu>
-            <el-menu-item index="5" @click="pdrr">
+            <el-menu-item index="5" @click="pdrrr()">
               <i class="el-icon-shopping-cart-1"></i>
             </el-menu-item>
 
@@ -44,14 +44,35 @@
       </el-container>
       <div style="width:94%;height:2px;margin:0px auto;padding:0px;background-color:gray;overflow:hidden;">
       </div>
+      <div style="  position: fixed;width: 100%;top: 60px;z-index: 999;">
+        <el-container>
+          <el-col :span="24">
+            <el-collapse accordion>
+              <el-collapse-item>
+                <template slot="title" style="text-center:center">
+                  全部商品<i class="header-icon el-icon-info"></i>
+                </template>
+                <div align="left" style="padding-left:20px">
+                  <el-tabs type="border-card" :tab-position="tabs" style="height: 250px;">
+                    <el-tab-pane v-for="d in fl" :label="d.gbsname">
+                      <div style="text-align: left" v-for="x in xfl(d.gbsid)"><a href="#" @click="tiaochaxun(d.gbsid,x.gssid)">{{x.gssname}}</a></div>
+                    </el-tab-pane>
+                  </el-tabs>
+                </div>
+              </el-collapse-item>
+            </el-collapse>
+          </el-col>
+        </el-container>
+      </div>
     </div>
     <div>
     <el-drawer
+      ref="gwc"
       title="我是标题"
       :visible.sync="tk"
       :with-header="false"
       size="40%">
-      <Gwc></Gwc>
+      <Gwc v-if="bo2" :drawer="gbgwc"></Gwc>
     </el-drawer>
     </div>
 
@@ -95,11 +116,79 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" round v-on:click="zconSubmit('registerForm')">确定</el-button>
-            <el-button type="warning" round v-on:click="zcresetForm('registerForm')">重置</el-button>
+            <el-button type="warning" round v-on:click="resetForm('registerForm')">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
     </el-dialog>
+
+    <el-dialog id="shdl" title="商户登录页面" :visible.sync="shdlym" width="30%">
+      <div >
+        <el-form ref="shloginForm" :model="shform" :rules="shrules" label-width="80px" class="login-box">
+          <el-form-item label="账号" prop="shyhm">
+            <el-input type="text" placeholder="请输入账号" v-model="shform.shyhm" prefix-icon="el-icon-user-solid"/>
+          </el-form-item>
+          <el-form-item label="密码" prop="password">
+            <el-input type="password" placeholder="请输入密码" v-model="shform.password" prefix-icon="el-icon-lock"/>
+          </el-form-item>
+          <el-form-item style="margin-right: 70px">
+            <el-button type="primary" round v-on:click="shonSubmit('shloginForm')">登录</el-button>
+            <el-button type="warning" round v-on:click="resetForm('shloginForm')">重置</el-button>
+            <el-button type="primary" round v-on:click="jrzc">去注册</el-button>
+          </el-form-item>
+        </el-form>
+
+        <el-dialog
+          title="温馨提示"
+          :visible.sync="dialogVisible"
+          width="30%">
+          <span>请输入正确的账号和密码</span>
+          <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+        </el-dialog>
+      </div>
+    </el-dialog>
+
+    <el-dialog id="shzc" title="商户注册页面" :visible.sync="shzcym" width="30%">
+
+      <el-row>
+
+        <el-col>
+          <el-form label-width="80px">
+            <el-form-item label="商户名">
+              <el-input v-model="shm" placeholder="请输入商户名"></el-input>
+            </el-form-item>
+
+            <el-form-item label="商户账号">
+              <el-input v-model="shzh" placeholder="请输入商户账号" disabled></el-input>
+            </el-form-item>
+
+            <el-form-item label="商户密码">
+              <el-input v-model="mm" placeholder="请输入密码" disabled></el-input>
+            </el-form-item>
+
+            <el-form-item label="商户地址">
+              <el-input v-model="address" placeholder="请输入地址"></el-input>
+            </el-form-item>
+
+            <el-form-item label="商户电话">
+              <el-input v-model="stele" placeholder="请输入电话"></el-input>
+            </el-form-item>
+
+            <el-form-item style="margin-right: 70px">
+              <el-button type="primary" @click="zcsq()">申请</el-button>
+              <el-button type="primary" @click="fhdl()">返回</el-button>
+            </el-form-item>
+
+          </el-form>
+        </el-col>
+      </el-row>
+
+
+    </el-dialog>
+
+
   </div>
 </template>
 
@@ -111,6 +200,16 @@
     components: {Gwc},
     data() {
       return {
+        fl:[],
+        xf:[],
+        pdrr:[],
+        gbgwc:this.$refs,
+        stele:"",
+        address:"",
+        shm:"",
+        shzh:"",
+        mm:"",
+        bo2:true,
         count:0,
         tk:false,
         dialogVisible: false,
@@ -121,11 +220,21 @@
         shang: "",
         tabs: "left",
         dlym:false,
+        shdlym:false,
+        shzcym:false,
         form:{
           username: '',
           password: ''
         },
+        shform:{
+          shyhm: '',
+          password: ''
+        },
         registerForm: {
+          username: '',
+          password: ''
+        },
+        shregisterForm: {
           username: '',
           password: ''
         },
@@ -150,15 +259,94 @@
       };
     },
     methods: {
+      getData(){
+        var _this=this
+        this.$axios.post("/queryAllGoodBigSortall.action").
+        then(function(result) {
+          _this.fl = result.data;
+          //console.log(result)
+          var daid=[];
+          for (let i = 0; i < result.data.length; i++) {
+            var params1 = new URLSearchParams();
+            params1.append("gbsid", result.data[i].gbsid);
+            _this.$axios.post("/queryGoodSmallsortBygbsid.action",params1).
+            then(function(result1) {
+              _this.pdrr[result.data[i].gbsid]=result1.data;
+              _this.pdrr.push()
+            }).
+            catch(function(error) {
+              alert(error)
+            });
+          }
+        }).
+        catch(function(error) {
+          alert(error)
+        });
+      },
+      xfl(val){
+        return this.pdrr[val]
+      },
+      tiaochaxun(dfl,spxfl){
+        sessionStorage.setItem("dfl",dfl)
+        sessionStorage.setItem("spxfl",spxfl)
+        var _this=this
+        this.bo =false
+        this.$nextTick(function(){
+          this.bo = true
+        })
+        _this.$router.push("/navigation/fenlei");
+      },
+      fhdl(){
+        this.shdlym=true;
+        this.shzcym=false;
+        this.resetForm("shloginForm");
+      },
+      zcsq(){
+        var _this = this;
+
+        var params = new URLSearchParams();
+        params.append("sname",this.shm);
+        params.append("yhm", this.shzh);
+        params.append("password", this.mm);
+        params.append("address",this.address);
+        params.append("stele",this.stele);
+
+        this.$axios.post("shzc",params).then(function (result) {
+          _this.$message({
+            message: result.data,
+            type: 'success'
+          });
+          _this.$router.push("/navigation/shouyemian")
+        }).catch(function (error) {
+          alert(error);
+          console.log(error)
+        });
+      },
+      jrzc(){
+        this.shzcym=true;
+        this.shdlym=false;
+        this.shzh=sessionStorage.getItem("username");
+        this.mm=sessionStorage.getItem("password");
+      },
       sy(){
-        this.$router.push("/navigation/shouyemian")
+        location.reload();
         this.shang=""
+        sessionStorage.removeItem("gid")
       },
       load () {
         this.count += 2
       },
-      pdrr(){
-        this.tk=true
+      pdrrr(){
+        if(this.user==null){
+          this.dlym=true;
+        }else {
+          var _this = this;
+          this.bo2 =false
+          this.$nextTick(function(){
+            this.bo2 = true
+          })
+          this.tk=true
+        }
       },
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
@@ -181,7 +369,15 @@
         this.shang=""
       },
       shanghu() {
-        this.$router.push("/shdl")
+        if(this.user!=null){
+          this.shdlym=true;
+          this.resetForm("shloginForm");
+        }else {
+          this.$message({
+            message: "请先登录用户",
+            type: 'warning'
+          });
+        }
       },
       dkdl(){
         this.dlym=true;
@@ -190,12 +386,12 @@
         this.zcym=true;
       },
       tcdl(){
-
-        sessionStorage.removeItem("username")
-        sessionStorage.removeItem("password")
-        sessionStorage.removeItem("yhname")
+        sessionStorage.removeItem("id");
+        sessionStorage.removeItem("username");
+        sessionStorage.removeItem("password");
+        sessionStorage.removeItem("yhname");
         this.user=null
-        this.$router.push("/navigation/shouyemian")
+        location.reload()
       },
       grzx(){
         this.$router.push("/navigation/userCenter")
@@ -274,9 +470,39 @@
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
+      shonSubmit() {
+        var _this = this;
+        var params = new URLSearchParams();
+        params.append("yhm", this.shform.shyhm);
+        params.append("password", this.shform.password);
 
+        this.$axios.post("shdl",params).then(function (result) {
+          if (result.data.code == "0") {
+            //登录成功  跳转 首页
+            _this.$message({
+              message: "欢迎:"+result.data.yhm,
+              type: 'success',
+            })
+            //将登录成功的用户名存入store中
+            sessionStorage.setItem("sname",result.data.yhm)
+
+            _this.$router.push("/navigation/shgrzx");
+            _this.shdlym=false;
+          } else {
+            //弹出消息  停留在该页面
+            _this.$message({
+              message: "错误:"+result.data.msg,
+              type: 'warning',
+            });
+          }
+        }).catch(function (error) {
+          alert(error);
+          console.log(error)
+        });
+      },
     },
     created() { //钩子函数  vue对象初始化完成后  执行
+      this.getData();
       this.$router.push("/navigation/shouyemian")
     }
   }

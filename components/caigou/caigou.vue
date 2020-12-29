@@ -128,8 +128,7 @@
             this.$axios.post("cg.action", params).
             then(function(result) {
               _this.$message({
-                message: result.data,
-                type: 'success'
+                message: result.data
               });
               _this.dialogFormVisiblezhuan=false
               //刷新数据
@@ -202,7 +201,6 @@
             idss=idss+item+","
           })
           this.cid=idss;
-          alert(num1+"|"+str+"|"+idss)
         }
       },
       created() { //钩子函数  vue对象初始化完成后  执行
