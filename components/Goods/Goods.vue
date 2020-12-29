@@ -1,5 +1,8 @@
 <template>
   <div id="Goods">
+    <button class="button" @click="countDown">
+      {{content}}
+    </button>
     <el-form :inline="true"  lclass="demo-form-inine">
       <el-form-item >
         <el-input v-model="goodsname" placeholder="商品名称"></el-input>
@@ -237,7 +240,10 @@ export default {
           gstatus:"",
           fileList: [],
           dialogImageUrl: '',
-          dialogVisible: false
+          dialogVisible: false,
+          isDisabled: false,
+          content: '发送验证码',  // 按钮里显示的内容
+          totalTime: 60      //记录具体倒计时时间
         /*  editSelectt:[],
           editSelecttt:[]*/
          /* rules: {
@@ -255,6 +261,16 @@ export default {
         }
       },
       methods: {
+        countDown() {
+          let clock = window.setInterval(() => {
+            this.total--
+            this.content = this.total + 's后重新发送'
+            if(this.total<1){
+              window.clearInterval(clock);
+            }
+          },1000)
+        },
+
         getData() { //获取数据方法
           this.tableData=[];
           var _this = this;
@@ -339,7 +355,6 @@ export default {
           let mids="";
         let fileList= this.$refs.editgoods.fileList
           if(fileList.length<1){
-            alert("没有图片")
             mids="";
           }else{
             fileList.forEach(i =>{

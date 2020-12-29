@@ -74,34 +74,7 @@
           }
       },
       methods:{
-        /*getSummaries(param) {
-          const { columns, data } = param;
-          const sums = [];
-          columns.forEach((column, index) => {
-            if (index === 0) {
-              sums[index] = '总价';
-              return;
-            }
-            const values = data.map(item => Number(item[column.property]));
-            if (column.property === 'xuancount' ) {
-              sums[index] = values.reduce((prev, curr) => {
-                const value = Number(curr);
-                if (!isNaN(value)) {
-                  return prev + curr;
-                } else {
-                  return prev;
-                }
-              }, 0);
-              sums[index];
 
-            }else{
-              sums[index]='--'
-
-            }
-
-          });
-          return this.sums=sums;
-        },*/
         tableSelected(val){
           console.log("人员信息val-",val);
           if(val.length<1){

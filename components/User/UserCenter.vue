@@ -7,7 +7,7 @@
         <br>
       </el-col>
     </el-row>
-    <el-tabs tab-position="left" style="height: 500px;width:100% ;font-size: 30px;margin-top: 30px">
+    <el-tabs tab-position="left" style="width:100% ;font-size: 30px">
       <el-tab-pane label="个人信息" style="font-size: 30px">
         <el-card class="box-card">
           <div slot="header">
@@ -39,22 +39,10 @@
         </el-card>
 
       </el-tab-pane>
-      <el-tab-pane label="我的钱包">
-        <el-row>
-          <label style="color: darkorange">余额:</label>
-          <span style="color: yellowgreen">{{ userVo.price }}</span>
-        </el-row>
-        <el-row>
-          <el-button type="primary" @click="">充值余额</el-button>
-        </el-row>
-      </el-tab-pane>
-      <el-tab-pane label="购物车">
-        配置管理
-      </el-tab-pane>
-      <el-tab-pane label="我的订单">
-        <el-table>
 
-        </el-table>
+
+      <el-tab-pane label="我的订单">
+      <userorder></userorder>
       </el-tab-pane>
     </el-tabs>
 
@@ -87,8 +75,10 @@
 </template>
 
 <script>
+import Userorder from "../order/userorder";
 export default {
   name: "UserCentre",
+  components: {Userorder},
   data() {
     return {
       user: sessionStorage.getItem("yhname"),
@@ -131,7 +121,6 @@ export default {
 
     },
     editData() {
-      var _this=this
       let params = new URLSearchParams();
       params.append("id", this.userVo.id);
       params.append("name", this.userVo.name);
@@ -146,7 +135,6 @@ export default {
               type: 'success'
             })
             this.clearEditForm();
-            sessionStorage.setItem("yhname",_this.userVo.name);
             this.getData();
           }
         })

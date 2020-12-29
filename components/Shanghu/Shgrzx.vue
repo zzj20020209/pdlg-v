@@ -17,7 +17,7 @@
         </el-header>
         <el-main class="el-main">
         <el-menu default-active="1-4-1" class="el-menu-vertical-demo"  :collapse="isCollapse" style="background-color: darkgray">
-          <el-menu-item index="2">
+          <el-menu-item index="2" @click="ding">
             <i class="el-icon-menu"></i>
             <span slot="title">我的订单</span>
           </el-menu-item>
@@ -33,8 +33,8 @@
         </el-main>
       </el-aside>
 
-      <el-main class="el-main" style="margin-top: 110px">
-          <h1>这里是商户页面</h1>
+      <el-main class="el-main">
+          <shangorder v-if="this.dingdan==true"></shangorder>
       </el-main>
     </el-container>
 
@@ -43,8 +43,10 @@
 </template>
 
 <script>
+    import Shangorder from "../order/shangorder";
     export default {
       name: "Shgrzx",
+      components: {Shangorder},
       data(){
         return {
           shm: sessionStorage.getItem('sname'),
@@ -52,13 +54,22 @@
           activeIndex2: '1',
           isCollapse: false,
           icon:"el-icon-s-fold",
-          circleUrl:"./img/1.jpg"
+          circleUrl:"./img/1.jpg",
+          dingdan:false,
         }
       },
       methods: {
+        kai(){
+           if(this.isCollapse==false){
+
+           }
+        },
         tc(){
           this.$router.push("/navigation/shouyemian")
           sessionStorage.removeItem("sname")
+        },
+        ding(){
+          this.dingdan=true;
         }
       }
     }
@@ -68,6 +79,13 @@
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
     min-height: 640px;
+  }
+  .homeWrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
 *{
   padding: 0px;

@@ -327,12 +327,14 @@
           })*/
         },
         zhuanbtn(){
+          var cuo=true;
           var _this = this;
           if(this.$refs.zhuanyi.selectlength<1){
             _this.$message({
               message: '至少选择一条数据',
               type: 'error'
             });
+            cuo=false
           }
           var num=0;
           var countstrids =this.$refs.zhuanyi.countstr.split(",");
@@ -347,6 +349,7 @@
                 message: '请输入你要转移的数量',
                 type: 'error'
               });
+              cuo=false
               return true;
             }
           });
@@ -362,6 +365,7 @@
                 message: '请选择你要转移的仓库',
                 type: 'error'
               });
+              cuo=false
               return true;
             }
           });
@@ -370,30 +374,34 @@
               message: '转移数量以及转移仓库均不能为空!',
               type: 'error'
             });
+            cuo=false
           }
-         /* var params = new URLSearchParams();
-          params.append("suidstr", this.$refs.zhuanyi.suidstr);
-          params.append("gidstr", this.$refs.zhuanyi.gidstr);
-          params.append("countstr", this.$refs.zhuanyi.countstr);
-          params.append("cangstr", this.$refs.zhuanyi.cangstr);
-          params.append("wid", this.xwid);
-          this.$axios.post("zhuanyi.action", params).
-          then(function(result) {
-            _this.$message({
-              message: result.data,
-              type: 'success'
-            });
-            _this.dialogFormVisiblezhuan=false
-            //刷新数据
-            _this.getData();
+          if(cuo==true){
+            var params = new URLSearchParams();
+            params.append("suidstr", this.$refs.zhuanyi.suidstr);
+            params.append("gidstr", this.$refs.zhuanyi.gidstr);
+            params.append("countstr", this.$refs.zhuanyi.countstr);
+            params.append("cangstr", this.$refs.zhuanyi.cangstr);
+            params.append("wid", this.xwid);
+            this.$axios.post("zhuanyi.action", params).
+            then(function(result) {
+              _this.$message({
+                message: result.data,
+                type: 'success'
+              });
+              _this.dialogFormVisiblezhuan=false
+              //刷新数据
+              _this.getData();
 
-          }).
-          catch(function() {
-            _this.$message({
-              message: '转移失败',
-              type: 'success'
-            });
-          })*/
+            }).
+            catch(function() {
+              _this.$message({
+                message: '转移失败',
+                type: 'success'
+              });
+            })
+          }
+
 
         },
         tuihuobtn(){
