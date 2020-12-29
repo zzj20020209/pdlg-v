@@ -7,7 +7,7 @@
         <br>
       </el-col>
     </el-row>
-    <el-tabs tab-position="left" style="height: 500px;width:100% ;font-size: 30px">
+    <el-tabs tab-position="left" style="height: 500px;width:100% ;font-size: 30px;margin-top: 30px">
       <el-tab-pane label="个人信息" style="font-size: 30px">
         <el-card class="box-card">
           <div slot="header">

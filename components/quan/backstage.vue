@@ -49,17 +49,6 @@
                   </el-col>
 
               </el-col>
-              <el-col :span="14" class="el-col-offset-1">
-                <el-col :span="24">
-                  <el-row ><el-col :span="24" style="padding-left: 3px;border: 1px solid whitesmoke">
-                    <div class="block"><el-avatar :size="100" src="imgs/1.jpg"></el-avatar>
-                      <div class="inline" ><span>{{username}}</span> <a href="#" @click="zx">注销</a>
-                        <br> <span>{{nowDate}}</span> </div></div>
-                  </el-col>
-
-                  </el-row>
-                </el-col>
-              </el-col>
             </el-row>
 
           </el-tab-pane>
@@ -147,7 +136,7 @@
       },
       zx(){
         sessionStorage.removeItem("username");
-        this.$router.push("/")
+        this.$router.push("/login")
       },
       removeTab(targetName) {
         let tabs = this.editableTabs;

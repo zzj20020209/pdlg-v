@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="padding-top: 60px;" class="el-col-offset-2">
+    <div style="padding-top: 110px;" class="el-col-offset-2">
     </div>
     <div style="padding-top: 5px;">
       <div style="width:100%;height:2px;margin:0px auto;padding:0px;background-color:gray;overflow:hidden;"></div>
@@ -48,7 +48,7 @@
       </el-row>
     </div>
     <div>
-      <img src="img/weibu.png" width="1918" height="324">
+      <img src="img/weibu.png" width="1900" height="324">
     </div>
   </div>
 </template>

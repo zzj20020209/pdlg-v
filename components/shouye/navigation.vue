@@ -35,7 +35,7 @@
               <template slot="title">更多</template>
               <el-menu-item index="4-1" @click="shanghu">进入商户</el-menu-item>
             </el-submenu>
-            <el-menu-item index="5" @click="pdrr()">
+            <el-menu-item index="5" @click="pdrrr()">
               <i class="el-icon-shopping-cart-1"></i>
             </el-menu-item>
 
@@ -336,7 +336,7 @@
       load () {
         this.count += 2
       },
-      pdrr(){
+      pdrrr(){
         if(this.user==null){
           this.dlym=true;
         }else {

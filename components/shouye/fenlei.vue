@@ -13,7 +13,7 @@
                 <div style="padding: 14px;">
                   <time class="time">名称:{{ cu.gname }}</time>
                   <br>
-                  <time class="time">价格:{{ cu.gshangjiaprice }}/{{cu.gunit}}</time>
+                  <time class="time">价格:{{ cu.gshangjiaprice }}【{{cu.gunit}}】</time>
                 </div>
               </el-card>
             </a>
@@ -125,6 +125,9 @@
   }
   *{
     text-align: center;
+  }
+  a{
+    text-decoration: none;
   }
 </style>
 

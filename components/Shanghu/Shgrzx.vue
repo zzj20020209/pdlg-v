@@ -1,9 +1,9 @@
 <template>
   <div>
-  <el-container style="height:100%" direction="vertical">
+  <el-container style="height:100%;" direction="vertical">
     <el-container>
       <el-aside class="el-aside">
-        <el-header class="el-header" style="height: 200px;margin-top: 60px">
+        <el-header class="el-header" style="height: 200px;margin-top: 110px">
           <div style="background-color: cornsilk;height: 220px;width: 200px">
             <br>
             <span>欢迎进入：[{{shm}}]！</span>
@@ -33,7 +33,7 @@
         </el-main>
       </el-aside>
 
-      <el-main class="el-main" style="margin-top: 60px">
+      <el-main class="el-main" style="margin-top: 110px">
           <h1>这里是商户页面</h1>
       </el-main>
     </el-container>

@@ -29,7 +29,7 @@
                     <a href="#" @click="jrxq(scope.row.gwname)">
                     <img style="width:200px;height:200px;border:none;" :src="$host+scope.row.gwimage"><br>
                     <label>{{scope.row.gwname}}</label><br>
-                    <label style="font-size: 18px"><font color="red">￥</font>{{scope.row.gwprice}}|{{scope.row.gwunit}}</label><br>
+                    <label style="font-size: 18px"><font color="red">￥</font>{{scope.row.gwprice}}【{{scope.row.gwunit}}】</label><br>
                     </a>
                       <el-input
                       placeholder="请输入你要采购的数量"
@@ -63,29 +63,60 @@
     </div>
     <el-col style="padding-top: 25px" :span="24">
       <el-button type="danger" style="width: 200px;height: 60px" class="el-button"  icon="el-icon-shopping-cart-2" @click="dpd">购买</el-button>
-      <el-button type="danger" style="width: 200px;height: 60px" class="el-button"  icon="el-icon-shopping-cart-2" @click="scgwc">删除</el-button>
+      <el-button type="danger" style="width: 200px;height: 60px" class="el-button"  icon="el-icon-delete" @click="scgwc">删除</el-button>
     </el-col>
     <label>共选择：<font style="color: red">{{xz}}</font>条</label>
     <label>总计：￥<font style="color: red">{{zprice}}</font></label>
+    <el-dialog append-to-body title="确认订单" :visible.sync="ddym" width="30%">
+      <goumai v-if="bo" ref="gm"></goumai>
+      <!--将编辑页面子组件加入到列表页面 -->
+      <div>
+        <el-col style="padding-top: 25px" :span="24">
+          <el-button type="danger" style="width: 200px;height: 60px" class="el-button"  icon="el-icon-shopping-cart-2" @click="tj">提交</el-button>
+          <el-button type="danger" style="width: 200px;height: 60px" class="el-button"  icon="el-icon-delete" @click="qx">取消</el-button>
+        </el-col>
+        <label>共选择：<font style="color: red">{{xz}}</font>条</label>
+        <label>总计：￥<font style="color: red">{{zprice}}</font></label>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+  import Goumai from "./goumai";
   export default {
     name: "Gwc",
+    components: {Goumai},
     props:['drawer'],
     data() {
       return {
+        ddym:false,
         zprice:0,
         xz:0,
         gid:0,
         id:"",
         msg2: [],
         count: 1,
-        innerDrawer: false
+        innerDrawer: false,
+        dd:[],
+        bo:true
       }
     },
     methods: {
+      tj(){
+        var _this=this
+        if(this.$refs.gm.shanghu==""){
+          _this.$message({
+            message: '请选择商户',
+            type: 'error'
+          });
+        }else {
+          this.ddym=false
+        }
+      },
+      qx(){
+        this.ddym=false
+      },
       jrxq(val){
         var _this=this
         var gname=val;
@@ -129,8 +160,21 @@
         }
       },
       dpd(){
-        this.drawer.gwc.hide();
-        this.$router.push("/navigation/userCenter")
+        var _this=this;
+        if(_this.$refs.gwcb.selection.length<1){
+          _this.$message({
+            message: '至少选择一条数据',
+            type: 'error'
+          });
+        }else {
+          sessionStorage.setItem("dd",this.dd)
+          var _this=this
+          this.bo =false
+          this.$nextTick(function(){
+            this.bo = true
+          })
+          this.ddym=true
+        }
       },
       handleClose(done) {
         this.$confirm('还有未保存的工作哦确定关闭吗？')
@@ -142,9 +186,11 @@
       },
       fxk(val){
         this.msg=[];
+        this.dd=[]
         var num=0;
         for (let i = 0; i < val.length; i++) {
           if (this.msg.indexOf(val[i].gwid) === -1) {
+            this.dd.push(val[i].gwid)
             this.msg.push(val[i].gwid)
             num+=(val[i].gwprice*val[i].gwsl)
           }
