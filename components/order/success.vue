@@ -39,11 +39,16 @@
         </el-menu>
       </el-col>
 
-      <el-col :span="25" style="border: 1px solid red;width: 100%;height: 100%" >
-        <div style="text-align: center">
-          <img src="img/wushuju.jpg">
-        </div>
+      <el-col :span="24" style="width: 100%;height: 100%" >
+<div style="height: 400px;border: 1px solid darkgrey">
+          <el-row>
+            <div style="text-align: center;margin-top: 120px;">
+            <img src="img/支付成功%20(1).png">
+            <h1>支付成功</h1><br><el-button @click="shouye">返回首页</el-button>
+            </div>
+          </el-row>
 
+</div>
       </el-col>
 
 
@@ -58,6 +63,11 @@
             user: sessionStorage.getItem("yhname"),
             circleUrl:"./img/2.png",
           }
+      },
+      methods:{
+        shouye(){
+          this.$router.push("/navigation/shouyemian")
+        }
       }
     }
 </script>

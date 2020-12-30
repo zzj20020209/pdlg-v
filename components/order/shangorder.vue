@@ -224,7 +224,7 @@
             var params = new URLSearchParams();
             params.append("page", this.page);
             params.append("size", this.pagesize);
-            params.append("sid", 1);
+            params.append("sid", sessionStorage.getItem("sid"));
             params.append("oSLogistics", this.tabname);
             this.$axios.post("/queryAllOrderShang.action",params).
             then(function(result) {
