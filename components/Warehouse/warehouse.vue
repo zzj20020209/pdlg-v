@@ -57,6 +57,7 @@
         <el-popconfirm title="确定删除这条记录吗？" @confirm="delwar(scope.row.wid)">
           <el-button type="danger" slot="reference">删除</el-button>
         </el-popconfirm>
+        <br>
         <el-button type="primary" v-if="scope.row.supplyList.length>0" @click="zhuanyi(scope.row.wid)">转移</el-button>
         <el-button type="primary" v-if="scope.row.supplyList.length>0" @click="tuihuo(scope.row.wid)">退货</el-button>
       </template>

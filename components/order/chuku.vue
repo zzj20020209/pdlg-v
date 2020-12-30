@@ -26,14 +26,14 @@
     </el-table-column>
     <el-table-column  label="请选择你要出库的数量" prop="xuancount" >
       <template slot-scope="scope">
-        <el-input
+        <el-input-number
           @input.native="inputshu"
           placeholder="出库数量"
           v-model="scope.row.xuancount"
           type="number"
           :max="scope.row.suinventory"
           :min="0">
-        </el-input>
+        </el-input-number>
       </template>
     </el-table-column>
   </el-table>

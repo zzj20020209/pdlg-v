@@ -1,6 +1,13 @@
 <template>
   <div>
-    <div id="main" style="width:650px;height:300px;"></div>
+    <el-row>
+      <el-col :span="15">
+        <div id="mains" style="width:650px;height:400px;"></div>
+      </el-col>
+      <el-col :span="9">
+        <div id="xiao" style="width:400px;height:400px;"></div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -15,11 +22,7 @@ export default {
   },
   methods: {
     gedata() {
-      var echarts = require('echarts/lib/echarts');
-      require('echarts/lib/chart/bar');
-      require('echarts/lib/component/tooltip');
-      require('echarts/lib/component/title');
-
+      var echarts = require('echarts');
       var yue = "5,4,3,2,1,0"
       this.$axios.post("/queryStatistics.action?yue=" + yue).
       then(result => {
@@ -27,7 +30,7 @@ export default {
           this.time.push(item.nian+"年"+item.times+"月");
           this.price.push(item.price);
         })
-        var myChart = echarts.init(document.getElementById('main'));
+        var myChart = echarts.init(document.getElementById('mains'));
         myChart.setOption({
           title: {
             text: '总店最近六月收入'
@@ -42,6 +45,52 @@ export default {
             type: 'bar',
             data: this.price
           }]
+        })
+
+        this.$axios.post("/queryGoodes.action").
+        then(result=>{
+          var myCharts = echarts.init(document.getElementById('xiao'));
+          let xiao = [];
+          let name = []
+          result.data.forEach((item=>{
+            xiao.push({value:item.oxcount, name: item.gname});
+            name.push(item.gname);
+          }))
+          myCharts.setOption( {
+            title: {
+              text: '商品销量前五',
+              left: 'center'
+            },
+            tooltip: {
+              trigger: 'item',
+              formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+            legend: {
+              orient: 'vertical',
+              left: 'left',
+              data: name
+            },
+            series: [
+              {
+                name: '访问来源',
+                type: 'pie',
+                radius: '55%',
+                center: ['50%', '60%'],
+                data: xiao,
+                emphasis: {
+                  itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                  }
+                }
+              }
+            ]
+          })
+          console.log(xiao)
+        }).
+        catch(erreo=>{
+          alert(erreo)
         })
       }).catch(error => {
         alert(error)
