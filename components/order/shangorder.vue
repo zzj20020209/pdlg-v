@@ -78,7 +78,7 @@
             </div>
             <div style="text-align: right">
             <span>总价:{{scope.row.oprice}}</span>
-            <el-button type="success" v-if="scope.row.oZLogistics=='已出库'"@click="queren(scope.row.id)">确认收货</el-button>
+            <el-button type="success" v-if="scope.row.oZLogistics=='已出库'"@click="queren(scope.row.id)">确认</el-button>
             </div>
           </template>
         </el-table-column>
