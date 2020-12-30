@@ -24,6 +24,7 @@
         <el-table-column label="退货数量"  >
           <template slot-scope="scope">
             <el-input  text-align="center"
+                       @input.native="inputshu"
               placeholder="退货数量"
               v-model="scope.row.xuancount"
               type="number"
@@ -52,6 +53,10 @@
         }
       },
       methods:{
+        inputshu({target}){
+          target.value=target.value.replace(/\[^0-9\]/gi,"");
+
+        },
         tableSelected(val){
           console.log("人员信息val-",val);
           if(val.length<1){

@@ -188,11 +188,10 @@
           },
           //移除图片
           handleRemove(file, fileList) {
-            alert("aaa")
+
             console.log(file, fileList);
             this.fileList=fileList
-            alert(this.fileList.length)
-            alert(this.fileList)
+
          /*   // 1.获取将要删除图片的临时路径
             const filePath = file.response.data.tmp_path
             // 2.从pics数组中，找到图片对应的索引值
@@ -221,7 +220,7 @@
           showFileList() {
             console.log(this.fileList)
             this.fileList.forEach(function(item){
-              alert(item.path)
+
             });
           }
         },

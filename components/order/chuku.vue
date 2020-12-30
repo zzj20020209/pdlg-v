@@ -28,7 +28,7 @@
       <template slot-scope="scope">
         <el-input
           @input.native="inputshu"
-          placeholder="请输入你要转移的数量"
+          placeholder="出库数量"
           v-model="scope.row.xuancount"
           type="number"
           :max="scope.row.suinventory"
@@ -110,14 +110,14 @@
             xuancountstr=xuancountstr+item+","
           })
           this.num=num;
-          alert("aa"+this.num)
+
           this.countstr=xuancountstr;
           let strgid="";
           this.multipleSelectiongid.forEach((item)=> {
             strgid=strgid+item+","
           })
           this.gidstr=strgid;
-          //alert(xuancountstr)
+
         }
       },
       created() {

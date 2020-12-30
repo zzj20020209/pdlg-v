@@ -27,6 +27,7 @@
           <el-table-column label="转移数量" prop="xuancount">
         <template slot-scope="scope">
                         <el-input
+                          @input.native="inputshu"
                           placeholder="请输入你要转移的数量"
                           v-model="scope.row.xuancount"
                           type="number"
@@ -74,6 +75,10 @@
           }
       },
       methods:{
+        inputshu({target}){
+          target.value=target.value.replace(/\[^0-9\]/gi,"");
+
+        },
 
         tableSelected(val){
           console.log("人员信息val-",val);

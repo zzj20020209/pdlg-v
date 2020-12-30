@@ -99,7 +99,8 @@
         count: 1,
         innerDrawer: false,
         dd:[],
-        bo:true
+        bo:true,
+        uid:sessionStorage.getItem('id'),
       }
     },
     methods: {
@@ -111,7 +112,41 @@
             type: 'error'
           });
         }else {
-          this.ddym=false
+          var _this=this
+          var params = new URLSearchParams();
+          //订单
+          //总金额 zprice
+          params.append("oprice",this.zprice);
+          //订单详情
+          //商品ID this.$refs.gm.msg2
+          //单个金额 // 单个数量
+          var dmoney="";
+          var dcount="";
+          var gname="";
+           this.$refs.gm.msg2.forEach(i=>{
+             dmoney+=i.gwprice+",";
+             dcount+=i.gwsl+",";
+             gname+=i.gwname+",";
+           })
+          params.append("dmoney",dmoney);
+          params.append("dcount",dcount);
+          params.append("gname",gname);
+          params.append("shang",parseInt(_this.$refs.gm.shanghu));
+          params.append("uid",parseInt(_this.uid));
+          this.$axios.post("/addOrder.action",params).
+          then(function(result) {
+            _this.$message({
+              type: 'success',
+              message: result.data
+            });
+            _this.ddym=false
+            _this.scgwc();
+            _this.drawer.gwc.hide();
+          }).
+          catch(function(error) {
+            alert(error)
+          });
+
         }
       },
       qx(){
@@ -174,6 +209,7 @@
             this.bo = true
           })
           this.ddym=true
+        alert("aaaa")
         }
       },
       handleClose(done) {

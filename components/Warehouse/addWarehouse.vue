@@ -12,7 +12,7 @@
     </el-row>
     <el-row> <el-col :span="8">
       <el-form-item label="仓库库存">
-        <el-input v-model="data.wzkucun"></el-input>
+        <el-input v-model="data.wzkucun" @input.native="inputshu"></el-input>
       </el-form-item></el-col>
     </el-row>
   </el-form>
@@ -22,6 +22,12 @@
     export default {
         name: "addWarehouse",
         props: ['data'],
+      methods:{
+        inputshu({target}){
+          target.value=target.value.replace(/\[^0-9\]/gi,"");
+
+        },
+      }
     }
 </script>
 

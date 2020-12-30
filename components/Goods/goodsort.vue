@@ -226,7 +226,6 @@
           var _this=this;
           var params = new URLSearchParams();
           params.append("gbsname", this.Databigadd.gbsname);
-          alert(this.Databigadd.gbsname)
           this.$axios.post("addGoodBigSort.action", params).
           then(function(result) {
             _this.$message({

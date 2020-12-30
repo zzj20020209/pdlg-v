@@ -75,7 +75,7 @@
         methods:{
           handleCurrentChange(val) {
             this.currentRow = val;
-            alert("bb:+"+this.currentRow.wid)
+
           },
           getData(){
             var _this = this;
