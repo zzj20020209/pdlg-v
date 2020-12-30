@@ -117,7 +117,7 @@
 
 
     <el-dialog :visible.sync="addFormVisible" width="60%">
-      <el-form    ><!--:rules="rules"-->
+      <el-form ref="addform"   ><!--:rules="rules"-->
         <!--  <el-form-item label="日期" :picker-options="pickerOptions">
             <el-date-picker v-model="editForm.date" type="date" placeholder="选择日期" format="yyyy 年 MM 月 dd 日"
                             value-format="yyyy-MM-dd"></el-date-picker>
@@ -132,11 +132,15 @@
               <el-input v-model="addgunit"></el-input>
             </el-form-item></el-col>
           <el-col :span="10">
-            <el-form-item label="商品价格" prop="gprice">
+            <el-form-item label="商品进货价格" prop="gprice">
               <el-input v-model="addgprice"></el-input>
             </el-form-item></el-col>
           <el-col :span="10">
-            <el-form-item label="商品图片">
+            <el-form-item label="商品出售价格" prop="gprice">
+              <el-input v-model="addgpriceshang"></el-input>
+            </el-form-item></el-col>
+          <el-col :span="10">
+            <el-form-item label="商品图片" >
               <el-upload
                 class="avatar-uploader"
                 :action="$host + 'fileUpload'"
@@ -227,6 +231,7 @@ export default {
           addgname:"",
           addgunit:"",
           addgprice:"",
+          addgpriceshang:"",
           leixing:"",
           selectIndex:0,
           selectData:{},
@@ -368,6 +373,7 @@ export default {
           params.append("gname", this.selectData.gname);
           params.append("gunit", this.selectData.gunit);
           params.append("gprice", this.selectData.gprice);
+          params.append("gshangjiaprice", this.selectData.gshangjiaprice);
           params.append("gimage", this.selectData.gimage);
           params.append("gssid", parseInt(this.selectData.gsid.gsid));
           params.append("gstatus",1);
@@ -506,6 +512,7 @@ export default {
           params.append("gprice", _this.addgprice);
           params.append("gimage", _this.imageUrl);
           params.append("gssid", _this.gsid);
+          params.append("gshangjiaprice", _this.addgpriceshang);
           params.append("mids", mids);
           this.$axios.post("addGoods.action", params).
           then(function(result) {
@@ -516,6 +523,7 @@ export default {
             _this.addFormVisible=false
             //刷新数据
             _this.getData();
+            _this.$refs.addform.resetFields();
 
           }).
           catch(function() {

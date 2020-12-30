@@ -33,7 +33,7 @@
                   <span> x{{e.oxcount}}</span>
                 </el-col>
                 <el-col :span="6">
-                  <el-button type="success" v-if="scope.row.oYogistics=='待发货'&&scope.row.warehouse==null"@click="chuku(e,scope.row.id)">出库</el-button>
+                  <el-button type="success" v-if="scope.row.oYogistics=='待发货'&&scope.row.warehouse.wid==0"@click="chuku(e,scope.row.id)">出库</el-button>
                 </el-col>
 
               </el-row>
@@ -79,7 +79,7 @@
                   <span> x{{e.oxcount}}</span>
                 </el-col>
                 <el-col :span="6">
-                  <el-button type="success" v-if="scope.row.oYogistics=='待发货'&&scope.row.warehouse==null"@click="chuku(e,scope.row.id)">出库</el-button>
+                  <el-button type="success" v-if="scope.row.oYogistics=='待发货'&&scope.row.warehouse.wid==0"@click="chuku(e,scope.row.id)">出库</el-button>
                 </el-col>
 
               </el-row>

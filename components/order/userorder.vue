@@ -1,5 +1,6 @@
 <template>
   <div>
+
   <!-- 添加模态框-->
     <el-dialog id="paydialog" title="支付" :visible.sync="dialogFormVisible">
       <div id="mydiv">
@@ -19,6 +20,8 @@
               </el-col>
               <el-col :span="12">
                 <div style="text-align: right">
+
+                <!--  <span v-if="scope.row.oYogistics=='待付款'?alert('aaa'):null">{{content}}秒后将自动取消订单,请尽快付款!</span>-->
                   <el-tag :type="scope.row.oYogistics!='待付款' ?'success':'info'" >{{scope.row.oYogistics}}</el-tag>
                 </div>
               </el-col>
@@ -44,7 +47,7 @@
             <div style="text-align: right">
             <span>总价:{{scope.row.oprice}}</span>
             <el-button type="success" v-if="scope.row.oYogistics=='待付款'" @click="fukuan(scope.row)">付款</el-button>
-            <el-button type="success" v-if="scope.row.oYogistics!='已完成' "@click="quxiao(scope.row.id)">取消订单</el-button>
+          <!--  <el-button type="success" v-if="scope.row.oYogistics!='已完成' "@click="quxiao(scope.row.id)">取消订单</el-button>-->
             <el-button type="success" v-if="scope.row.oSLogistics=='待提货'"@click="queren(scope.row.id)">确认收货</el-button>
             </div>
           </template>
@@ -69,6 +72,7 @@
               </el-col>
               <el-col :span="12">
                 <div style="text-align: right">
+                <!--  <span v-if="scope.row.oYogistics=='待付款'?this.countDown():null">{{content}}秒后将自动取消订单,请尽快付款!</span>-->
                   <el-tag :type="scope.row.oYogistics!='待付款' ?'success':'info'" >{{scope.row.oYogistics}}</el-tag>
                 </div>
               </el-col>
@@ -94,7 +98,7 @@
             <div style="text-align: right">
               <span>总价:{{scope.row.oprice}}</span>
               <el-button type="success" v-if="scope.row.oYogistics=='待付款'" @click="fukuan(scope.row)">付款</el-button>
-              <el-button type="success" v-if="scope.row.oYogistics!='已完成' "@click="quxiao(scope.row.id)">取消订单</el-button>
+            <!--  <el-button type="success" v-if="scope.row.oYogistics!='已完成' "@click="quxiao(scope.row.id)">取消订单</el-button>-->
               <el-button type="success" v-if="scope.row.oSLogistics=='待提货'"@click="queren(scope.row.id)">确认收货</el-button>
             </div>
           </template>
@@ -144,7 +148,7 @@
             <div style="text-align: right">
               <span>总价:{{scope.row.oprice}}</span>
               <el-button type="success" v-if="scope.row.oYogistics=='待付款'" @click="fukuan(scope.row)">付款</el-button>
-              <el-button type="success" v-if="scope.row.oYogistics!='已完成' "@click="quxiao(scope.row.id)">取消订单</el-button>
+            <!--  <el-button type="success" v-if="scope.row.oYogistics!='已完成' "@click="quxiao(scope.row.id)">取消订单</el-button>-->
               <el-button type="success" v-if="scope.row.oSLogistics=='待提货'"@click="queren(scope.row.id)">确认收货</el-button>
             </div>
           </template>
@@ -194,8 +198,8 @@
             <div style="text-align: right">
               <span>总价:{{scope.row.oprice}}</span>
               <el-button type="success" v-if="scope.row.oYogistics=='待付款'" @click="fukuan(scope.row)">付款</el-button>
-              <el-button type="success" v-if="scope.row.oYogistics!='已完成' "@click="quxiao(scope.row.id)">取消订单</el-button>
-
+             <!-- <el-button type="success" v-if="scope.row.oYogistics!='已完成' "@click="quxiao(scope.row.id)">取消订单</el-button>
+-->
             </div>
           </template>
         </el-table-column>
@@ -244,7 +248,7 @@
             <div style="text-align: right">
               <span>总价:{{scope.row.oprice}}</span>
               <el-button type="success" v-if="scope.row.oYogistics=='待付款'" @click="fukuan(scope.row)">付款</el-button>
-              <el-button type="success" v-if="scope.row.oYogistics!='已完成' "@click="quxiao(scope.row.id)">取消订单</el-button>
+<!--              <el-button type="success" v-if="scope.row.oYogistics!='已完成' "@click="quxiao(scope.row.id)">取消订单</el-button>-->
 
             </div>
           </template>
@@ -294,7 +298,7 @@
             <div style="text-align: right">
               <span>总价:{{scope.row.oprice}}</span>
               <el-button type="success" v-if="scope.row.oYogistics=='待付款'" @click="fukuan(scope.row)">付款</el-button>
-              <el-button type="success" v-if="scope.row.oYogistics!='已完成' "@click="quxiao(scope.row.id)">取消订单</el-button>
+        <!--      <el-button type="success" v-if="scope.row.oYogistics!='已完成' "@click="quxiao(scope.row.id)">取消订单</el-button>-->
 
             </div>
           </template>
@@ -322,10 +326,22 @@
             loading: true,
             tabname:"",
             uid:sessionStorage.getItem('id'),
-            dialogFormVisible:false
+            dialogFormVisible:false,
+            content:"", //按钮里显示的内容
+            totalTime: 15
           }
         },
         methods:{
+        /*  countDown() {
+            let clock = window.setInterval(() => {
+              this.total--
+              this.content = this.total + 's后将自动取消订单,请尽快付款哦!'
+              if(this.total<=1){
+                alert(aaa)
+                window.clearInterval(clock);
+              }
+            },1000)
+          },*/
           pagechange(pageindex){
             this.tableData=[];
             //页码变更时
@@ -407,6 +423,7 @@
         },
         created(){
           this.getData();
+
         },
 
     }

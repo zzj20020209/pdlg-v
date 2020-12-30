@@ -20,7 +20,7 @@
         </el-form-item></el-col>
       <el-col :span="8">
         <el-form-item label="商品价格">
-          <el-input v-model="data.gprice"></el-input>
+          <el-input v-model="data.gshangjiaprice"></el-input>
         </el-form-item></el-col>
     </el-row>
     <el-row>
