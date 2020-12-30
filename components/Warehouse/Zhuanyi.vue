@@ -26,7 +26,7 @@
           </el-table-column>
           <el-table-column label="转移数量" prop="xuancount">
         <template slot-scope="scope">
-                        <el-input
+                        <el-input-number
                           @input.native="inputshu"
                           placeholder="请输入你要转移的数量"
                           v-model="scope.row.xuancount"
@@ -34,7 +34,7 @@
                          :max="scope.row.suinventory"
                           :min="0"
                        >
-                        </el-input>
+                        </el-input-number>
                       </template>
           </el-table-column>
           <el-table-column label="转移仓库">
@@ -77,7 +77,6 @@
       methods:{
         inputshu({target}){
           target.value=target.value.replace(/\[^0-9\]/gi,"");
-
         },
 
         tableSelected(val){

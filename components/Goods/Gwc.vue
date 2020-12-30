@@ -209,7 +209,6 @@
             this.bo = true
           })
           this.ddym=true
-        alert("aaaa")
         }
       },
       handleClose(done) {

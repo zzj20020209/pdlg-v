@@ -34,7 +34,7 @@
 
                   <el-row style="padding-top: 50px">
                     <el-col :span="2">数量:</el-col>
-                    <el-col :span="4"><el-input-number style="width: 100px;text-align: left" v-model="num" controls-position="right" @change="handleChange" :min="1" :max=kc></el-input-number><br>当前剩余库存：{{kc}}</el-col>
+                    <el-col :span="4"><el-input-number @input.native="inputshu" style="width: 100px;text-align: left" v-model="num" controls-position="right" @change="handleChange" :min="1" :max=kc></el-input-number><br>当前剩余库存：{{kc}}</el-col>
                   </el-row>
                   <el-col style="padding-top: 75px" :span="24">
                       <el-button type="danger" style="width: 200px;height: 60px" class="el-button"  icon="el-icon-shopping-cart-2">购买</el-button>
@@ -72,6 +72,9 @@ export default {
       circleUrl:"./img/2.png"
     };
   },methods: {
+    inputshu({target}){
+      target.value=target.value.replace(/\[^0-9\]/gi,"");
+    },
     getData() { //获取数据方法
       this.tableData=[];
       var _this = this;
