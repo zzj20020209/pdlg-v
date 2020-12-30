@@ -33,9 +33,10 @@
               </el-row>
               <el-divider></el-divider>
             </div>
-            <span>总价:{{scope.row.oprice}}</span>
-            <el-button type="success" v-if="scope.row.oZLogistics=='已出库'&&scope.row.oSLogistics!='已提货'"@click="queren(scope.row.id)">确认收货</el-button>
-          </template>
+            <div style="text-align: right">
+              <span>总价:{{scope.row.oprice}}</span>
+              <el-button type="success" v-if="scope.row.oZLogistics=='已出库'"@click="queren(scope.row.id)">确认</el-button>
+            </div></template>
         </el-table-column>
       </el-table>
       <el-pagination style="text-align: center;margin-top: 20px" background
